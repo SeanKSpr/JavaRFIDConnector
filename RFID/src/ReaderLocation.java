@@ -1,0 +1,3 @@
+public enum ReaderLocation {
+	FLOOR_BACKROOM, STORE_ENTRANCE, BACKROOM_WAREHOUSE;
+}
