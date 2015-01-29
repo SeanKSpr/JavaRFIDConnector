@@ -3,6 +3,7 @@ import com.impinj.octanesdk.Tag;
 public class TagWrapper {
 	private Tag tag;
 	private TagLocation location;
+	private long timeSeen;
 	
 	public TagWrapper() {
 		this.tag = null;
@@ -12,6 +13,7 @@ public class TagWrapper {
 	public TagWrapper(Tag tag) {
 		this.tag = tag;
 		location = TagLocation.WAREHOUSE;
+		this.setTimeSeen(System.currentTimeMillis());
 	}
 	
 	public Tag getTag() {
@@ -32,5 +34,13 @@ public class TagWrapper {
 	
 	public boolean isInStock() {
 		return location != TagLocation.OUT_OF_STORE;
+	}
+
+	public long getTimeSeen() {
+		return timeSeen;
+	}
+
+	public void setTimeSeen(long timeSeen) {
+		this.timeSeen = timeSeen;
 	}
 }
