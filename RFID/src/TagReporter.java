@@ -7,10 +7,11 @@ import com.impinj.octanesdk.TagReportListener;
  * TagReporter is an implementation of the TagReportListener interface. It only has one function which is 
  * called each time a TagReport comes in standard input from the physical RFID reader. This class simply 
  * listens for these reports and adds any and all tags which have been read to a Collection of read tags
- * as long as the tags aren't deemed to be duplicate readings.
+ * as long as the tags aren't deemed to be duplicate readings. As of version 1.1 WrappedTags are constructed 
+ * with the location of the reader which scanned the tag.
  * 
- * @since 2-3-2015
- * @version 1
+ * @since  	1 	(2-3-2015)
+ * @version 1.1 (2-4-2015)
  * @author Sean Spurlin
  */
 public class TagReporter implements TagReportListener {
@@ -25,7 +26,7 @@ public class TagReporter implements TagReportListener {
 	public void onTagReported(ImpinjReader reader, TagReport report) {
 		TagWrapper wrappedTag;
 		for (Tag t : report.getTags()) {
-			wrappedTag = new TagWrapper(t);
+			wrappedTag = new TagWrapper(t, (AuburnReader)reader);
 			
 			if (!DuplicateReadDetector.isDuplicateRead(wrappedTag)) {
 				DuplicateReadDetector.addWrappedTag(wrappedTag);

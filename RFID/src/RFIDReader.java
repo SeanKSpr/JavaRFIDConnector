@@ -2,7 +2,7 @@
  * RFIDReader is an interface for interacting with the RFID reader. It only includes the bare methods needed to setup
  * the RFID reader and then have the reader begin reading tags.
  * 
- * @since January 28, 2015
+ * @since 	1	(1-28-2015)
  * @version 1
  * @author Sean Spurlin 
  */

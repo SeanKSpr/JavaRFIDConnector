@@ -3,7 +3,7 @@ import java.util.List;
  * RFIDDatabaseManager is a generic interface for interacting with a database. I based it off a database helper that
  * I used for an android project so it might not be entirely correct for this application. Feel free to correct it.
  * 
- * @since January 28, 2015
+ * @since 	1 (1-28-2015)
  * @version 1
  * @author Sean Spurlin
  * 

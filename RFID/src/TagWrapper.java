@@ -2,10 +2,10 @@ import com.impinj.octanesdk.Tag;
 /**
  * TagWrapper is an implementation of the Wrapper design pattern. This class adds functionality to 
  * the Impinj written Tag class. In particular, TagWrapper adds a TagLocation, and a time seen 
- * (in Epoch time) to the tag. 
+ * (in Epoch time) to the tag. As of version 1.1 TagWrapper keeps track of where it was scanned as well (ReaderLocation). 
  * 
- * @since 2-3-2015
- * @version 1
+ * @since	1	 (2-3-2015)
+ * @version 1.1	 (2-4-2015)
  * @author Sean Spurlin
  * 
  */
@@ -13,6 +13,7 @@ public class TagWrapper {
 	private Tag tag;
 	private TagLocation location;
 	private long timeSeen;
+	private ReaderLocation locationScanned;
 	
 	/**
 	 * Default constructor for TagWrapper. Creates a TagWrapper with all fields set to null.
@@ -33,6 +34,19 @@ public class TagWrapper {
 		this.setTimeSeen(System.currentTimeMillis());
 	}
 	
+	/**
+	 * Constructor which takes the input tag and wraps it up. When it does this, it sets the timestamp of the tag to be the
+	 * current time in milliseconds from the Epoch, and sets the TagLocation to be in the warehouse. It also records the 
+	 * location of the reader which read the tag.
+	 * @param tag The tag which is to be wrapped up
+	 * @param reader The reader which read the tag
+	 */
+	public TagWrapper(Tag tag, AuburnReader reader) {
+		this.tag = tag;
+		location = TagLocation.WAREHOUSE;
+		this.setTimeSeen(System.currentTimeMillis());
+		this.locationScanned = reader.getLocation();
+	}
 	/**
 	 * Returns the tag field of the TagWrapper
 	 * @return Tag
@@ -89,5 +103,21 @@ public class TagWrapper {
 	 */
 	public void setTimeSeen(long timeSeen) {
 		this.timeSeen = timeSeen;
+	}
+	
+	/**
+	 * Returns the location of the RFID reader which scanned the tag
+	 * @return Location of the RFID reader which scanned the tag 
+	 */
+	public ReaderLocation getLocationScanned() {
+		return locationScanned;
+	}
+	
+	/**
+	 * Sets the location of where the tag was scanned to the input 
+	 * @param locationScanned new location of where the tag was scanned (See ReaderLocation for valid values)
+	 */
+	public void setLocationScanned(ReaderLocation locationScanned) {
+		this.locationScanned = locationScanned;
 	}
 }

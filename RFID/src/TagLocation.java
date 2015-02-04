@@ -5,7 +5,7 @@
  * RFID reader at location FLOOR_BACKROOM then the location of the tag would be changed from STORE_FLOOR to BACKROOM to reflect
  * that the tag has moved from the store floor to the backroom of the store.
  * 
- * @since 2-3-2015
+ * @since 	1 (2-3-2015)
  * @version 1
  * @author Sean Spurlin
  * 

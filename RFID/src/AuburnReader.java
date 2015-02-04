@@ -4,7 +4,7 @@ import com.impinj.octanesdk.ImpinjReader;
  * AuburnReader is a child of the ImpinjReader documented in Impinj's OctaneSDK for Java. This class adds functionality
  * to an RFID reader that allows the retrieval of the reader's location.
  * @version 1
- * @since 2-3-2015
+ * @since	1 (2-3-2015)  
  * @author Sean Spurlin
  *
  */

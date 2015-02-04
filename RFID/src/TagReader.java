@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Timer;
 
 import com.impinj.octanesdk.AntennaConfigGroup;
 import com.impinj.octanesdk.OctaneSdkException;
@@ -12,10 +13,12 @@ import com.impinj.octanesdk.Settings;
  * (currently Impinj Speedway Revolution). After making a connection with the reader, it begins reading RFID data from 
  * standard input which is handled by an onTagReportListener. The RFID read settings are set to their default (see OctaneSDK
  * ImpinjReader.queryDefaultSettings). In general, this class was drafted from the ReadTags.java file which is present in the
- * Impinj OctaneSDK samples folder. NOTE: Currently this class does not support multiple readers, only a single reader.
+ * Impinj OctaneSDK samples folder. As of version 1.1 this class instantiates a TimerTask which will periodically update the
+ * database with the latest tag information collected. 
+ * NOTE: Currently this class does not support multiple readers, only a single reader.
  * 
- * @since 2-3-2015
- * @version 1
+ * @since  	1 	(2-3-2015)
+ * @version 1.1	(2-4-2015)
  * @author Sean Spurlin
  */
 public class TagReader implements RFIDReader {
@@ -129,6 +132,7 @@ public class TagReader implements RFIDReader {
 
             reader.stop();
             reader.disconnect();
+            s.close();
         } catch (OctaneSdkException ex) {
             System.out.println(ex.getMessage());
         } catch (Exception ex) {
@@ -173,6 +177,9 @@ public class TagReader implements RFIDReader {
 	 * Bootstrapping function which is required to set up the reader's host name and location.
 	 */
 	public void readerBootstrap(String hostname, ReaderLocation location) {
+		Timer timer = new Timer();
+		DBUpdateTimer updateTimer = new DBUpdateTimer();
+		timer.scheduleAtFixedRate(updateTimer, DBUpdateTimer.TIMER_DELAY, DBUpdateTimer.TIMER_DELAY);
 		this.hostname = hostname;
 		this.location = location;
 		

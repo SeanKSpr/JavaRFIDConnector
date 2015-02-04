@@ -7,15 +7,16 @@ import java.util.List;
  * a list of previously seen RFID tags. DuplicateReadDetector will compare a newly read tag to the existing tags within the 
  * collection of read tags and compare the time of the newly read tag to the time that the tag was last read. If the difference
  * in read time is above a certain threshold, then the tag is added to the list of tags. Otherwise the tag is ignored.
- * This list of tags is uploaded to the base periodically and then emptied.
+ * This list of tags is uploaded to the base periodically and then emptied. All functions of DuplicateReadDetector are thread
+ * safe as of version 1.1.
  * 
- * @version 1
- * @since 2-3-2015
+ * @version 1.1
+ * @since 	1	(2-3-2015)
  * @author Sean Spurlin
  * 
  */
 public final class DuplicateReadDetector {
-	private static Collection<TagWrapper> tagBatch = new LinkedList<TagWrapper>();
+	private static volatile Collection<TagWrapper> tagBatch = new LinkedList<TagWrapper>();
 	//This time window indicates how long we ignore subsequent RFID reads of the SAME tag after the initial read. The time is in microseconds.
 	static final int READ_DUPLICATE_TIME_WINDOW = 5000;
 	
@@ -23,15 +24,22 @@ public final class DuplicateReadDetector {
 	 * Returns the collection of recently read tags
 	 * @return Collection of recently read tags.
 	 */
-	public static Collection<TagWrapper> getWrappedTags() {
+	public static synchronized Collection<TagWrapper> getWrappedTags() {
 		return tagBatch;
 	}
 	
 	/**
+	 * Returns a copy of the batch of read RFID tags
+	 * @return Copy of the collection of recently read tags.
+	 */
+	public static synchronized Collection<TagWrapper> getBatchCopy() {
+		return new LinkedList<TagWrapper>(tagBatch);
+	}
+	/**
 	 * Adds a tag to the collection of read tags
 	 * @param wrappedTag An RFID tag wrapped up with its current location and last seen time
 	 */
-	public static void addWrappedTag(TagWrapper wrappedTag) {
+	public static synchronized void addWrappedTag(TagWrapper wrappedTag) {
 		tagBatch.add(wrappedTag);
 	}
 	
@@ -39,7 +47,7 @@ public final class DuplicateReadDetector {
 	 * Returns the EPC and Time Seen of each TagWrapper in the list of read tags as a string
 	 * @return String containing EPC and Time Seen information of every TagWrapper in the Collection
 	 */
-	public static String getTagBatchTimeInfo() {
+	public static synchronized String getTagBatchTimeInfo() {
 		String timeList = "";
 		for (TagWrapper tw : tagBatch) {
 			timeList += "EPC: " + tw.getTag().getEpc().toString() +  " Time: " + tw.getTimeSeen() + "\n";
@@ -52,7 +60,7 @@ public final class DuplicateReadDetector {
 	 * Empties the collection of seen tags. This is to be used after uploading tag information to permanent storage
 	 * @param wrappedTags Collection of read tags which is to be cleared out.
 	 */
-	public static void emptyCollection(Collection<TagWrapper> wrappedTags) {
+	public static synchronized void emptyCollection(Collection<TagWrapper> wrappedTags) {
 		wrappedTags.clear();
 	}
 	
@@ -63,13 +71,13 @@ public final class DuplicateReadDetector {
 	 * @param recentlyReadTag - RFID tag which was just read by the RFID reader
 	 * @return The entry for the previous time the input tag was read or null if there was no matching tag in the collection
 	 */
-	public static TagWrapper findDuplicateTagWithLatestReadTime(TagWrapper recentlyReadTag) {
+	public static synchronized TagWrapper findDuplicateTagWithLatestReadTime(TagWrapper recentlyReadTag) {
 		TagWrapper latestReadMatchingTag = null;
 		for (TagWrapper tw : tagBatch) {
 			List<Integer> EPC1 = recentlyReadTag.getTag().getEpc().toWordList();
 			List<Integer> EPC2 = tw.getTag().getEpc().toWordList();
 			if (epcEqual(EPC1, EPC2)) {
-				if (latestReadMatchingTag.getTag() == null) {
+				if (latestReadMatchingTag == null) {
 					latestReadMatchingTag = tw;
 				}
 				else if (tw.getTimeSeen() > latestReadMatchingTag.getTimeSeen())
@@ -86,16 +94,16 @@ public final class DuplicateReadDetector {
 	 * @param latestRead The most recent read of an RFID tag
 	 * @return True if the latestRead is a duplicate; false otherwise
 	 */
-	public static boolean isDuplicateRead(TagWrapper latestRead) {
+	public static synchronized boolean isDuplicateRead(TagWrapper latestRead) {
 		TagWrapper previousRead = findDuplicateTagWithLatestReadTime(latestRead);
-		if (previousRead.getTag() == null) {
+		if (previousRead == null) {
 			return false;
 		}
 		long previousReadTime = previousRead.getTimeSeen();
 		long latestReadTime = latestRead.getTimeSeen();
 		
 		//TESTING PURPOSES DELETE LATER
-		long result = latestReadTime - previousReadTime;
+		//long result = latestReadTime - previousReadTime;
 
 		if (latestReadTime - previousReadTime < READ_DUPLICATE_TIME_WINDOW) {
 			return true;
