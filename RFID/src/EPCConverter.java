@@ -37,6 +37,8 @@ public final class EPCConverter {
 		productReference = extractProductReference(epcCopy, productRefBitLength);
 		
 		UPC = companyPrefix + productReference;
+		int checkDigit = generateCheckDigit(UPC);
+		UPC += checkDigit;
 		return UPC;
 		
 	}
@@ -297,6 +299,23 @@ public final class EPCConverter {
 		return bits0Thru7;
 	}
 	
+	/**
+	 * Generates a check digit for the UPC following the standardized formula which can be found at 
+	 * http://www.gs1.org/how-calculate-check-digit-manually
+	 * @param baseUPC The UPC prior to its check digit being generated 
+	 * @return The check digit of the UPC as an integer
+	 */
+	private static int generateCheckDigit(String baseUPC) {
+		int oddSum = 0, evenSum = 0, checkDigit;
+		for (int i = 0; i < baseUPC.length(); i++) {
+			int temp = Integer.parseInt(baseUPC.substring(i, i + 1));
+			if (temp % 2 == 0) evenSum += temp;
+			else oddSum += 3 * temp;
+		}
+		checkDigit = 10 - ((oddSum + evenSum) % 10);
+		return checkDigit;
+		
+	}
 	//Simple optimal test for the class. Runs the first item in the excel spreadsheet. This test succeeds.
 	public static void main(String[] args) {
 		ArrayList<Integer> testList = new ArrayList<Integer>();
