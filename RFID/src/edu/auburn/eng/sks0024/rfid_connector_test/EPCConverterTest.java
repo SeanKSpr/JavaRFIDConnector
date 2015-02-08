@@ -93,9 +93,6 @@ public class EPCConverterTest {
 		
 		long serial = EPCConverter.getSerial(testList);
 		long actualSerial = Long.parseLong("193273528341");
-		assertEquals(serial, actualSerial);
-		
-		
-		
+		assertEquals(serial, actualSerial);	
 	}
 }

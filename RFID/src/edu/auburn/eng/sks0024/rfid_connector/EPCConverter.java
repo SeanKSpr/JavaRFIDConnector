@@ -194,6 +194,11 @@ public final class EPCConverter {
 		
 	}
 	
+	/**
+	 * Returns the serial number of the EPC. This is a unique identifier for products.
+	 * @param epc Electronic Product Code stored as a list of integers
+	 * @return Serial of the EPC as a long
+	 */
 	public static long getSerial(List<Integer> epc) {
 		int bits57thru62 = epc.get(3) & 0x003f;
 		int bits63thru78 = epc.get(4);
