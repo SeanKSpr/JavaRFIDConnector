@@ -325,6 +325,34 @@ public final class EPCConverter {
 		return checkDigit;
 		
 	}
+	
+	public static long getSerial(List<Integer> epc) {
+		int bits57thru62 = epc.get(3) & 0x003f;
+		int bits63thru78 = epc.get(4);
+		int bits79thru95 = epc.get(5);
+		
+		String bits57thru62Str, bits63thru78Str, bits79thru95Str;
+		
+		bits57thru62Str = Integer.toBinaryString(bits57thru62);
+		bits63thru78Str = Integer.toBinaryString(bits63thru78);
+		bits79thru95Str = Integer.toBinaryString(bits79thru95);
+		
+		while (bits57thru62Str.length() < 6) {
+			bits57thru62Str = "0" + bits57thru62Str;
+		}
+		while (bits63thru78Str.length() < 16) {
+			bits63thru78Str = "0" + bits63thru78Str;
+		}
+		while (bits79thru95Str.length() < 16) {
+			bits79thru95Str = "0" + bits79thru95Str;
+		}
+		
+		String serialBinary = bits57thru62Str + bits63thru78Str + bits79thru95Str;
+		
+		long serial = Long.parseLong(serialBinary, 2);
+		
+		return serial;
+	}
 	//Simple optimal test for the class. Runs the first item in the excel spreadsheet. This test succeeds.
 	public static void main(String[] args) {
 		ArrayList<Integer> testList = new ArrayList<Integer>();
