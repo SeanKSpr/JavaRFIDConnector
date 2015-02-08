@@ -1,4 +1,5 @@
 package edu.auburn.eng.sks0024.rfid_connector;
+import java.sql.Connection;
 import java.util.Collection;
 import java.util.TimerTask;
 
@@ -28,12 +29,14 @@ public class DBUpdateTimer extends TimerTask {
 	 */
 	public void updateDatabase() {
 		// TODO replace null with RFIDDatabaseManager implementing class
-		RFIDDatabaseManager dbManager = null;
+		RFIDDatabaseManager dbManager = new PostgresConnector();
+		Connection dbConnection = dbManager.open();
+		
 		Collection<TagWrapper> tagBatch = DuplicateReadDetector.getBatchCopy();
 		for (TagWrapper tag : tagBatch) {
 			System.out.println("Updating Database Tag: " + tag.getTag().getEpc().toString() + " Time: " + tag.getTimeSeen());
-			if(!dbManager.updateTag(tag)) {
-				dbManager.insertTag(tag);
+			if(!dbManager.updateTag(tag, dbConnection)) {
+				dbManager.insertTag(tag, dbConnection);
 			};
 		}
 		//For testing reasons (not that it really matters if this is displayed on the console)
