@@ -28,7 +28,6 @@ public class DBUpdateTimer extends TimerTask {
 	 * Takes the batch of read tags and connects with the DatabaseManager to update tag information in the database.
 	 */
 	public void updateDatabase() {
-		// TODO replace null with RFIDDatabaseManager implementing class
 		RFIDDatabaseManager dbManager = new PostgresConnector();
 		Connection dbConnection = dbManager.open();
 		
