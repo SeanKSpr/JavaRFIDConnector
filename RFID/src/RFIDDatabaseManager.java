@@ -1,3 +1,4 @@
+package edu.auburn.eng.sks0024.rfid_connector;
 import java.util.List;
 /**
  * RFIDDatabaseManager is a generic interface for interacting with a database. I based it off a database helper that

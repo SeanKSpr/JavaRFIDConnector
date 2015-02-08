@@ -1,3 +1,4 @@
+package edu.auburn.eng.sks0024.rfid_connector;
 /**
  * RFIDReader is an interface for interacting with the RFID reader. It only includes the bare methods needed to setup
  * the RFID reader and then have the reader begin reading tags.

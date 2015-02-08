@@ -1,3 +1,4 @@
+package edu.auburn.eng.sks0024.rfid_connector;
 import java.util.Collection;
 import java.util.TimerTask;
 
@@ -26,11 +27,13 @@ public class DBUpdateTimer extends TimerTask {
 	 * Takes the batch of read tags and connects with the DatabaseManager to update tag information in the database.
 	 */
 	public void updateDatabase() {
-		//RFIDDatabaseManager dbManager = null;
+		RFIDDatabaseManager dbManager = null;
 		Collection<TagWrapper> tagBatch = DuplicateReadDetector.getBatchCopy();
 		for (TagWrapper tag : tagBatch) {
 			System.out.println("Updating Database Tag: " + tag.getTag().getEpc().toString() + " Time: " + tag.getTimeSeen());
-			//dbManager.updateTag(tag);
+			if(!dbManager.updateTag(tag)) {
+				dbManager.insertTag(tag);
+			};
 		}
 		//For testing reasons (not that it really matters if this is displayed on the console)
 		if (tagBatch.isEmpty()) {

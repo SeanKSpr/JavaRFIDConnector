@@ -1,3 +1,4 @@
+package edu.auburn.eng.sks0024.rfid_connector;
 import com.impinj.octanesdk.Tag;
 /**
  * TagWrapper is an implementation of the Wrapper design pattern. This class adds functionality to 

@@ -1,3 +1,4 @@
+package edu.auburn.eng.sks0024.rfid_connector;
 /**
  * TagLocation is an enumeration of the possible locations an RFID tag can be located. The possible locations for a tag are:
  * on the store floor, in the back room, in the warehouse, or out of the store (sold). This enumeration is used in conjunction with

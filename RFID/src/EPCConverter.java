@@ -1,3 +1,4 @@
+package edu.auburn.eng.sks0024.rfid_connector;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,11 @@ public final class EPCConverter {
 		productReference = extractProductReference(epcCopy, productRefBitLength);
 		
 		UPC = companyPrefix + productReference;
+		
+		while (UPC.length() < 11) {
+			UPC = "0" + UPC;
+		}
+		
 		int checkDigit = generateCheckDigit(UPC);
 		UPC += checkDigit;
 		return UPC;
@@ -163,7 +169,6 @@ public final class EPCConverter {
 		fullEntries = (prefixBitLength - 2) / 16;
 		int i;
 		for (i = 1; i < fullEntries + 1; i++) {
-			//need to ensure that each is 16 bits long (save all dem 0's)
 			String leadingZeroCheck = Integer.toBinaryString(epc.get(i));
 			while (leadingZeroCheck.length() < 16) {
 				leadingZeroCheck = "0" + leadingZeroCheck;
@@ -171,7 +176,6 @@ public final class EPCConverter {
 			prefixBinary += leadingZeroCheck;
 		}
 		leftOverBits = (prefixBitLength - 2) % 16;
-		//Need to save all dem 0's (do tempLeftOverBits < leftOverBits ? add 0's : nothing)
 		String tempLeftOverBits = Integer.toBinaryString(epc.get(i));
 		while (tempLeftOverBits.length() < 16) {
 			tempLeftOverBits = "0" + tempLeftOverBits;
@@ -309,10 +313,15 @@ public final class EPCConverter {
 		int oddSum = 0, evenSum = 0, checkDigit;
 		for (int i = 0; i < baseUPC.length(); i++) {
 			int temp = Integer.parseInt(baseUPC.substring(i, i + 1));
-			if (temp % 2 == 0) evenSum += temp;
+			if ((i + 1) % 2 == 0) evenSum += temp;
 			else oddSum += 3 * temp;
 		}
 		checkDigit = 10 - ((oddSum + evenSum) % 10);
+		
+		if (checkDigit == 10) {
+			checkDigit = 0;
+		}
+		
 		return checkDigit;
 		
 	}
@@ -331,5 +340,16 @@ public final class EPCConverter {
 		String prefix = extractCompanyPrefix(testList, 24);
 		String productReference = extractProductReference(testList, 20);
 		String UPC = getUPC(testList);
+		
+		ArrayList<Integer> testInstance2 = new ArrayList<Integer>();
+		testInstance2.add(0x3034);
+		testInstance2.add(0x031d);
+		testInstance2.add(0xfc53);
+		testInstance2.add(0x2dc0);
+		testInstance2.add(0x0000);
+		testInstance2.add(0x0002);
+		
+		String Instance2UPC = getUPC(testInstance2);
+		assert(UPC.compareTo(Instance2UPC) == 0);
 	}
 }

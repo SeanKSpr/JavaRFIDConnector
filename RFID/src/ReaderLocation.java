@@ -1,3 +1,4 @@
+package edu.auburn.eng.sks0024.rfid_connector;
 /**
  * ReaderLocation is an enumeration of the possible locations a reader can be. Valid locations are between the
  * store floor and the backroom, at the store entrance, and between the backroom and the warehouse. This enumeration is

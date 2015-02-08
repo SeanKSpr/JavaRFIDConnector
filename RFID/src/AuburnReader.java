@@ -1,3 +1,4 @@
+package edu.auburn.eng.sks0024.rfid_connector;
 import com.impinj.octanesdk.ImpinjReader;
 
 /**
