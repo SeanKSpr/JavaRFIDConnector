@@ -95,8 +95,8 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	 */
 	public boolean updateTag(TagWrapper tag, Connection c){
 		try {
-		    //long epc = tag.tag.getEpc(); //get upc from this
-		    //long serialNum = tag.tag.getEpc(); //get serial num from this
+		    long upc = Long.parseLong(EPCConverter.getUPC(tag.getTag().getEpc().toWordList())); //get upc from this
+		    //long serialNum = Long.parseLong(EPCConverter.getSerialNum()); //get serial num from this
 			Statement stmt = c.createStatement();
 	        String sql = "SELECT products.id as productid,upc_descriptions.id as upcid, upc, upc_description_id, serial_num, location, vendor, fit, style FROM products JOIN upc_descriptions on upc_descriptions.id = products.upc_description_id where upc_descriptions.upc = 672787789760 and serial_num = "+4+";";
 	        System.out.println(sql);
