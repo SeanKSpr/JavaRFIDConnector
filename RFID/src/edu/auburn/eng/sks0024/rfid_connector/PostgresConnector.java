@@ -29,11 +29,11 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		Connection c = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres", "password");
+			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfidb","rfidweb", "rfidweb");
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 		} catch (Exception e) {
-			System.out.println("Exception occured while opening db connection");
+			System.out.println("Exception occurred while opening db connection");
 		}
 		return c;
 	}
@@ -65,17 +65,17 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	public boolean insertTag(TagWrapper tag, Connection c){
 
 		try {
-			Statement stmt = c.createStatement();
-			String sql = "INSERT into upc_descriptions values" +
-					"(3, 151071851756, 'Wrangler', '50/30', 'strech', 'Men', 'blue')," +
-					"(4, 772787789760, 'Rustler', '33/30', 'classic', 'Men', 'blue');" +
-					"INSERT into products values(3, 1, 2, 'in_store')," +
-					"(4, 2, 2, 'warehouse'), (5, 2, 3, 'warehouse');";
-	        System.out.println(sql);
-			stmt.executeUpdate(sql);
-			
-			stmt.close();
-			c.commit();
+//			Statement stmt = c.createStatement();
+//			String sql = "INSERT into upc_descriptions values" +
+//					"(3, 151071851756, 'Wrangler', '50/30', 'strech', 'Men', 'blue')," +
+//					"(4, 772787789760, 'Rustler', '33/30', 'classic', 'Men', 'blue');" +
+//					"INSERT into products values(3, 1, 2, 'in_store')," +
+//					"(4, 2, 2, 'warehouse'), (5, 2, 3, 'warehouse');";
+//	        System.out.println(sql);
+//			stmt.executeUpdate(sql);
+//			
+//			stmt.close();
+//			c.commit();
 			return true;
 		} catch (Exception e) {
 			System.out.println("Error occurred while inserting default values into the database");
@@ -96,17 +96,23 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	public boolean updateTag(TagWrapper tag, Connection c){
 		try {
 		    long upc = Long.parseLong(EPCConverter.getUPC(tag.getTag().getEpc().toWordList())); //get upc from this
-		    //long serialNum = Long.parseLong(EPCConverter.getSerialNum()); //get serial num from this
+		    long serialNum = (EPCConverter.getSerial(tag.getTag().getEpc().toWordList()));
+		    System.out.println("UPC: " + upc);
+		    System.out.println("Serial: " + serialNum);//get serial num from this
 			Statement stmt = c.createStatement();
-	        String sql = "SELECT products.id as productid,upc_descriptions.id as upcid, upc, upc_description_id, serial_num, location, vendor, fit, style FROM products JOIN upc_descriptions on upc_descriptions.id = products.upc_description_id where upc_descriptions.upc = 672787789760 and serial_num = "+4+";";
-	        System.out.println(sql);
+	        String sql = "SELECT products.id as productid,upc_descriptions.id as upcid, upc, upc_description_id, serial_num, location, vendor, fit, style FROM products JOIN upc_descriptions on upc_descriptions.id = products.upc_description_id where upc_descriptions.upc = " + upc +" and serial_num = "+ serialNum +";";
+	        
 	        ResultSet rs = stmt.executeQuery(sql);
 	        rs.next();
 	        int id = rs.getInt("productid");
 	        String dbLocation = rs.getString("location");
 	        TagLocation currLoc = convertLocation(dbLocation);
 	        TagLocation tl = tag.getLocation().getNewLocation(currLoc, tag.getLocationScanned());
+	        System.out.println("Scanner location: " + tag.getLocationScanned());
+	        System.out.println("Current tag location: " + currLoc);
+	        System.out.println("New tag location: " + tl);
 			String location = convertLocation(tl);
+			System.out.println("Updated item location: " + location);
 	        
 	        if (!dbLocation.equalsIgnoreCase(location)) {
 		        sql = "UPDATE PRODUCTS set LOCATION = '" + location + "' where ID=" + id + ";";
