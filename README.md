@@ -1,6 +1,7 @@
-# JavaRFIDConnector
+# JavaRFIDConnector Description
 Use Java and OctaneSDK to connect RFID tag information to a PostgreSQL Database
 
+# JavaRFIDConnector Installation Guide
 ## Hardware
 ### You will need
 1. An Impinj RFID reader hub. We are using the Impinj Speedway Revolution
