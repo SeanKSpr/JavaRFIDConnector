@@ -15,11 +15,11 @@
         <pathelement location=".\test\lib\junit-4.11.jar"/>
     </path>
     <path id="OctaneSDK.userclasspath">
-        <pathelement location="../../../../../Program Files/Java/jdk1.7.0_51/Octane SDK Java 1 0 0 BETA/OctaneSDKJava-1.0.0.240-jar-with-dependencies.jar"/>
-        <pathelement location="../../../../../Program Files/Java/jdk1.7.0_51/Octane SDK Java 1 0 0 BETA/OctaneSDKJava-1.0.0.240-javadoc.jar"/>
+        <pathelement location=".\test\lib\OctaneSDKJava-1.0.0.240-jar-with-dependencies.jar"/>
+        <pathelement location=".\test\lib\OctaneSDKJava-1.0.0.240-javadoc.jar"/>
     </path>
     <path id="PostgreSQL JDBC.userclasspath">
-        <pathelement location="../../../../../Program Files/Java/jre1.8.0_31/lib/postgresql-9.4-1200.jdbc41.jar"/>
+        <pathelement location=".\test\lib\postgresql-9.4-1200.jdbc41.jar"/>
     </path>
     <path id="JavaRFIDConnector.classpath">
         <pathelement location="bin"/>
