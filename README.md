@@ -15,7 +15,7 @@ Use Java and OctaneSDK to connect RFID tag information to a PostgreSQL Database
   2. Right click the unidentified LAN network and click properties
   3. High light Internet Protocol Version 4 (TCP/IPv4) in the Networking tab
   4. Click Properties
-  5. Checkmark "Use the following IP address:
+  5. Checkmark "Use the following IP address":
     1. In the IP address box type the IP of the Revolution
     2. In the Subnet mask box type - 255.255.255.0
     3. Click Ok
