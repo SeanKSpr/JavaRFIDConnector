@@ -73,12 +73,11 @@
 		<antcall target="build"/>
 	</target>
 
-	<target name="test" depends="build-project">
+	<target name="test" depends="build-project, TagLocationTest">
 		<mkdir dir="${junit.output.dir}"/>
 		<junit fork="yes" printsummary="on">
 			<formatter type="xml"/>
 			<test name="edu.auburn.eng.sks0024.rfid_connector_test.EPCConverterTest" todir="${junit.output.dir}"/>
-			<test name="edu.auburn.eng.sks0024.rfid_connector_test.TagLocationTest" todir="${junit.output.dir}"/>
 			<classpath refid="JavaRFIDConnector.classpath"/>
 		</junit>
 	</target>
