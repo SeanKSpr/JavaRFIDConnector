@@ -83,15 +83,6 @@
 		</junit>
 	</target>
 
-	<target name="TagLocationTest">
-		<mkdir dir="${junit.output.dir}"/>
-		<junit fork="yes" printsummary="withOutAndErr">
-			<formatter type="xml"/>
-			<test name="edu.auburn.eng.sks0024.rfid_connector_test.TagLocationTest" todir="${junit.output.dir}"/>
-			<classpath refid="JavaRFIDConnector.classpath"/>
-		</junit>
-	</target>
-
 	<target name="junitreport">
 		<junitreport todir="${junit.output.dir}">
 			<fileset dir="${junit.output.dir}">
