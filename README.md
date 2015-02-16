@@ -32,6 +32,7 @@ Use Java and OctaneSDK to connect RFID tag information to a PostgreSQL Database
   * Place the .jar file in a directory of your choosing
 4. Clone JavaRFIDConnector to your desktop
 5. Open up Eclipse
+	* May need to install EGit plugin http://eclipse.org/egit/download/
 6. Click on File at the top of the screen
 7. Click on import... on the dropdown menu
 8. Click on Git as your import source  
