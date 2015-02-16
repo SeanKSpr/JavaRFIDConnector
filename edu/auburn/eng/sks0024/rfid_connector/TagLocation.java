@@ -22,7 +22,7 @@ public enum TagLocation {
 	 * @param readerLoc The location of the RFID reader that read the RFID tag
 	 * @return The new location of the RFID tag
 	 */
-	public TagLocation getNewLocation(TagLocation currentLocation, ReaderLocation readerLoc) {
+	public static TagLocation getNewLocation(TagLocation currentLocation, ReaderLocation readerLoc) {
 		TagLocation newLocation = null;
 		switch(readerLoc) {
 		case FLOOR_BACKROOM:
