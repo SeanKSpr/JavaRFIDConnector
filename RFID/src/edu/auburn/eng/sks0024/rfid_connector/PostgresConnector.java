@@ -4,6 +4,8 @@ import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+
+import com.impinj.octanesdk.Tag;
 //import java.util.List;
 
 /**
@@ -31,7 +33,8 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		Connection c = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfidb","rfidweb", "rfidweb");
+			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres","password");
+			//c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfidb","rfidweb", "rfidweb");
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 		} catch (Exception e) {
@@ -77,6 +80,27 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			Statement stmt = c.createStatement();
 			String sql = "INSERT into products values " //+ " (id, upc_id, serial, location)"
 			+ "(" + upc + ", " + serialNum + ", " + convertLocation(TagLocation.BACK_ROOM) + ")";
+	        System.out.println(sql);
+			stmt.executeUpdate(sql);
+			
+			stmt.close();
+			c.commit();
+			return true;
+		} catch (Exception e) {
+			System.out.println("Error occurred while inserting new value into the database");
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	public boolean testInsertTag(long tagUPC, long tagSerial, Connection c){
+
+		try {
+		    long upc = 2;//tagUPC;
+		    long serialNum = 100;//tagSerial;
+			Statement stmt = c.createStatement();
+			String sql = "INSERT into products(upc_description_id, serial_num, location) values " //+ " (id, upc_id, serial, location)"
+			+ "(" + upc + ", " + serialNum + ", '" + convertLocation(TagLocation.BACK_ROOM) + "')";
 	        System.out.println(sql);
 			stmt.executeUpdate(sql);
 			
@@ -271,4 +295,23 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	 * @return Tag associated with the id
 	 */
 	public TagWrapper getTag(long id, Connection c){return null;}
+	
+	public static void main(String[] args) {
+		//similar to EPCConverter class, run some tests locally as an instance of "running" the class
+		
+		PostgresConnector pc = new PostgresConnector();
+		Connection c = pc.open();
+		pc.getAllTags(c);
+		long tagUPC = 0;
+		long tagSerial = 0;
+		pc.testInsertTag(tagUPC, tagSerial, c); //tests the SQL part of adding new tags
+		//valid testing since we assume the TagWrapper is populated correctly in this class
+		//and testing for populating TagWrapper as well as getting UPC and Serial is done elsewhere
+		
+		//similar testing theory to above, this tests updateTag
+		//TagLocation readLocation = TagLocation.BACK_ROOM;
+		//pc.testUpdateTag(tagUPC, tagSerial, c, readLocation);
+		pc.close(c);
+		
+	}
 }
