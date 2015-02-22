@@ -1,6 +1,5 @@
 package edu.auburn.eng.sks0024.rfid_connector;
-import java.sql.*;
-import java.util.List;
+import java.sql.Connection;
 /**
  * RFIDDatabaseManager is a generic interface for interacting with a database. I based it off a database helper that
  * I used for an android project so it might not be entirely correct for this application. Feel free to correct it.
@@ -85,22 +84,4 @@ public interface RFIDDatabaseManager {
 	 */
 	public TagWrapper getTag(long id, Connection c);
 	
-	/**
-	 * Function:		dropTable
-	 * Precondition:	Connection to database has been established
-	 * Postcondition:	Table which shares the same as the input is dropped from the database along with any data belonging
-	 * to entries in the dropped table
-	 * @param tableName Name of the table in the database to be dropped
-	 * @param c Current connection to our database
-	 */
-	public void dropTable(String tableName, Connection c);
-	
-	/**
-	 * Function:		initializeTable
-	 * Precondition:	Connection to database has been established
-	 * Postcondition:	Table with the same name as the input String is initialized with default information
-	 * @param tableName Name of the table in the database to be filled with default values
-	 * @param c Current connection to our database
-	 */
-	public void initializeTable(String tableName, Connection c);	
 }
