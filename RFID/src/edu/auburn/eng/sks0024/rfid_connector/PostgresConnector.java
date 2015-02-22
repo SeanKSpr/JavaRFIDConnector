@@ -138,12 +138,13 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	        rs.next();
 	        int id = rs.getInt("productid");
 	        String dbLocation = rs.getString("location");
-	        TagLocation currLoc = convertLocation(dbLocation);
-	        TagLocation tl = tag.getLocation().getNewLocation(currLoc, tag.getLocationScanned());
+	        TagLocation currLoc = TagLocation.convertLocation(dbLocation);
+	        tag.getLocation();
+			TagLocation tl = TagLocation.getNewLocation(currLoc, tag.getLocationScanned());
 	        System.out.println("Scanner location: " + tag.getLocationScanned());
 	        System.out.println("Current tag location: " + currLoc);
 	        System.out.println("New tag location: " + tl);
-			String location = convertLocation(tl);
+			String location = TagLocation.convertLocation(tl);
 			System.out.println("Updated item location: " + location);
 	        
 			//need to get Sean to double-check that this makes sense to him
