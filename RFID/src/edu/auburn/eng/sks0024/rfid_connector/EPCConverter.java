@@ -226,31 +226,4 @@ public final class EPCConverter {
 		
 		return serial;
 	}
-	//Simple optimal test for the class. Runs the first item in the excel spreadsheet. This test succeeds.
-	public static void main(String[] args) {
-		ArrayList<Integer> testList = new ArrayList<Integer>();
-		testList.add(0x3034);
-		testList.add(0x031d);
-		testList.add(0xfc53);
-		testList.add(0x2dc0);
-		testList.add(0x0000);
-		testList.add(0x0001);
-		
-		int header = extractHeader(testList);
-		int filter = extractFilter(testList);
-		String prefix = extractCompanyPrefix(testList, 24);
-		String productReference = extractProductReference(testList, 20);
-		String UPC = getUPC(testList);
-		
-		ArrayList<Integer> testInstance2 = new ArrayList<Integer>();
-		testInstance2.add(0x3034);
-		testInstance2.add(0x031d);
-		testInstance2.add(0xfc53);
-		testInstance2.add(0x2dc0);
-		testInstance2.add(0x0000);
-		testInstance2.add(0x0002);
-		
-		String Instance2UPC = getUPC(testInstance2);
-		assert(UPC.compareTo(Instance2UPC) == 0);
-	}
 }

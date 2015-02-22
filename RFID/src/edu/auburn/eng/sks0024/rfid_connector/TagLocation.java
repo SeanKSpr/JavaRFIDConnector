@@ -81,7 +81,7 @@ public enum TagLocation {
 	 * @param loc The TagLocation enum value we need to convert to the String value for the database
 	 * @return The String location to enter in the database
 	 */
-	public String convertLocation(TagLocation loc) {
+	public static String convertLocation(TagLocation loc) {
 		switch(loc) {
 		case BACK_ROOM:
 			return "back room";

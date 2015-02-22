@@ -1,11 +1,8 @@
 package edu.auburn.eng.sks0024.rfid_connector;
-import java.sql.*;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
-
-import com.impinj.octanesdk.Tag;
 //import java.util.List;
 
 /**
