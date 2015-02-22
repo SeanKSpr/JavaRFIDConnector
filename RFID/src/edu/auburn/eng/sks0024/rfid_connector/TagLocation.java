@@ -49,4 +49,50 @@ public enum TagLocation {
 		}
 		return newLocation;
 	}
+	
+	/**
+	 * Function:		convertLocation
+	 * 
+	 * Precondition:	TagLocation has been recieved from the given TagWrapper object
+	 * Postcondition:	TagLocation value has been converted to its String representation
+	 * @param loc The String value we need to convert to the TagLocation enum value for the database
+	 * @return The TagLocation from the database to compare to the new location from the reader
+	 */
+	public static TagLocation convertLocation(String loc) {
+		switch(loc) {
+		case "back room":
+			return TagLocation.BACK_ROOM;
+		case "on store floor":
+			return TagLocation.STORE_FLOOR;
+		case "warehouse":
+			return TagLocation.WAREHOUSE;
+		case "out of store":
+			return TagLocation.OUT_OF_STORE;
+		default:
+			return null;
+		}
+	}
+	
+	/**
+	 * Function:		convertLocation
+	 * 
+	 * Precondition:	TagLocation has been recieved from the given TagWrapper object
+	 * Postcondition:	TagLocation value has been converted to its String representation
+	 * @param loc The TagLocation enum value we need to convert to the String value for the database
+	 * @return The String location to enter in the database
+	 */
+	public String convertLocation(TagLocation loc) {
+		switch(loc) {
+		case BACK_ROOM:
+			return "back room";
+		case STORE_FLOOR:
+			return "on store floor";
+		case WAREHOUSE:
+			return "warehouse";
+		case OUT_OF_STORE:
+			return "out of store";
+		default:
+			return "";
+		}
+	}
 }

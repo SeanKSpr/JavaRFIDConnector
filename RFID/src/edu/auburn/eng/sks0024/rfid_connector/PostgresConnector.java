@@ -79,7 +79,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		    long serialNum = (EPCConverter.getSerial(tag.getTag().getEpc().toWordList()));
 			Statement stmt = c.createStatement();
 			String sql = "INSERT into products values " //+ " (id, upc_id, serial, location)"
-			+ "(" + upc + ", " + serialNum + ", " + convertLocation(TagLocation.BACK_ROOM) + ")";
+			+ "(" + upc + ", " + serialNum + ", " + TagLocation.convertLocation(TagLocation.BACK_ROOM) + ")";
 	        System.out.println(sql);
 			stmt.executeUpdate(sql);
 			
@@ -100,7 +100,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		    long serialNum = 100;//tagSerial;
 			Statement stmt = c.createStatement();
 			String sql = "INSERT into products(upc_description_id, serial_num, location) values " //+ " (id, upc_id, serial, location)"
-			+ "(" + upc + ", " + serialNum + ", '" + convertLocation(TagLocation.BACK_ROOM) + "')";
+			+ "(" + upc + ", " + serialNum + ", '" + TagLocation.convertLocation(TagLocation.BACK_ROOM) + "')";
 	        System.out.println(sql);
 			stmt.executeUpdate(sql);
 			
@@ -163,51 +163,6 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		}
 	}
 	
-	/**
-	 * Function:		convertLocation
-	 * 
-	 * Precondition:	TagLocation has been recieved from the given TagWrapper object
-	 * Postcondition:	TagLocation value has been converted to its String representation
-	 * @param loc The TagLocation enum value we need to convert to the String value for the database
-	 * @return The String location to enter in the database
-	 */
-	public String convertLocation(TagLocation loc) {
-		switch(loc) {
-		case BACK_ROOM:
-			return "back room";
-		case STORE_FLOOR:
-			return "on store floor";
-		case WAREHOUSE:
-			return "warehouse";
-		case OUT_OF_STORE:
-			return "out of store";
-		default:
-			return "";
-		}
-	}
-	
-	/**
-	 * Function:		convertLocation
-	 * 
-	 * Precondition:	TagLocation has been recieved from the given TagWrapper object
-	 * Postcondition:	TagLocation value has been converted to its String representation
-	 * @param loc The String value we need to convert to the TagLocation enum value for the database
-	 * @return The TagLocation from the database to compare to the new location from the reader
-	 */
-	public TagLocation convertLocation(String loc) {
-		switch(loc) {
-		case "back room":
-			return TagLocation.BACK_ROOM;
-		case "on store floor":
-			return TagLocation.STORE_FLOOR;
-		case "warehouse":
-			return TagLocation.WAREHOUSE;
-		case "out of store":
-			return TagLocation.OUT_OF_STORE;
-		default:
-			return null;
-		}
-	}
 	
 	/**
 	 * Function:		findTag
