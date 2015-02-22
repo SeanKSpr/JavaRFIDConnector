@@ -240,6 +240,27 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		}
 	}
 	
+	public boolean testFindTag(long upcTag, long serialTag, Connection c){
+		try {
+		    long upc = Long.parseLong("672787789760");//upcTag;
+		    long serialNum = serialTag;
+			Statement stmt = c.createStatement();
+			String sql = "SELECT * FROM products JOIN upc_descriptions ON upc_descriptions.id = products.upc_description_id WHERE upc = " + upc + " AND serial_num = " + serialNum + ";";
+			ResultSet rs = stmt.executeQuery(sql);
+			if (!rs.next()) { //condition passes if no valid rows in rs
+				stmt.close();
+				System.out.println("Did not find Tag");
+				return false;
+			}
+			stmt.close();
+			System.out.println("Found Tag");
+			return true;
+		} catch (Exception e) {
+			System.out.println("Error occurred while locating Tags in the database");
+			return false;
+		}
+	}
+	
 	/**
 	 * Function:		deleteTag
 	 * I can add this later, but it doesn't seem like we need to delete tags via Java database access
@@ -302,9 +323,10 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		PostgresConnector pc = new PostgresConnector();
 		Connection c = pc.open();
 		pc.getAllTags(c);
-		long tagUPC = 0;
-		long tagSerial = 0;
-		pc.testInsertTag(tagUPC, tagSerial, c); //tests the SQL part of adding new tags
+		long tagUPC = 2;
+		long tagSerial = 100;
+		if(!pc.testFindTag(tagUPC, tagSerial, c))
+			pc.testInsertTag(tagUPC, tagSerial, c); //tests the SQL part of adding new tags
 		//valid testing since we assume the TagWrapper is populated correctly in this class
 		//and testing for populating TagWrapper as well as getting UPC and Serial is done elsewhere
 		
