@@ -7,7 +7,7 @@ package edu.auburn.eng.sks0024.rfid_connector;
  * that the tag has moved from the store floor to the backroom of the store.
  * 
  * @since 	1 (2-3-2015)
- * @version 1
+ * @version 1.1 (2-23-2015)
  * @author Sean Spurlin
  * 
  */
@@ -44,6 +44,14 @@ public enum TagLocation {
 			}
 			else if (currentLocation == WAREHOUSE) {
 				newLocation = BACK_ROOM;
+			}
+			break;
+		case WAREHOUSE_LOADING:
+			if (currentLocation == null || currentLocation == OUT_OF_STORE) {
+				newLocation = WAREHOUSE;
+			}
+			else {
+				newLocation = OUT_OF_STORE;
 			}
 			break;
 		}

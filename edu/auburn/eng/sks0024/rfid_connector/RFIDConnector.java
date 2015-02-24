@@ -4,24 +4,24 @@ package edu.auburn.eng.sks0024.rfid_connector;
  * the RFID reader and then have the reader begin reading tags.
  * 
  * @since 	1	(1-28-2015)
- * @version 1
+ * @version 1.1 (2-23-2015)
  * @author Sean Spurlin 
  */
-public interface RFIDReader {
+public interface RFIDConnector {
 	/**
-	 * Function:		startReader
+	 * Function:		startConnector
 	 * 
 	 * Precondition:	readerBootstrap has been called and the reader has a hostname and a ReaderLocation
 	 * Postcondition:	The implementing class will begin reading RFID tags and adding them to a collection of read tags
 	 */
-	public void startReader();
+	public void startConnector();
 	/**
-	 * Function:		 readerBootstrap
+	 * Function:		 connectorBootstrap
 	 * 
 	 * Precondition:	 The RFID reader is connected to the computer running this software
-	 * Postcondition:	 The software RFID reader knows the hostname and the location of the hardware RFID reader
+	 * Postcondition:	 The software RFID reader knows the hostname of the Impinj RFID reader and a Timer has been set 
+	 * to update the database periodically with the Tags read by the RFID reader.
 	 * @param hostname - The IP address/hostname of the hardware RFID reader
-	 * @param location - The location of the hardware RFID reader (ex. at the entrance of the store floor. See ReaderLocation)
 	 */
-	public void readerBootstrap(String hostname, ReaderLocation location);
+	public void connectorBootstrap(String hostname);
 }
