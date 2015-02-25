@@ -22,6 +22,10 @@
 	<path id="PostgreSQL JDBC.userclasspath">
 		<pathelement location=".\lib\postgresql-9.4-1200.jdbc41.jar"/>
 	</path>
+	<path id="SWT.userclasspath">
+		<pathelement location=".\lib\swt_64.jar"/>
+		<pathelement location=".\lib\swt-debug_64.jar"/>
+	</path>
 	<path id="JavaRFIDConnector.classpath">
 		<pathelement location="bin"/>
 		<path refid="JUnit 4.libraryclasspath"/>
