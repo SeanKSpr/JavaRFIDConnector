@@ -7,9 +7,31 @@ package edu.auburn.eng.sks0024.rfid_connector;
  * that the tag has moved from the store floor to the backroom of the store.
  * 
  * @since   1 (2-3-2015)
- * @version 1
+ * @version 1.1 (2-23-2015)
  * @author Sean Spurlin
  */
 public enum ReaderLocation {
-	FLOOR_BACKROOM, STORE_ENTRANCE, BACKROOM_WAREHOUSE;
+	FLOOR_BACKROOM, STORE_ENTRANCE, BACKROOM_WAREHOUSE, WAREHOUSE_LOADING;
+	
+	/**
+	 * convertLocation takes in a String describing the an RFID antenna/reader location and returns the 
+	 * corresponding ReaderLocation enumeration. This function should be used primarily by the ReaderLocation Combo
+	 * GUI components described in the RFIDManagerWindow class.
+	 * @param readerLocation The location of an antenna/reader as a String
+	 * @return The location of the same antenna/reader as the corresponding ReaderLocation enum
+	 */
+	public static ReaderLocation convertLocation(String readerLocation) {
+		switch (readerLocation) {
+		case "Between Warehouse and Loading":
+			return WAREHOUSE_LOADING;
+		case "Between Warehouse and Backroom":
+			return BACKROOM_WAREHOUSE;
+		case "Between Backroom and Store floor":
+			return FLOOR_BACKROOM;
+		case "Between Store floor and Store entrance":
+			return STORE_ENTRANCE;
+		}
+		return null;
+		
+	}
 }
