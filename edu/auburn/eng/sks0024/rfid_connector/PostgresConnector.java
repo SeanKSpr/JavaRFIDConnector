@@ -150,7 +150,17 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			String location = TagLocation.convertLocation(tl);
 			System.out.println("Updated item location: " + location);
 	        
-			//need to get Sean to double-check that this makes sense to him
+			// Sean 		2-24-2015          //////////////////////////////////////////////////////////////////////////////////////                                                                       
+			//
+			// Read: if oldTagLocation ISN'T the same as the newTagLocation AND the oldTagLocation ISN'T OUT_OF_STORE
+			//			then: update the database with the latest tag information; return True
+			//			else: (do nothing) return True
+			//
+			////**********************************************COMMENT***************************************************************
+			//What if the reason something went OUT_OF_STORE was because it left through the Warehouse door, and
+			//now the truck is bringing the same tag back to the store through the warehouse? I feel as though if a tag enters 
+			//through the warehouse entrance it should be added to the database regardless of previous status.
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	        if (!dbLocation.equalsIgnoreCase(location) && !dbLocation.equalsIgnoreCase("out of store")) {
 		        sql = "UPDATE PRODUCTS set LOCATION = '" + location + "' where ID=" + id + ";";
 		        System.out.println(sql);
@@ -186,7 +196,6 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			Statement stmt = c.createStatement();
 			String sql = "SELECT * FROM products JOIN upc_descriptions ON upc_description.id = product.id WHERE upc_decription.id = " + upc + " AND serial = " + serialNum + ";";
 	        ResultSet rs = stmt.executeQuery(sql);
-	        
 			if (!rs.first()) { //condition passes if no valid rows in rs
 				stmt.close();
 				return false;
