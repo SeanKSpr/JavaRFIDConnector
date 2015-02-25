@@ -32,10 +32,16 @@ public enum TagLocation {
 			else if (currentLocation == BACK_ROOM) {
 				newLocation = STORE_FLOOR;
 			}
+			else {
+				newLocation = currentLocation;
+			}
 			break;
 		case STORE_ENTRANCE:
 			if (currentLocation == STORE_FLOOR) {
 				newLocation = OUT_OF_STORE;
+			}
+			else {
+				newLocation = currentLocation;
 			}
 			break;
 		case BACKROOM_WAREHOUSE:
@@ -44,6 +50,9 @@ public enum TagLocation {
 			}
 			else if (currentLocation == WAREHOUSE) {
 				newLocation = BACK_ROOM;
+			}
+			else {
+				newLocation = currentLocation;
 			}
 			break;
 		case WAREHOUSE_LOADING:
