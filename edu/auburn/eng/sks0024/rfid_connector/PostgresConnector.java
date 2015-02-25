@@ -197,8 +197,9 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			String sql = "SELECT id, location FROM products WHERE id = " + id + ";";
 	        
 	        ResultSet rs = stmt.executeQuery(sql);
-	        rs.next();
-	        String dbLocation = rs.getString("location");
+	        String dbLocation = "";
+	        if(rs.next())
+	        	dbLocation = rs.getString("location");
 			stmt.close();
 			return dbLocation;
 		} catch (Exception e) {
