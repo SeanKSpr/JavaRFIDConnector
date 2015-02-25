@@ -67,7 +67,7 @@ public class TagLocationTest {
 		ReaderLocation readerLoc = ReaderLocation.WAREHOUSE_LOADING;
 		TagLocation newLocation = TagLocation.getNewLocation(location, readerLoc);
 		
-		assertEquals(TagLocation.STORE_FLOOR, newLocation);
+		assertEquals(TagLocation.OUT_OF_STORE, newLocation);
 	}
 	
 	@Test
@@ -103,7 +103,7 @@ public class TagLocationTest {
 		ReaderLocation readerLoc = ReaderLocation.WAREHOUSE_LOADING;
 		TagLocation newLocation = TagLocation.getNewLocation(location, readerLoc);
 		
-		assertEquals(TagLocation.BACK_ROOM, newLocation);
+		assertEquals(TagLocation.OUT_OF_STORE, newLocation);
 	}
 	
 	@Test
