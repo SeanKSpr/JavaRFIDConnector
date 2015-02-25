@@ -74,14 +74,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		try {
 		    long upc = Long.parseLong(EPCConverter.getUPC(tag.getTag().getEpc().toWordList())); //get upc from this
 		    long serialNum = (EPCConverter.getSerial(tag.getTag().getEpc().toWordList()));
-			Statement stmt = c.createStatement();
-			String sql = "INSERT into products values " //+ " (id, upc_id, serial, location)"
-			+ "(" + upc + ", " + serialNum + ", " + TagLocation.convertLocation(TagLocation.BACK_ROOM) + ")";
-	        System.out.println(sql);
-			stmt.executeUpdate(sql);
-			
-			stmt.close();
-			c.commit();
+			addTagToDatabase(upc, serialNum, c);
 			return true;
 		} catch (Exception e) {
 			System.out.println("Error occurred while inserting new value into the database");
@@ -90,11 +83,11 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		}
 	}
 	
-	public boolean testInsertTag(long tagUPC, long tagSerial, Connection c){
+	public boolean addTagToDatabase(long tagUPC, long tagSerial, Connection c){
 
 		try {
-		    long upc = 2;//tagUPC;
-		    long serialNum = 100;//tagSerial;
+		    long upc = tagUPC;
+		    long serialNum = tagSerial;
 			Statement stmt = c.createStatement();
 			String sql = "INSERT into products(upc_description_id, serial_num, location) values " //+ " (id, upc_id, serial, location)"
 			+ "(" + upc + ", " + serialNum + ", '" + TagLocation.convertLocation(TagLocation.BACK_ROOM) + "')";
@@ -126,34 +119,27 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		try {
 		    long upc = Long.parseLong(EPCConverter.getUPC(tag.getTag().getEpc().toWordList())); //get upc from this
 		    long serialNum = (EPCConverter.getSerial(tag.getTag().getEpc().toWordList()));//get serial num from this
-		    System.out.println("UPC: " + upc);
-		    System.out.println("Serial: " + serialNum);
+		    //System.out.println("UPC: " + upc);
+		    //System.out.println("Serial: " + serialNum);
 			Statement stmt = c.createStatement();
-	        String sql = "SELECT products.id as productid, upc_descriptions.id as upcid, upc, upc_description_id, serial_num, location, vendor, fit, style FROM products JOIN upc_descriptions on upc_descriptions.id = products.upc_description_id where upc_descriptions.upc = " + upc +" and serial_num = "+ serialNum +";";
-	        
-	        ResultSet rs = stmt.executeQuery(sql);
-	        rs.next();
-	        int id = rs.getInt("productid");
-	        String dbLocation = rs.getString("location");
+			
+			int id = getTagID(upc, serialNum, c);
+			String dbLocation = getTagLocation(id, c);
+			
 	        TagLocation currLoc = TagLocation.convertLocation(dbLocation);
-	        tag.getLocation();
-			TagLocation tl = TagLocation.getNewLocation(currLoc, tag.getLocationScanned());
-	        System.out.println("Scanner location: " + tag.getLocationScanned());
-	        System.out.println("Current tag location: " + currLoc);
-	        System.out.println("New tag location: " + tl);
-			String location = TagLocation.convertLocation(tl);
-			System.out.println("Updated item location: " + location);
+			TagLocation newLoc = TagLocation.getNewLocation(currLoc, tag.getLocationScanned());
+			String location = TagLocation.convertLocation(newLoc);
 	        
-			//need to get Sean to double-check that this makes sense to him
 	        if (!dbLocation.equalsIgnoreCase(location) && !dbLocation.equalsIgnoreCase("out of store")) {
-		        sql = "UPDATE PRODUCTS set LOCATION = '" + location + "' where ID=" + id + ";";
+		        String sql = "UPDATE PRODUCTS set LOCATION = '" + location + "' where ID=" + id + ";";
 		        System.out.println(sql);
 				stmt.executeUpdate(sql);
 				
 				stmt.close();
 				c.commit();
+				return true;
 	        }
-			return true;
+			return false;
 		} catch (Exception e) {
 			System.out.println("Error occurred while updating tag");
 			System.out.println(e.getMessage());
@@ -161,6 +147,43 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		}
 	}
 	
+	public boolean updateTagInDatabase(long upc, long serial, Connection c) {
+		return false;
+	}
+	
+	public int getTagID(long upc, long serial, Connection c) {
+
+		try {
+			Statement stmt = c.createStatement();
+			String sql = "SELECT products.id as productid FROM products JOIN upc_descriptions on upc_descriptions.id = products.upc_description_id where upc_descriptions.upc = " + upc +" and serial_num = "+ serial +";";
+	        
+	        ResultSet rs = stmt.executeQuery(sql);
+	        rs.next();
+	        int id = rs.getInt("productid");
+			stmt.close();
+			return id;
+		} catch (Exception e) {
+			System.out.println("Error occurred while obtaining Tag ID from database");
+			return 0;
+		}
+	}
+	
+	public String getTagLocation(int id, Connection c) {
+
+		try {
+			Statement stmt = c.createStatement();
+			String sql = "SELECT id, location FROM products WHERE id = " + id + ";";
+	        
+	        ResultSet rs = stmt.executeQuery(sql);
+	        rs.next();
+	        String dbLocation = rs.getString("location");
+			stmt.close();
+			return dbLocation;
+		} catch (Exception e) {
+			System.out.println("Error occurred while obtaining Tag location from database");
+			return null;
+		}
+	}
 	
 	/**
 	 * Function:		findTag
@@ -173,32 +196,16 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	 * @return True if the Tag exists, False otherwise
 	 */
 	public boolean findTag(TagWrapper tag, Connection c){
-		try {
-		    long upc = Long.parseLong(EPCConverter.getUPC(tag.getTag().getEpc().toWordList())); //get upc from this
-		    long serialNum = (EPCConverter.getSerial(tag.getTag().getEpc().toWordList()));//get serial num from this
-
-			Statement stmt = c.createStatement();
-			String sql = "SELECT * FROM products JOIN upc_descriptions ON upc_description.id = product.id WHERE upc_decription.id = " + upc + " AND serial = " + serialNum + ";";
-	        ResultSet rs = stmt.executeQuery(sql);
-	        
-			if (!rs.first()) { //condition passes if no valid rows in rs
-				stmt.close();
-				return false;
-			}
-			stmt.close();
-			return true;
-		} catch (Exception e) {
-			System.out.println("Error occurred while locating Tags in the database");
-			return false;
-		}
+		
+	    long upc = Long.parseLong(EPCConverter.getUPC(tag.getTag().getEpc().toWordList())); //get upc from this
+	    long serialNum = (EPCConverter.getSerial(tag.getTag().getEpc().toWordList()));//get serial num from this
+	    return findTagInDatabase(upc, serialNum, c);
 	}
 	
-	public boolean testFindTag(long upcTag, long serialTag, Connection c){
-		try {
-		    long upc = Long.parseLong("672787789760");//upcTag;
-		    long serialNum = serialTag;
+	public boolean findTagInDatabase(long upcTag, long serialTag, Connection c){
+		try {		    
 			Statement stmt = c.createStatement();
-			String sql = "SELECT * FROM products JOIN upc_descriptions ON upc_descriptions.id = products.upc_description_id WHERE upc = " + upc + " AND serial_num = " + serialNum + ";";
+			String sql = "SELECT * FROM products JOIN upc_descriptions ON upc_descriptions.id = products.upc_description_id WHERE upc = " + upcTag + " AND serial_num = " + serialTag + ";";
 			ResultSet rs = stmt.executeQuery(sql);
 			if (!rs.next()) { //condition passes if no valid rows in rs
 				stmt.close();
@@ -263,6 +270,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	 * Function:		getTag
 	 * If we need to grab actual information about a given Tag from the db, we will do it here;
 	 * however, for now we only need to know if the Tag exists via findTag()
+	 * We actually cannot create Tag objects, so this function is obsolete
 	 * Precondition:	Connection to database has been established
 	 * Postcondition:	Tag associated with the input id has been retrieved from the database
 	 * @param id Key to retrieve the associated Tag from the database; the key is the EPC
@@ -278,10 +286,25 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		pc.getAllTags(c);
 		long tagUPC = 2;
 		long tagSerial = 100;
-		if(!pc.testFindTag(tagUPC, tagSerial, c))
-			pc.testInsertTag(tagUPC, tagSerial, c); //tests the SQL part of adding new tags
+		if(!pc.findTagInDatabase(tagUPC, tagSerial, c))
+			pc.addTagToDatabase(tagUPC, tagSerial, c); //tests the SQL part of adding new tags
 		//valid testing since we assume the TagWrapper is populated correctly in this class
 		//and testing for populating TagWrapper as well as getting UPC and Serial is done elsewhere
+		
+		//test getAllTags w/ empty
+		
+		//test insertTag (findTag first)
+		
+		//test findTag
+		
+		//test getTagLocation
+		
+		//test updateTag w/ getTagLocation
+		
+		//test findTag
+		
+		
+		
 		
 		//similar testing theory to above, this tests updateTag
 		//TagLocation readLocation = TagLocation.BACK_ROOM;
