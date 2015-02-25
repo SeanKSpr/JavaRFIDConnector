@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 //import java.util.List;
+import java.util.Properties;
 
 /**
  * PostgresConnector is the implementation of RFIDDatabaseManager used to write to our database. Currently based
@@ -32,6 +33,11 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			Class.forName("org.postgresql.Driver");
 			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres","password");
 			//c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfidb","rfidweb", "rfidweb");
+			Properties connectionProperties = c.getClientInfo();
+			connectionProperties.setProperty("url", "jdbc:postgresql://localhost:5432/rfiddb");
+			connectionProperties.setProperty("user", "postgres");
+			c.setClientInfo(connectionProperties);
+			
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 		} catch (Exception e) {
