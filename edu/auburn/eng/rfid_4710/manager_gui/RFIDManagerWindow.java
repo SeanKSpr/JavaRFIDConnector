@@ -233,10 +233,11 @@ public class RFIDManagerWindow {
 							String readerLocation = comboAntennaLocation.getText();
 							if (readerLocation != null && readerLocation != "") {
 								connector.addReader(readerLocation);
-								connector.startConnector();
 							}
 						}
 				}
+					Thread thread = new Thread(connector);
+					thread.start();
 				}
 				
 			}

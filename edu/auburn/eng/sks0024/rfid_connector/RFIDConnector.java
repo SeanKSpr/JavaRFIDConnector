@@ -7,14 +7,14 @@ package edu.auburn.eng.sks0024.rfid_connector;
  * @version 1.1 (2-23-2015)
  * @author Sean Spurlin 
  */
-public interface RFIDConnector {
+public interface RFIDConnector extends Runnable{
 	/**
-	 * Function:		startConnector
+	 * Function:		run
 	 * 
 	 * Precondition:	readerBootstrap has been called and the reader has a hostname and a ReaderLocation
 	 * Postcondition:	The implementing class will begin reading RFID tags and adding them to a collection of read tags
 	 */
-	public void startConnector();
+	public void run();
 	/**
 	 * Function:		 connectorBootstrap
 	 * 

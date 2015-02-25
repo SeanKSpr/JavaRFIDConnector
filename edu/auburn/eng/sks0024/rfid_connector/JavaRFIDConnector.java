@@ -34,7 +34,7 @@ public class JavaRFIDConnector implements RFIDConnector {
 	public static void main (String args[]) {
 		JavaRFIDConnector reader = new JavaRFIDConnector();
 		//reader.readerBootstrap("192.168.225.50", ReaderLocation.FLOOR_BACKROOM);
-		reader.startConnector();
+		reader.run();
 		
 		
 	}
@@ -74,7 +74,7 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * the RFID reader. These TagReports come in through standard input. This method runs until the system is turned off. Exceptions
 	 * are thrown if the host name of the reader or its location haven't been set.
 	 */
-    public void startConnector() {
+    public void run() {
         try {
             //String hostname = "192.168.225.50";                       
             if (hostname == null) {
