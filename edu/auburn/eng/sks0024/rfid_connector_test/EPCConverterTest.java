@@ -1,6 +1,8 @@
 package edu.auburn.eng.sks0024.rfid_connector_test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 import edu.auburn.eng.sks0024.rfid_connector.EPCConverter;
 import static org.junit.Assert.*;
@@ -95,4 +97,45 @@ public class EPCConverterTest {
 		long actualSerial = Long.parseLong("193273528341");
 		assertEquals(serial, actualSerial);	
 	}
+	
+	@Test
+	public void decomposeEPC() {
+		ArrayList<Integer> testList = new ArrayList<Integer>();
+		testList.add(0x3034);
+		testList.add(0x0266);
+		testList.add(0x2c4e);
+		testList.add(0xd800);
+		testList.add(0x0000);
+		testList.add(0x0001);
+		
+		long serial = EPCConverter.getSerial(testList);
+		long actualSerial = Long.parseLong("1");
+		assertEquals(serial, actualSerial);	
+		
+		String EPC = EPCConverter.getUPC(testList);
+		assertTrue(EPC.equals("039307807364"));
+		
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Input a 96-bit EPC as it appears in hex: ");
+		String epcString = scan.nextLine();
+		scan.close();
+		
+		LinkedList<Integer> epc = new LinkedList<Integer>();
+		for (int i = 0; i < 6; i++) {
+			String fourHexString = epcString.substring(0, 4);
+			//fourHexString = "0x" + fourHexString;
+			int fourHex = Integer.parseInt(fourHexString, 16);
+			epc.add(fourHex);
+			epcString = epcString.substring(4);
+		}
+		System.out.println(epc);
+		long serialID = EPCConverter.getSerial(epc);
+		String UPC = EPCConverter.getUPC(epc);
+		
+		System.out.println("Corresponding UPC: " + UPC);
+		System.out.println("Corresponding Serial ID: " + serialID);
+		
+		
+	}
+	
 }

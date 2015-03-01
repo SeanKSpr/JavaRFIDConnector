@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 
 import org.junit.Test;
 
@@ -37,6 +38,48 @@ public class DBConnectionTest {
 		assertEquals(connectionProperties.getProperty("url"), "jdbc:postgresql://localhost:5432/postgres");
 	}
 	
+	@Test
+	public void EstablishConnectionAccept() {
+		PostgresConnector connector = new PostgresConnector();
+		String user, url, password;
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Enter the user name for the database owner: ");
+		user = scan.nextLine();
+		System.out.print("Enter the url to the database: ");
+		url = scan.nextLine();
+		System.out.print("Enter the password to the database: ");
+		password = scan.nextLine();
+		scan.close();
+		
+		Connection dbConnection = connector.openTest(user, url, password);
+		Properties connectionProperties = null;
+		try {
+			connectionProperties = dbConnection.getClientInfo();
+		} catch (SQLException e) {
+			fail();
+			e.printStackTrace();
+		}
+		assertEquals(connectionProperties.getProperty("user"), user);
+		assertEquals(connectionProperties.getProperty("url"), url);
+		assertEquals(connectionProperties.getProperty("password"), password);
+		System.out.println("Connection to " + url + " established successfully");
+		System.out.println("Database owner: " + user + "\nPassword: " + password);
+		
+		closeConnectionAccept(connector, user, url, password, dbConnection);
+		
+	}
+
+	private void closeConnectionAccept(PostgresConnector connector,
+			String user, String url, String password, Connection dbConnection) {
+		connector.close(dbConnection);
+		try {
+			dbConnection.getClientInfo();
+		} catch (SQLException e) {
+			System.out.println("Connection to " + url + " closed successfully");
+			System.out.println("Database owner: " + user + "\nPassword: " + password);
+			assertTrue(true);
+		}
+	}
 	@Test
 	public void testCloseConnection() {
 		PostgresConnector connector = new PostgresConnector();
