@@ -6,6 +6,8 @@ import java.sql.Statement;
 //import java.util.List;
 import java.util.Properties;
 
+import edu.auburn.eng.sks0024.rfid_connector_test.DBAcceptanceTests;
+
 /**
  * PostgresConnector is the implementation of RFIDDatabaseManager used to write to our database. Currently based
  * on Sean's interface and its desired functionality.
@@ -188,6 +190,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			TagLocation newLoc = TagLocation.getNewLocation(currLoc, rl);
 			String location = TagLocation.convertLocation(newLoc);
 			
+			//If invalid combination of reader location and current location, new location = current location, so we fail this condition.
 	        if (!dbLocation.equalsIgnoreCase(location) && !dbLocation.equalsIgnoreCase("out of store")) {
 		        String sql = "UPDATE PRODUCTS set LOCATION = '" + location + "' where ID=" + id + ";";
 		        System.out.println(sql);
@@ -211,9 +214,11 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			Statement stmt = c.createStatement();
 			String sql = "SELECT products.id as productid FROM products JOIN upc_descriptions on upc_descriptions.id = products.upc_description_id where upc_descriptions.upc = " + upc +" and serial_num = "+ serial +";";
 	        
+			int id = 0;
 	        ResultSet rs = stmt.executeQuery(sql);
-	        rs.next();
-	        int id = rs.getInt("productid");
+	        if(rs.next()) {
+	        	id = rs.getInt("productid");
+	        }
 			stmt.close();
 			return id;
 		} catch (Exception e) {
@@ -334,39 +339,47 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	public TagWrapper getTag(long id, Connection c){return null;}
 	
 	public static void main(String[] args) {
-		//similar to EPCConverter class, run some tests locally as an instance of "running" the class
 		
 		PostgresConnector pc = new PostgresConnector();
-		Connection c = pc.open();
-		pc.getAllTags(c);
-		long tagUPC = 2;
-		long tagSerial = 100;
-		//add Tag checks for if the Tag currently exists before adding
-		pc.addTagToDatabase(tagUPC, tagSerial, c); //tests the SQL part of adding new tags
-		//valid testing since we assume the TagWrapper is populated correctly in this class
-		//and testing for populating TagWrapper as well as getting UPC and Serial is done elsewhere
+		DBAcceptanceTests dbat = new DBAcceptanceTests(pc);
+		boolean success;
 		
 		//test getAllTags w/ empty
+		dbat.displayAllTest();
 		
-		//test insertTag (findTag first)
-		
-		//test findTag
+		//test inserting Tags, finding Tags that do exist, and finding Tags that don't exist
+		success = dbat.insertTest();
+		if(success) {
+			System.out.println("Test 1 Passed");
+		} else {
+			System.out.println("Test 1 Failed");
+		}
 		
 		//test getTagLocation
+		success = dbat.getNewLocationTest() && dbat.getNonexistentLocationTest();
+		if(success) {
+			System.out.println("Test 2 Passed");
+		} else {
+			System.out.println("Test 2 Failed");
+		}
 		
 		//test updateTag w/ getTagLocation
+		success = dbat.moveNewLocationTest() && dbat.updateInvalidLocationTest() && dbat.updateNonExistentTagsTest();
+		if(success) {
+			System.out.println("Test 3 Passed");
+		} else {
+			System.out.println("Test 3 Failed");
+		}
 		
-		//test findTag
+		//test whole system extensively
+		success = dbat.overallSystemTest();
+		if(success) {
+			System.out.println("Test 4 Passed");
+		} else {
+			System.out.println("Test 4 Failed");
+		}
 		
-		//insert a bunch of Tags w/ assorted updates
-		
-		//test getAllTags with new defined state
-		
-		
-		//similar testing theory to above, this tests updateTag
-		//TagLocation readLocation = TagLocation.BACK_ROOM;
-		//pc.testUpdateTag(tagUPC, tagSerial, c, readLocation);
-		pc.close(c);
-		
+		//display final database configuration
+		dbat.displayAllTest();
 	}
 }
