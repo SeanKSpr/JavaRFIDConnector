@@ -43,4 +43,18 @@ public class DBUpdateTimer extends TimerTask {
 			System.out.println("Nothing in the tag batch");
 		}
 	}
+	
+	public int testUpdate() {
+		Collection<TagWrapper> tagBatch = DuplicateReadDetector.getBatchCopy();
+		for (TagWrapper tag : tagBatch) {
+			System.out.println("Updating Database Tag: " + tag.getTag().getEpc().toString() + " Time: " + tag.getTimeSeen());
+		}
+		//For testing reasons (not that it really matters if this is displayed on the console)
+		if (tagBatch.isEmpty()) {
+			System.out.println("Nothing in the tag batch");
+		}
+		int numOfTagsUpdated = tagBatch.size();
+		DuplicateReadDetector.emptyCollection(DuplicateReadDetector.getWrappedTags());
+		return numOfTagsUpdated;
+	}
 }
