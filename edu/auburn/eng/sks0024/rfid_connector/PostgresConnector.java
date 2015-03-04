@@ -350,33 +350,33 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		//test inserting Tags, finding Tags that do exist, and finding Tags that don't exist
 		success = dbat.insertTest();
 		if(success) {
-			System.out.println("Test 1 Passed");
+			System.out.println("Test insert Passed");
 		} else {
-			System.out.println("Test 1 Failed");
+			System.out.println("Test insert Failed");
 		}
 		
 		//test getTagLocation
 		success = dbat.getNewLocationTest() && dbat.getNonexistentLocationTest();
 		if(success) {
-			System.out.println("Test 2 Passed");
+			System.out.println("Test new location Passed");
 		} else {
-			System.out.println("Test 2 Failed");
+			System.out.println("Test new location Failed");
 		}
 		
 		//test updateTag w/ getTagLocation
 		success = dbat.moveNewLocationTest() && dbat.updateInvalidLocationTest() && dbat.updateNonExistentTagsTest();
 		if(success) {
-			System.out.println("Test 3 Passed");
+			System.out.println("Test updated location Passed");
 		} else {
-			System.out.println("Test 3 Failed");
+			System.out.println("Test updated location Failed");
 		}
 		
 		//test whole system extensively
 		success = dbat.overallSystemTest();
 		if(success) {
-			System.out.println("Test 4 Passed");
+			System.out.println("Test entire system Passed");
 		} else {
-			System.out.println("Test 4 Failed");
+			System.out.println("Test entire system Failed");
 		}
 		
 		//display final database configuration
