@@ -134,7 +134,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			Statement stmt = c.createStatement();
 			int id = getUPCId(tagUPC, c);
 			String sql = "INSERT into products(upc_description_id, serial_num, location) values " //+ " (upc_id, serial, location)"
-			+ "(" + id + ", " + tagSerial + ", '" + TagLocation.convertLocation(TagLocation.BACK_ROOM) + "')";
+			+ "(" + id + ", " + tagSerial + ", '" + TagLocationEnum.convertLocation(TagLocationEnum.BACK_ROOM) + "')";
 			stmt.executeUpdate(sql);
 			
 			stmt.close();
@@ -179,16 +179,16 @@ public class PostgresConnector implements RFIDDatabaseManager {
         return updateTagInDatabase(upc, serialNum, tag.getLocationScanned(), c);
 	}
 	
-	public boolean updateTagInDatabase(long upc, long serial, ReaderLocation rl, Connection c) {
+	public boolean updateTagInDatabase(long upc, long serial, ReaderLocationEnum rl, Connection c) {
 		try {
 			Statement stmt = c.createStatement();
 
 			int id = getTagID(upc, serial, c);
 			String dbLocation = getTagLocation(id, c);
 			
-	        TagLocation currLoc = TagLocation.convertLocation(dbLocation);
-			TagLocation newLoc = TagLocation.getNewLocation(currLoc, rl);
-			String location = TagLocation.convertLocation(newLoc);
+	        TagLocationEnum currLoc = TagLocationEnum.convertLocation(dbLocation);
+			TagLocationEnum newLoc = TagLocationEnum.getNewLocation(currLoc, rl);
+			String location = TagLocationEnum.convertLocation(newLoc);
 			
 			//If invalid combination of reader location and current location, new location = current location, so we fail this condition.
 	        if (!dbLocation.equalsIgnoreCase(location) && !dbLocation.equalsIgnoreCase("out of store")) {

@@ -12,9 +12,9 @@ import com.impinj.octanesdk.Tag;
  */
 public class TagWrapper {
 	private Tag tag;
-	private TagLocation location;
+	private TagLocationEnum location;
 	private long timeSeen;
-	private ReaderLocation locationScanned;
+	private ReaderLocationEnum locationScanned;
 	
 	/**
 	 * Default constructor for TagWrapper. Creates a TagWrapper with all fields set to null.
@@ -31,7 +31,7 @@ public class TagWrapper {
 	 */
 	public TagWrapper(Tag tag) {
 		this.tag = tag;
-		location = TagLocation.WAREHOUSE;
+		location = TagLocationEnum.WAREHOUSE;
 		this.setTimeSeen(System.currentTimeMillis());
 	}
 	
@@ -44,7 +44,7 @@ public class TagWrapper {
 	 */
 	public TagWrapper(Tag tag, AuburnReader reader) {
 		this.tag = tag;
-		location = TagLocation.WAREHOUSE;
+		location = TagLocationEnum.WAREHOUSE;
 		this.setTimeSeen(System.currentTimeMillis());
 		this.locationScanned = reader.getLocation();
 	}
@@ -68,7 +68,7 @@ public class TagWrapper {
 	 * Returns the location of the wrapped tag
 	 * @return the location of the wrapped tag
 	 */
-	public TagLocation getLocation() {
+	public TagLocationEnum getLocation() {
 		return location;
 	}
 
@@ -76,7 +76,7 @@ public class TagWrapper {
 	 * Sets the location of the wrapped tag to be that of the input location
 	 * @param location the new location of the wrapped tag
 	 */
-	public void setLocation(TagLocation location) {
+	public void setLocation(TagLocationEnum location) {
 		this.location = location;
 	}
 	
@@ -86,7 +86,7 @@ public class TagWrapper {
 	 * @return False of the tag's location isn't out of the store; True otherwise.
 	 */
 	public boolean isInStock() {
-		return location != TagLocation.OUT_OF_STORE;
+		return location != TagLocationEnum.OUT_OF_STORE;
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class TagWrapper {
 	 * Returns the location of the RFID reader which scanned the tag
 	 * @return Location of the RFID reader which scanned the tag 
 	 */
-	public ReaderLocation getLocationScanned() {
+	public ReaderLocationEnum getLocationScanned() {
 		return locationScanned;
 	}
 	
@@ -118,7 +118,7 @@ public class TagWrapper {
 	 * Sets the location of where the tag was scanned to the input 
 	 * @param locationScanned new location of where the tag was scanned (See ReaderLocation for valid values)
 	 */
-	public void setLocationScanned(ReaderLocation locationScanned) {
+	public void setLocationScanned(ReaderLocationEnum locationScanned) {
 		this.locationScanned = locationScanned;
 	}
 }

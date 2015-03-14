@@ -17,8 +17,8 @@ import com.impinj.octanesdk.OctaneSdkException;
 import com.impinj.octanesdk.TagData;
 
 import edu.auburn.eng.sks0024.rfid_connector.PostgresConnector;
-import edu.auburn.eng.sks0024.rfid_connector.ReaderLocation;
-import edu.auburn.eng.sks0024.rfid_connector.TagLocation;
+import edu.auburn.eng.sks0024.rfid_connector.ReaderLocationEnum;
+import edu.auburn.eng.sks0024.rfid_connector.TagLocationEnum;
 import edu.auburn.eng.sks0024.rfid_connector.TagWrapper;
 
 public class DBConnectionTest {
@@ -206,12 +206,12 @@ public class DBConnectionTest {
 		}
 		((MyTag) tag).assignEPC(epc);
 		TagWrapper tWrapper = new TagWrapper(tag);
-		tWrapper.setLocation(TagLocation.WAREHOUSE);
+		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
 		boolean success = connector.insertTag(tWrapper, dbConnection);
 		assertTrue(success);
 		
-		tWrapper.setLocation(TagLocation.BACK_ROOM);
-		tWrapper.setLocationScanned(ReaderLocation.BACKROOM_WAREHOUSE);
+		tWrapper.setLocation(TagLocationEnum.BACK_ROOM);
+		tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
 		success = connector.updateTag(tWrapper, dbConnection);
 		assertTrue(success);
 		
@@ -242,11 +242,11 @@ public class DBConnectionTest {
 		}
 		((MyTag) tag).assignEPC(epc);
 		TagWrapper tWrapper = new TagWrapper(tag);
-		tWrapper.setLocation(TagLocation.WAREHOUSE);
+		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
 		boolean success = connector.insertTag(tWrapper, dbConnection);
 		
-		tWrapper.setLocation(TagLocation.WAREHOUSE);
-		tWrapper.setLocationScanned(ReaderLocation.BACKROOM_WAREHOUSE);
+		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
+		tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
 		success = connector.updateTag(tWrapper, dbConnection);
 		assertTrue(success);
 		
@@ -277,12 +277,12 @@ public class DBConnectionTest {
 		}
 		((MyTag) tag).assignEPC(epc);
 		TagWrapper tWrapper = new TagWrapper(tag);
-		tWrapper.setLocation(TagLocation.OUT_OF_STORE);
+		tWrapper.setLocation(TagLocationEnum.OUT_OF_STORE);
 		//boolean success = connector.insertTag(tWrapper, dbConnection);
 		//assertTrue(success);
 		
-		tWrapper.setLocation(TagLocation.WAREHOUSE);
-		tWrapper.setLocationScanned(ReaderLocation.BACKROOM_WAREHOUSE);
+		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
+		tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
 		boolean success = connector.updateTag(tWrapper, dbConnection);
 		assertTrue(success);
 		
@@ -314,15 +314,15 @@ public class DBConnectionTest {
 		}
 		((MyTag) tag).assignEPC(epc);
 		TagWrapper tWrapper = new TagWrapper(tag);
-		tWrapper.setLocation(TagLocation.WAREHOUSE);
+		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
 		boolean success = connector.insertTag(tWrapper, dbConnection);
 		assertTrue(success);
 		
 		//Lost connection
 		dbConnection = null;
 		
-		tWrapper.setLocation(TagLocation.BACK_ROOM);
-		tWrapper.setLocationScanned(ReaderLocation.BACKROOM_WAREHOUSE);
+		tWrapper.setLocation(TagLocationEnum.BACK_ROOM);
+		tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
 		boolean failure = !connector.updateTag(tWrapper, dbConnection);
 		assertTrue(failure);
 	}

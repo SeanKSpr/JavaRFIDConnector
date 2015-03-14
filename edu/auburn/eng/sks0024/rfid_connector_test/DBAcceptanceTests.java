@@ -3,7 +3,7 @@ package edu.auburn.eng.sks0024.rfid_connector_test;
 import java.sql.Connection;
 
 import edu.auburn.eng.sks0024.rfid_connector.PostgresConnector;
-import edu.auburn.eng.sks0024.rfid_connector.ReaderLocation;
+import edu.auburn.eng.sks0024.rfid_connector.ReaderLocationEnum;
 
 public class DBAcceptanceTests {
 
@@ -102,8 +102,8 @@ public class DBAcceptanceTests {
 	//Test to make sure we can change location for new Tags to the store floor.
 	public boolean moveNewLocationTest() {
 		boolean success;
-		success = conn.updateTagInDatabase(upc1, firstSerials[0], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc2, firstSerials[1], ReaderLocation.FLOOR_BACKROOM, c);
+		success = conn.updateTagInDatabase(upc1, firstSerials[0], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc2, firstSerials[1], ReaderLocationEnum.FLOOR_BACKROOM, c);
 		
 		return success && getUpdatedLocationsTest();
 	}
@@ -122,8 +122,8 @@ public class DBAcceptanceTests {
 	public boolean updateInvalidLocationTest() {
 		boolean failure;
 		//Both Tags should be on the store floor, so the reader location listed is invalid for those Tags.
-		failure = conn.updateTagInDatabase(upc1, firstSerials[0], ReaderLocation.BACKROOM_WAREHOUSE, c);
-		failure &= conn.updateTagInDatabase(upc2, firstSerials[1], ReaderLocation.BACKROOM_WAREHOUSE, c);
+		failure = conn.updateTagInDatabase(upc1, firstSerials[0], ReaderLocationEnum.BACKROOM_WAREHOUSE, c);
+		failure &= conn.updateTagInDatabase(upc2, firstSerials[1], ReaderLocationEnum.BACKROOM_WAREHOUSE, c);
 		
 		//Need to make sure the location of neither Tag was somehow changed; both should still be on the store floor.
 		return !failure && getUpdatedLocationsTest();		
@@ -133,8 +133,8 @@ public class DBAcceptanceTests {
 	public boolean updateNonExistentTagsTest() {
 		boolean failure;
 		//Location of reader should not matter, since neither Tag exists in the database.
-		failure = conn.updateTagInDatabase(upc1, firstSerials[1], ReaderLocation.FLOOR_BACKROOM, c);
-		failure &= conn.updateTagInDatabase(upc2, firstSerials[0], ReaderLocation.FLOOR_BACKROOM, c);
+		failure = conn.updateTagInDatabase(upc1, firstSerials[1], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		failure &= conn.updateTagInDatabase(upc2, firstSerials[0], ReaderLocationEnum.FLOOR_BACKROOM, c);
 		
 		return !failure;		
 	}
@@ -172,22 +172,22 @@ public class DBAcceptanceTests {
 		}
 
 		//Extensively test updating Tag locations. All Tags end on store floor unless otherwise specified.
-		success &= conn.updateTagInDatabase(upc1, dupeSerials[0], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc2, dupeSerials[0], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc1, dupeSerials[1], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc2, dupeSerials[1], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc1, dupeSerials[4], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc2, dupeSerials[4], ReaderLocation.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc1, dupeSerials[0], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc2, dupeSerials[0], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc1, dupeSerials[1], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc2, dupeSerials[1], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc1, dupeSerials[4], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc2, dupeSerials[4], ReaderLocationEnum.FLOOR_BACKROOM, c);
 				//move these Tags onto floor and then into back room again
-		success &= conn.updateTagInDatabase(upc1, dupeSerials[2], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc2, dupeSerials[2], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc1, dupeSerials[2], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc2, dupeSerials[2], ReaderLocation.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc1, dupeSerials[2], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc2, dupeSerials[2], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc1, dupeSerials[2], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc2, dupeSerials[2], ReaderLocationEnum.FLOOR_BACKROOM, c);
 				//move these Tags completely out of the store
-		success &= conn.updateTagInDatabase(upc1, dupeSerials[3], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc2, dupeSerials[3], ReaderLocation.FLOOR_BACKROOM, c);
-		success &= conn.updateTagInDatabase(upc1, dupeSerials[3], ReaderLocation.STORE_ENTRANCE, c);
-		success &= conn.updateTagInDatabase(upc2, dupeSerials[3], ReaderLocation.STORE_ENTRANCE, c);
+		success &= conn.updateTagInDatabase(upc1, dupeSerials[3], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc2, dupeSerials[3], ReaderLocationEnum.FLOOR_BACKROOM, c);
+		success &= conn.updateTagInDatabase(upc1, dupeSerials[3], ReaderLocationEnum.STORE_ENTRANCE, c);
+		success &= conn.updateTagInDatabase(upc2, dupeSerials[3], ReaderLocationEnum.STORE_ENTRANCE, c);
 		
 		//Extensively test that Tags are in expected locations
 		int id1 = conn.getTagID(upc1, dupeSerials[0], c);

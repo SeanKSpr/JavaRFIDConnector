@@ -1,5 +1,6 @@
 package edu.auburn.eng.sks0024.rfid_connector;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Timer;
 
@@ -19,8 +20,8 @@ import com.impinj.octanesdk.Settings;
  * database with the latest tag information collected. 
  * NOTE: Currently this class does not support multiple readers, only a single reader.
  * 
- * @since  	1 	(2-3-2015)
- * @version 1.2	(2-23-2015)
+ * @since  	1 	(2-23-2015)
+ * @version 1.3	(3-14-2015)
  * @author Sean Spurlin
  */
 public class JavaRFIDConnector implements RFIDConnector {
@@ -41,6 +42,8 @@ public class JavaRFIDConnector implements RFIDConnector {
 	
 	private String hostname, readerName;
 	private ArrayList<AuburnReader> readerList = new ArrayList<AuburnReader>();
+	private static HashMap<StoreConfigurationKey, TagLocation> storeConfigurationMap = new HashMap<StoreConfigurationKey, TagLocation>();
+			
 	/**
 	 * Default constructor which creates a new TagReader with fields set to null.
 	 */
@@ -75,8 +78,7 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * are thrown if the host name of the reader or its location haven't been set.
 	 */
     public void run() {
-        try {
-            //String hostname = "192.168.225.50";                       
+        try {                      
             if (hostname == null) {
                 throw new Exception("Must specify the hostname property of the reader");
             }
@@ -86,14 +88,9 @@ public class JavaRFIDConnector implements RFIDConnector {
 	            if (reader.getLocation() == null) {
 	            	throw new Exception("Must specify the location of the reader");
 	            }
-	            
-	            //System.out.println("Starting");
 	            reader.start();
-	            
-	            //System.out.println("Press Enter to exit.");
 	            Scanner s = new Scanner(System.in);
 	            s.nextLine();
-	
 	            reader.stop();
 	            reader.disconnect();
 	            s.close();
@@ -167,7 +164,7 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 */
 	public void addReader(String readerLocation) {
 		AuburnReader reader = new AuburnReader();
-		ReaderLocation location = ReaderLocation.convertLocation(readerLocation);
+		ReaderLocationEnum location = ReaderLocationEnum.convertLocation(readerLocation);
 		reader.setLocation(location);
 		try {
 		reader.connect(hostname);
@@ -198,5 +195,27 @@ public class JavaRFIDConnector implements RFIDConnector {
             ex.printStackTrace(System.out);
         }
 		this.readerList.add(reader);
+	}
+	
+	/**
+	 * Adds a new entry into the StoreConfiguration hash map. 
+	 * This function was introduced in version 1.3 to facilitate user defined tag location areas and transitions
+	 * @param key - Key to the HashMap entry
+	 * @param value - Value associated with the key
+	 */
+	public void addStoreConfigKeyValue(StoreConfigurationKey key, TagLocation value) {
+		storeConfigurationMap.put(key, value);
+	}
+	
+	/**
+	 * Returns a new tag location based on the input current tag location and where the tag was scanned.
+	 * If the transition isn't valid then this function returns null.
+	 * This function was introduced in version 1.3 to facilitate user defined tag location areas and transitions.
+	 * @param currentLocation
+	 * @param locationScanned
+	 * @return
+	 */
+	public static TagLocation getNewLocation(TagLocation currentLocation, ReaderLocation locationScanned) {
+		return storeConfigurationMap.get(new StoreConfigurationKey(currentLocation, locationScanned));
 	}
 }
