@@ -24,6 +24,7 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.custom.StyledText;
 
 public class RFIDConfigurationManager {
 	private DataBindingContext m_bindingContext;
