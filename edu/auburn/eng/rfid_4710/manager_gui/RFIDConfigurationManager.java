@@ -258,7 +258,7 @@ public class RFIDConfigurationManager {
 	}
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
-		//
+		
 		return bindingContext;
 	}
 }

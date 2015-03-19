@@ -23,5 +23,5 @@ public interface RFIDReader {
 	 * @param hostname - The IP address/hostname of the hardware RFID reader
 	 * @param location - The location of the hardware RFID reader (ex. at the entrance of the store floor. See ReaderLocation)
 	 */
-	public void readerBootstrap(String hostname, ReaderLocation location);
+	public void readerBootstrap(String hostname, ReaderLocationEnum location);
 }

@@ -1,37 +1,89 @@
 package edu.auburn.eng.sks0024.rfid_connector;
+
 /**
- * ReaderLocation is an enumeration of the possible locations a reader can be. Valid locations are between the
- * store floor and the backroom, at the store entrance, and between the backroom and the warehouse. This enumeration is
- * used to determine the new location of an RFID tag. For instance, if a tag with current location STORE_FLOOR was read by
- * RFID reader at location FLOOR_BACKROOM then the location of the tag would be changed from STORE_FLOOR to BACKROOM to reflect
- * that the tag has moved from the store floor to the backroom of the store.
- * 
- * @since   1 (2-3-2015)
- * @version 1.1 (2-23-2015)
+ * ReaderLocation is a data class which keeps track of the two locations that an RFID reader sits between.
+ * This class is used to determine how RFID tags transition throughout the store.
+ * @version 1 (3-14-2015)
+ * @since 1 (3-14-2015)
  * @author Sean Spurlin
  */
-public enum ReaderLocation {
-	FLOOR_BACKROOM, STORE_ENTRANCE, BACKROOM_WAREHOUSE, WAREHOUSE_LOADING;
+public class ReaderLocation {
+	private String storeAreaOne, storeAreaTwo;
 	
 	/**
-	 * convertLocation takes in a String describing the an RFID antenna/reader location and returns the 
-	 * corresponding ReaderLocation enumeration. This function should be used primarily by the ReaderLocation Combo
-	 * GUI components described in the RFIDManagerWindow class.
-	 * @param readerLocation The location of an antenna/reader as a String
-	 * @return The location of the same antenna/reader as the corresponding ReaderLocation enum
+	 * Constructor which takes in the two locations that the RFID reader sits between and assigns them to the 
+	 * location fields of the ReaderLocation object.
+	 * @param storeAreaOne A store area which is to one side of the RFID reader
+	 * @param storeAreaTwo The other store area which is on the side opposite to storeAreaOne
 	 */
-	public static ReaderLocation convertLocation(String readerLocation) {
-		switch (readerLocation) {
-		case "Between Warehouse and Loading":
-			return WAREHOUSE_LOADING;
-		case "Between Warehouse and Backroom":
-			return BACKROOM_WAREHOUSE;
-		case "Between Backroom and Store floor":
-			return FLOOR_BACKROOM;
-		case "Between Store floor and Store entrance":
-			return STORE_ENTRANCE;
+	public ReaderLocation(String storeAreaOne, String storeAreaTwo) {
+		this.storeAreaOne = storeAreaOne;
+		this.storeAreaTwo = storeAreaTwo;
+	}
+	
+	/**
+	 * Overloaded equals to compare two ReaderLocations by their storeAreaOne and storeAreaTwo. If these two fields
+	 * match, then the ReaderLocations are considered to be the same.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
 		}
-		return null;
+		if ((obj == null || (obj.getClass() != this.getClass()))) {
+			return false;
+		}
 		
+		ReaderLocation otherLocation = (ReaderLocation)obj;
+		if (this.storeAreaOne.equals(otherLocation.getStoreAreaOne())) {
+			if (this.storeAreaTwo.equals(otherLocation.getStoreAreaTwo())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Overloaded hashCode to generate a hash code based on the two Strings storeAreaOne and storeAreaTwo.
+	 * This is to facilitate the correctness and viability of the store configuration hash map.
+	 */
+	@Override
+	public int hashCode() {
+		int result = 0;
+		result = 31 * result + (storeAreaOne != null ? this.storeAreaOne.hashCode() : 0);
+		result = 31 * result + (storeAreaTwo != null ? this.storeAreaTwo.hashCode() : 0);
+		return result;
+	}
+	
+	/**
+	 * A getter function for obtaining storeAreaOne
+	 * @return storeAreaOne - One of the store locations the RFID reader sits between
+	 */
+	public String getStoreAreaOne() {
+		return storeAreaOne;
+	}
+	
+	/**
+	 * A setter function for setting storeAreaOne
+	 * @param storeAreaOne A store location the RFID reader sits between
+	 */
+	public void setStoreAreaOne(String storeAreaOne) {
+		this.storeAreaOne = storeAreaOne;
+	}
+	
+	/**
+	 * A getter function for obtaining storeAreaTwo
+	 * @return storeAreaTwo - One of the store locations the RFID reader sits between
+	 */
+	public String getStoreAreaTwo() {
+		return storeAreaTwo;
+	}
+	
+	/**
+	 * A setter function for setting storeAreaTwo
+	 * @param storeAreaTwo A store location the RFID reader sits between
+	 */
+	public void setStoreAreaTwo(String storeAreaTwo) {
+		this.storeAreaTwo = storeAreaTwo;
 	}
 }

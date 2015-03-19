@@ -32,14 +32,14 @@ public class TagReader implements RFIDReader {
 	 */
 	public static void main (String args[]) {
 		TagReader reader = new TagReader();
-		reader.readerBootstrap("192.168.225.50", ReaderLocation.FLOOR_BACKROOM);
+		reader.readerBootstrap("192.168.225.50", ReaderLocationEnum.FLOOR_BACKROOM);
 		reader.startReader();
 		
 		
 	}
 	
 	private String hostname, readerName;
-	private ReaderLocation location;
+	private ReaderLocationEnum location;
 	
 	/**
 	 * Default constructor which creates a new TagReader with fields set to null.
@@ -75,7 +75,7 @@ public class TagReader implements RFIDReader {
 	 * @param hostname IP address/host name of the physical RFID reader which we are connecting.
 	 * @param location The location of the reader (see ReaderLocation enumeration for more information)
 	 */
-	public TagReader(String hostname, ReaderLocation location) {
+	public TagReader(String hostname, ReaderLocationEnum location) {
 		this.hostname = hostname;
 		this.location = location;
 	}
@@ -177,7 +177,7 @@ public class TagReader implements RFIDReader {
 	/**
 	 * Bootstrapping function which is required to set up the reader's host name and location.
 	 */
-	public void readerBootstrap(String hostname, ReaderLocation location) {
+	public void readerBootstrap(String hostname, ReaderLocationEnum location) {
 		Timer timer = new Timer();
 		DBUpdateTimer updateTimer = new DBUpdateTimer();
 		timer.scheduleAtFixedRate(updateTimer, DBUpdateTimer.TIMER_DELAY, DBUpdateTimer.TIMER_DELAY);
