@@ -18,15 +18,17 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+
+//import org.eclipse.core.databinding.DataBindingContext;
+//import org.eclipse.core.databinding.observable.value.IObservableValue;
+//import org.eclipse.jface.databinding.swt.WidgetProperties;
+//import org.eclipse.core.databinding.beans.PojoProperties;
+//import org.eclipse.core.databinding.observable.Realm;
+//import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.custom.StyledText;
 
 public class RFIDConfigurationManager {
-	private DataBindingContext m_bindingContext;
+//	private DataBindingContext m_bindingContext;
 
 	protected Shell shlRfidConfigurationManager;
 	private Text text;
@@ -36,9 +38,9 @@ public class RFIDConfigurationManager {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Display display = Display.getDefault();
-		Realm.runWithDefault(SWTObservables.getRealm(display), new Runnable() {
-			public void run() {
+//		Display display = Display.getDefault();
+//		Realm.runWithDefault(SWTObservables.getRealm(display), new Runnable() {
+//			public void run() {
 				try {
 					RFIDConfigurationManager window = new RFIDConfigurationManager();
 					window.open();
@@ -46,8 +48,8 @@ public class RFIDConfigurationManager {
 					e.printStackTrace();
 				}
 			}
-		});
-	}
+//		});
+//	}
 
 	/**
 	 * Open the window.
@@ -252,12 +254,12 @@ public class RFIDConfigurationManager {
 		Combo combo_7 = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		combo_7.setBounds(494, 184, 91, 23);
 		combo_7.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
-		m_bindingContext = initDataBindings();
+//		m_bindingContext = initDataBindings();
 
 	}
-	protected DataBindingContext initDataBindings() {
-		DataBindingContext bindingContext = new DataBindingContext();
+//	protected DataBindingContext initDataBindings() {
+//		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		return bindingContext;
-	}
+//		return bindingContext;
+//	}
 }
