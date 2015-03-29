@@ -2,13 +2,13 @@ package edu.auburn.eng.rfid_4710.manager_gui;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import swing2swt.layout.BorderLayout;
+//import swing2swt.layout.BorderLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.RowLayout;
+//import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.RowData;
-import swing2swt.layout.BoxLayout;
+//import org.eclipse.swt.layout.RowData;
+//import swing2swt.layout.BoxLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -18,14 +18,13 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-
 //import org.eclipse.core.databinding.DataBindingContext;
 //import org.eclipse.core.databinding.observable.value.IObservableValue;
 //import org.eclipse.jface.databinding.swt.WidgetProperties;
 //import org.eclipse.core.databinding.beans.PojoProperties;
 //import org.eclipse.core.databinding.observable.Realm;
 //import org.eclipse.jface.databinding.swt.SWTObservables;
-import org.eclipse.swt.custom.StyledText;
+//import org.eclipse.swt.custom.StyledText;
 
 public class RFIDConfigurationManager {
 //	private DataBindingContext m_bindingContext;
@@ -259,7 +258,6 @@ public class RFIDConfigurationManager {
 	}
 //	protected DataBindingContext initDataBindings() {
 //		DataBindingContext bindingContext = new DataBindingContext();
-		//
 //		return bindingContext;
 //	}
 }
