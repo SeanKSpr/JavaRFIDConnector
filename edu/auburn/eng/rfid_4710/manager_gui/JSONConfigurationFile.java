@@ -35,6 +35,7 @@ public class JSONConfigurationFile implements ConfigurationFile{
 
 	private void saveJsonObjAsJSONFile(JsonObject jsonObj) throws IOException {
 		String path = saveFile();
+		if (path == null) { return;}
 		FileWriter file = new FileWriter(path);
 		try {
 			file.write(jsonObj.toString());

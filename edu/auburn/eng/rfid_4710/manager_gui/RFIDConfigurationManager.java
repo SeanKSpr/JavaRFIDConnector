@@ -308,28 +308,28 @@ public class RFIDConfigurationManager {
 				antenna1.setStoreAreaTwo(combo_1.getText());
 				antenna1.setEnabled(btnIsEnabled.getSelection());
 				antenna1.setEntryPoint(btnIsDoesNew.getSelection());
-				System.out.println("Antenna 1: " + antenna1.toString());
+				//System.out.println("Antenna 1: " + antenna1.toString());
 				antennaList.add(antenna1);
 				Antenna antenna2 = new Antenna();
 				antenna2.setStoreAreaOne(combo_2.getText());
 				antenna2.setStoreAreaTwo(combo_3.getText());
 				antenna2.setEnabled(btnEnabled.getSelection());
 				antenna2.setEntryPoint(btnEntryPoint.getSelection());
-				System.out.println("Antenna 2: " + antenna2.toString());
+				//System.out.println("Antenna 2: " + antenna2.toString());
 				antennaList.add(antenna2);
 				Antenna antenna3 = new Antenna();
 				antenna3.setStoreAreaOne(combo_4.getText());
 				antenna3.setStoreAreaTwo(combo_5.getText());
 				antenna3.setEnabled(btnEnabled_1.getSelection());
 				antenna3.setEntryPoint(btnEntryPoint_1.getSelection());
-				System.out.println("Antenna 3: " + antenna3.toString());
+				//System.out.println("Antenna 3: " + antenna3.toString());
 				antennaList.add(antenna3);
 				Antenna antenna4 = new Antenna();
 				antenna4.setStoreAreaOne(combo_6.getText());
 				antenna4.setStoreAreaTwo(combo_7.getText());
 				antenna4.setEnabled(btnEnabled_2.getSelection());
 				antenna4.setEntryPoint(btnEntryPoint_2.getSelection());
-				System.out.println("Antenna 4: " + antenna4.toString());
+				//System.out.println("Antenna 4: " + antenna4.toString());
 				antennaList.add(antenna4);				
 				
 				JSONConfigurationFile js = new JSONConfigurationFile();
@@ -338,10 +338,10 @@ public class RFIDConfigurationManager {
 				si.setOwner("rfidb");
 				si.setPassword("rfidb");
 				si.setUrl("http://aurfid.herokuapp.com/");
-				js.saveConfiguration(text.getText(), antennaList, si);
-				System.out.println(text.getText() + "\n\n" + antennaList.size() + "\n\n" + antennaList.get(0).toString() + "\n\n"
+				js.saveConfiguration(text.getText(), antennaList, si); //catch (Exception ex) { System.out.println(ex); return;}
+				/*System.out.println(text.getText() + "\n\n" + antennaList.size() + "\n\n" + antennaList.get(0).toString() + "\n\n"
 						+ antennaList.get(1).toString() + "\n\n" + antennaList.get(2).toString() + "\n\n"
-						+ antennaList.get(3).toString() + "\n\n" + serverInfo.toString());
+						+ antennaList.get(3).toString() + "\n\n" + serverInfo.toString());*/
 			}
 			public void mouseUp(MouseEvent e) { }
 			public void mouseDoubleClick(MouseEvent e) { }
@@ -350,7 +350,7 @@ public class RFIDConfigurationManager {
 		btnLoadStuff.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
 				JSONConfigurationFile js = new JSONConfigurationFile();
-				try {js.loadConfiguration();} catch (Exception ex) { System.out.println("Error occurred while executing load protocol"); }
+				try {js.loadConfiguration();} catch (LoadCancelledException ex) { System.out.println(ex); return; }
 				text.setText(js.getHostname());
 				//How are we using the server info from the config file?
 				ServerInfo serverInfo = js.getServerInfo();
