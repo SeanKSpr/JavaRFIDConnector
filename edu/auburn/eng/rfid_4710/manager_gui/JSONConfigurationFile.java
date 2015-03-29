@@ -18,16 +18,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class JSONConfigurationFile implements ConfigurationFile {
+public class JSONConfigurationFile implements ConfigurationFile{
+	
 	private JsonObject jsonConfig;
 	@Override
-	public void saveConfiguration(String hostIP, List<String[]> antennaList) {
+	public void saveConfiguration(String hostIP, List<Antenna> antennaList, ServerInfo serverInfo) {
 		JsonObject jsonObj = new JsonObject();
-		jsonObj.add("configurationFile", createJSONConfigFile(hostIP, antennaList));
+		jsonObj = createJSONConfigFile(hostIP, antennaList, serverInfo);
 		try {
 			saveJsonObjAsJSONFile(jsonObj);
 		} catch (IOException e) {
 			displayErrorBox("Opening File", e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -40,11 +42,13 @@ public class JSONConfigurationFile implements ConfigurationFile {
 
 	private void saveJsonObjAsJSONFile(JsonObject jsonObj) throws IOException {
 		String path = saveFile();
+		if (path == null) { return;}
 		FileWriter file = new FileWriter(path);
 		try {
 			file.write(jsonObj.toString());
 		} catch (IOException e) {
-			displayErrorBox("Writing to File", e.getMessage());
+			displayErrorBox("Opening File", e.getMessage());
+			e.printStackTrace();
 		} finally {
 			file.flush();
 			file.close();
@@ -52,8 +56,11 @@ public class JSONConfigurationFile implements ConfigurationFile {
 	}
 
 	@Override
-	public ConfigurationFile loadConfiguration() {
+	public boolean loadConfiguration() throws LoadCancelledException{
 		String pathAsString = getConfigFilePath();
+		if (pathAsString == null) {
+			throw new LoadCancelledException();
+		}
 		Path path = Paths.get(pathAsString);
 		JsonParser parser = new JsonParser();
 		String configFileContent;
@@ -63,29 +70,40 @@ public class JSONConfigurationFile implements ConfigurationFile {
 			this.jsonConfig = configurationFile;
 		} catch (IOException e) {
 			displayErrorBox("Reading a config file", e.getMessage());
+			return false;
 		}
-		return this;
+		return true;
 	}
-	
-	private JsonObject createJSONConfigFile(String hostIP, List<String[]> antennaList) {
+
+	private JsonObject createJSONConfigFile(String hostIP, List<Antenna> antennaList, ServerInfo serverInfo) {
 		JsonObject configurationFileFields = new JsonObject();
 		JsonObject configurationFile = new JsonObject();
 		configurationFileFields.addProperty("readerHost", hostIP);		
 		addAntennaListToJSON(configurationFileFields, antennaList);
+		addServerSetupToJSON(configurationFileFields, serverInfo);
 		configurationFile.add("configurationFile", configurationFileFields);
 		return configurationFile;
+	}
+
+	private void addServerSetupToJSON(JsonObject configurationFileFields,
+			ServerInfo serverInfo) {
+		JsonObject jsonServerInfo = new JsonObject();
+		jsonServerInfo.addProperty("owner", serverInfo.getOwner());
+		jsonServerInfo.addProperty("password", serverInfo.getPassword());
+		jsonServerInfo.addProperty("url", serverInfo.getUrl());
+		configurationFileFields.add("serverSetup", jsonServerInfo);
 		
 	}
 
-	private void addAntennaListToJSON(JsonObject jsonObj, List<String[]> antennaList) {
+	private void addAntennaListToJSON(JsonObject jsonObj, List<Antenna> antennaList) {
 		JsonArray jsonAntennas = new JsonArray();
 		JsonObject jsonAntenna;
-		for (String[] antennaProperties : antennaList) {
+		for (Antenna antennaProperties : antennaList) {
 			jsonAntenna = new JsonObject();
-			jsonAntenna.addProperty("enabled", Boolean.parseBoolean(antennaProperties[0]));
-			jsonAntenna.addProperty("isEntryPoint", Boolean.parseBoolean(antennaProperties[1]));
-			jsonAntenna.addProperty("storeAreaOne", antennaProperties[2]);
-			jsonAntenna.addProperty("storeAreaTwo", antennaProperties[3]);
+			jsonAntenna.addProperty("enabled", antennaProperties.isEnabled());
+			jsonAntenna.addProperty("isEntryPoint", antennaProperties.isEntryPoint());
+			jsonAntenna.addProperty("storeAreaOne", antennaProperties.getStoreAreaOne());
+			jsonAntenna.addProperty("storeAreaTwo", antennaProperties.getStoreAreaTwo());
 			jsonAntennas.add(jsonAntenna);
 		}
 		jsonObj.add("antennaList", jsonAntennas);
@@ -110,7 +128,7 @@ public class JSONConfigurationFile implements ConfigurationFile {
 	public String saveFile() {
 		return fileDialogBuilder(SWT.SAVE).getFilterPath();
 	}
-	
+
 	public String getHostname() {
 		JsonObject configurationFile = jsonConfig.get("configurationFile").getAsJsonObject();
 		return configurationFile.get("readerHost").getAsString();
@@ -133,14 +151,31 @@ public class JSONConfigurationFile implements ConfigurationFile {
 		return antennaList;
 	}
 	
+	public ServerInfo getServerInfo() {
+		ServerInfo serverInfo = new ServerInfo();
+		JsonObject configurationFile = jsonConfig.get("configurationFile").getAsJsonObject();
+		JsonObject serverInfoInJson = configurationFile.get("serverSetup").getAsJsonObject();
+		serverInfo.setOwner(serverInfoInJson.get("owner").getAsString());
+		serverInfo.setPassword(serverInfoInJson.get("password").getAsString());
+		serverInfo.setUrl(serverInfoInJson.get("url").getAsString());
+		return serverInfo;
+	}
+
 	public static void main(String[] args) throws IOException {
 		JSONConfigurationFile configFile = new JSONConfigurationFile();
-		configFile.loadConfiguration();
-		String hostName = configFile.getHostname();
-		ArrayList<Antenna> antennaList = configFile.getAntennaList();
-		
-		configFile.saveConfiguration(hostName, Antenna.toListOfStringArrays(antennaList));
-		
+		String hostName = null;
+		ArrayList<Antenna> antennaList = null;
+		ServerInfo serverInfo = null;
+		try {
+			configFile.loadConfiguration();
+			hostName = configFile.getHostname();
+			antennaList = configFile.getAntennaList();
+			serverInfo = configFile.getServerInfo();
+		} catch (LoadCancelledException e) {
+			e.printStackTrace();
+		}
+		configFile.saveConfiguration(hostName, antennaList, serverInfo);
+
 		configFile.displayErrorBox("Opening File", "Error message goes here");
 		configFile.getConfigFilePath();
 		//String savePath = configFile.saveFile();

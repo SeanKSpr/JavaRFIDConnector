@@ -40,6 +40,11 @@ public class ReaderLocation {
 				return true;
 			}
 		}
+		else if (this.storeAreaOne.equals(otherLocation.getStoreAreaTwo())){
+			if (this.storeAreaTwo.equals(otherLocation.getStoreAreaOne())) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -50,8 +55,22 @@ public class ReaderLocation {
 	@Override
 	public int hashCode() {
 		int result = 0;
-		result = 31 * result + (storeAreaOne != null ? this.storeAreaOne.hashCode() : 0);
-		result = 31 * result + (storeAreaTwo != null ? this.storeAreaTwo.hashCode() : 0);
+		String firstDataItemToBeUsed, secondDataItemToBeUsed;
+		
+		if (storeAreaOne == null || storeAreaTwo == null) {
+			return super.hashCode();
+		}
+		
+		if (storeAreaOne.compareTo(storeAreaTwo) <= 0) {
+			firstDataItemToBeUsed = storeAreaOne;
+			secondDataItemToBeUsed = storeAreaTwo;
+		}
+		else {
+			firstDataItemToBeUsed = storeAreaTwo;
+			secondDataItemToBeUsed = storeAreaOne;
+		}
+		result = 31 * result + (firstDataItemToBeUsed != null ? firstDataItemToBeUsed.hashCode() : 0);
+		result = 31 * result + (secondDataItemToBeUsed != null ? secondDataItemToBeUsed.hashCode() : 0);
 		return result;
 	}
 	
