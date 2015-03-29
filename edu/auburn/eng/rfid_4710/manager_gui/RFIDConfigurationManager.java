@@ -21,6 +21,8 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+
+import edu.auburn.eng.sks0024.rfid_connector.*;
 //import org.eclipse.core.databinding.DataBindingContext;
 //import org.eclipse.core.databinding.observable.value.IObservableValue;
 //import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -389,6 +391,21 @@ public class RFIDConfigurationManager {
 			public void mouseDoubleClick(MouseEvent e) { }
 		});
 		
+		btnRunAway.addMouseListener(new MouseListener() {
+			public void mouseDown(MouseEvent arg0) {
+				JavaRFIDConnector jrc = new JavaRFIDConnector();
+				//AuburnReader ar = new AuburnReader();
+				
+				jrc.setHostname("192.168.250.50");
+				jrc.addReader("Store_Floor:Warehouse");
+				
+				Thread thread = new Thread(jrc);
+				thread.start();
+			}
+			public void mouseDoubleClick(MouseEvent arg0) {	}
+			public void mouseUp(MouseEvent arg0) { }
+			
+		});
 //		m_bindingContext = initDataBindings();
 
 	}
