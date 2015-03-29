@@ -105,7 +105,7 @@ public class RFIDConfigurationManager {
 		lblAntenna.setText("Antenna 1");
 		
 		final Button btnIsDoesNew = new Button(shlRfidConfigurationManager, SWT.CHECK);
-		btnIsDoesNew.setEnabled(false);
+		btnIsDoesNew.setEnabled(btnIsEnabled.getSelection());
 		btnIsDoesNew.setBounds(156, 99, 93, 16);
 		btnIsDoesNew.setText("Entry point?");
 		
@@ -114,7 +114,7 @@ public class RFIDConfigurationManager {
 		lblBetwixt.setText("Between");
 		
 		final Combo combo = new Combo(shlRfidConfigurationManager, SWT.NONE);
-		combo.setEnabled(false);
+		combo.setEnabled(btnIsEnabled.getSelection());
 		combo.setBounds(316, 97, 91, 23);
 		combo.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -124,7 +124,7 @@ public class RFIDConfigurationManager {
 		lblAndpersand.setText("&&");
 		
 		final Combo combo_1 = new Combo(shlRfidConfigurationManager, SWT.NONE);
-		combo_1.setEnabled(false);
+		combo_1.setEnabled(btnIsEnabled.getSelection());
 		combo_1.setBounds(494, 97, 91, 23);
 		combo_1.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -160,7 +160,7 @@ public class RFIDConfigurationManager {
 		lblAntenna_1.setBounds(85, 129, 55, 15);
 		
 		final Button btnEntryPoint = new Button(shlRfidConfigurationManager, SWT.CHECK);
-		btnEntryPoint.setEnabled(false);
+		btnEntryPoint.setEnabled(btnEnabled.getSelection());
 		btnEntryPoint.setText("Entry point?");
 		btnEntryPoint.setBounds(156, 128, 93, 16);
 		
@@ -169,7 +169,7 @@ public class RFIDConfigurationManager {
 		lblBetween.setBounds(255, 128, 55, 15);
 		
 		final Combo combo_2 = new Combo(shlRfidConfigurationManager, SWT.NONE);
-		combo_2.setEnabled(false);
+		combo_2.setEnabled(btnEnabled.getSelection());
 		combo_2.setBounds(316, 126, 91, 23);
 		combo_2.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -179,7 +179,7 @@ public class RFIDConfigurationManager {
 		lblAnd.setBounds(423, 129, 55, 15);
 		
 		final Combo combo_3 = new Combo(shlRfidConfigurationManager, SWT.NONE);
-		combo_3.setEnabled(false);
+		combo_3.setEnabled(btnEnabled.getSelection());
 		combo_3.setBounds(494, 126, 91, 23);
 		combo_3.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -192,7 +192,7 @@ public class RFIDConfigurationManager {
 		lblAntenna_2.setBounds(85, 158, 55, 15);
 		
 		final Button btnEntryPoint_1 = new Button(shlRfidConfigurationManager, SWT.CHECK);
-		btnEntryPoint_1.setEnabled(false);
+		btnEntryPoint_1.setEnabled(btnEnabled_1.getSelection());
 		btnEntryPoint_1.setText("Entry point?");
 		btnEntryPoint_1.setBounds(156, 157, 93, 16);
 		
@@ -201,7 +201,7 @@ public class RFIDConfigurationManager {
 		lblBetween_1.setBounds(255, 157, 55, 15);
 		
 		final Combo combo_4 = new Combo(shlRfidConfigurationManager, SWT.NONE);
-		combo_4.setEnabled(false);
+		combo_4.setEnabled(btnEnabled_1.getSelection());
 		combo_4.setBounds(316, 155, 91, 23);
 		combo_4.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -211,7 +211,7 @@ public class RFIDConfigurationManager {
 		label_5.setBounds(423, 158, 55, 15);
 		
 		final Combo combo_5 = new Combo(shlRfidConfigurationManager, SWT.NONE);
-		combo_5.setEnabled(false);
+		combo_5.setEnabled(btnEnabled_1.getSelection());
 		combo_5.setBounds(494, 155, 91, 23);
 		combo_5.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -224,7 +224,7 @@ public class RFIDConfigurationManager {
 		lblAntenna_3.setBounds(85, 187, 55, 15);
 		
 		final Button btnEntryPoint_2 = new Button(shlRfidConfigurationManager, SWT.CHECK);
-		btnEntryPoint_2.setEnabled(false);
+		btnEntryPoint_2.setEnabled(btnEnabled_2.getSelection());
 		btnEntryPoint_2.setText("Entry point?");
 		btnEntryPoint_2.setBounds(156, 186, 93, 16);
 		
@@ -233,7 +233,7 @@ public class RFIDConfigurationManager {
 		lblBetween_2.setBounds(255, 186, 55, 15);
 		
 		final Combo combo_6 = new Combo(shlRfidConfigurationManager, SWT.NONE);
-		combo_6.setEnabled(false);
+		combo_6.setEnabled(btnEnabled_2.getSelection());
 		combo_6.setBounds(316, 184, 91, 23);
 		combo_6.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -243,7 +243,7 @@ public class RFIDConfigurationManager {
 		lblAnd_1.setBounds(423, 187, 55, 15);
 		
 		final Combo combo_7 = new Combo(shlRfidConfigurationManager, SWT.NONE);
-		combo_7.setEnabled(false);
+		combo_7.setEnabled(btnEnabled_2.getSelection());
 		combo_7.setBounds(494, 184, 91, 23);
 		combo_7.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -347,9 +347,10 @@ public class RFIDConfigurationManager {
 			public void mouseDoubleClick(MouseEvent e) { }
 		});
 		
-		btnSaveStuff.addMouseListener(new MouseListener() {
+		btnLoadStuff.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
 				JSONConfigurationFile js = new JSONConfigurationFile();
+				try {js.loadConfiguration();} catch (Exception ex) { System.out.println("Error occurred while executing load protocol"); }
 				text.setText(js.getHostname());
 				//How are we using the server info from the config file?
 				ServerInfo serverInfo = js.getServerInfo();
@@ -370,6 +371,19 @@ public class RFIDConfigurationManager {
 				combo_7.setText(antennaList.get(3).getStoreAreaTwo());
 				btnEnabled_2.setSelection(antennaList.get(3).isEnabled());
 				btnEntryPoint_2.setSelection(antennaList.get(3).isEntryPoint());
+
+				combo.setEnabled(btnIsEnabled.getSelection());
+				combo_1.setEnabled(btnIsEnabled.getSelection());
+				btnIsDoesNew.setEnabled(btnIsEnabled.getSelection());
+				combo_2.setEnabled(btnEnabled.getSelection());
+				combo_3.setEnabled(btnEnabled.getSelection());
+				btnEntryPoint.setEnabled(btnEnabled.getSelection());
+				combo_4.setEnabled(btnEnabled_1.getSelection());
+				combo_5.setEnabled(btnEnabled_1.getSelection());
+				btnEntryPoint_1.setEnabled(btnEnabled_1.getSelection());
+				combo_6.setEnabled(btnEnabled_2.getSelection());
+				combo_7.setEnabled(btnEnabled_2.getSelection());
+				btnEntryPoint_2.setEnabled(btnEnabled_2.getSelection());
 			}
 			public void mouseUp(MouseEvent e) { }
 			public void mouseDoubleClick(MouseEvent e) { }
