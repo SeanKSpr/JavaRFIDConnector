@@ -1,6 +1,5 @@
 package edu.auburn.eng.rfid_4710.manager_gui;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +10,7 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.gson.JsonArray;
@@ -28,7 +28,7 @@ public class JSONConfigurationFile implements ConfigurationFile{
 		try {
 			saveJsonObjAsJSONFile(jsonObj);
 		} catch (IOException e) {
-			//TODO display error popup
+			displayErrorBox("Opening File", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -39,7 +39,7 @@ public class JSONConfigurationFile implements ConfigurationFile{
 		try {
 			file.write(jsonObj.toString());
 		} catch (IOException e) {
-			//TODO: display error popup
+			displayErrorBox("Opening File", e.getMessage());
 			e.printStackTrace();
 		} finally {
 			file.flush();
@@ -67,9 +67,11 @@ public class JSONConfigurationFile implements ConfigurationFile{
 		return true;
 	}
 	
-	private void displayErrorBox(String string, String message) {
-		// TODO Auto-generated method stub
-		
+	private void displayErrorBox(String errorAction, String errorMessage) {
+		MessageBox dialog = new MessageBox(new Shell(), SWT.ERROR | SWT.OK);
+				dialog.setText("Error during action: " + errorAction);
+				dialog.setMessage("Error message: " + errorMessage);
+				dialog.open();
 	}
 
 	private JsonObject createJSONConfigFile(String hostIP, List<String[]> antennaList, List<String> serverInfo) {
