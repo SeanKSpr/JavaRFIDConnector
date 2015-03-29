@@ -96,9 +96,9 @@ public class RFIDConfigurationManager {
 		text.setBounds(163, 36, 137, 21);
 		text.setMessage("Ex: 192.168.225.50");
 		
-		final Button btnFuck = new Button(shlRfidConfigurationManager, SWT.CHECK);
-		btnFuck.setBounds(10, 99, 65, 16);
-		btnFuck.setText("Enabled");
+		final Button btnIsEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		btnIsEnabled.setBounds(10, 99, 65, 16);
+		btnIsEnabled.setText("Enabled");
 		
 		Label lblAntenna = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAntenna.setBounds(85, 100, 55, 15);
@@ -247,7 +247,7 @@ public class RFIDConfigurationManager {
 		combo_7.setBounds(494, 184, 91, 23);
 		combo_7.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
-		btnFuck.addSelectionListener(new SelectionListener() {
+		btnIsEnabled.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				//^ is XOR
@@ -306,7 +306,7 @@ public class RFIDConfigurationManager {
 				Antenna antenna1 = new Antenna();
 				antenna1.setStoreAreaOne(combo.getText());
 				antenna1.setStoreAreaTwo(combo_1.getText());
-				antenna1.setEnabled(btnFuck.getSelection());
+				antenna1.setEnabled(btnIsEnabled.getSelection());
 				antenna1.setEntryPoint(btnIsDoesNew.getSelection());
 				System.out.println("Antenna 1: " + antenna1.toString());
 				antennaList.add(antenna1);
@@ -334,13 +334,42 @@ public class RFIDConfigurationManager {
 				
 				JSONConfigurationFile js = new JSONConfigurationFile();
 				ArrayList<String> serverInfo = new ArrayList<String>();
-				serverInfo.add("rfidb");
-				serverInfo.add("rfidb");
-				serverInfo.add("http://aurfid.herokuapp.com/");
-				//js.saveConfiguration(text.getText(), antennaList, serverInfo);
+				ServerInfo si = new ServerInfo();
+				si.setOwner("rfidb");
+				si.setPassword("rfidb");
+				si.setUrl("http://aurfid.herokuapp.com/");
+				js.saveConfiguration(text.getText(), antennaList, si);
 				System.out.println(text.getText() + "\n\n" + antennaList.size() + "\n\n" + antennaList.get(0).toString() + "\n\n"
 						+ antennaList.get(1).toString() + "\n\n" + antennaList.get(2).toString() + "\n\n"
 						+ antennaList.get(3).toString() + "\n\n" + serverInfo.toString());
+			}
+			public void mouseUp(MouseEvent e) { }
+			public void mouseDoubleClick(MouseEvent e) { }
+		});
+		
+		btnSaveStuff.addMouseListener(new MouseListener() {
+			public void mouseDown(MouseEvent e) {
+				JSONConfigurationFile js = new JSONConfigurationFile();
+				text.setText(js.getHostname());
+				//How are we using the server info from the config file?
+				ServerInfo serverInfo = js.getServerInfo();
+				ArrayList<Antenna> antennaList = js.getAntennaList();
+				combo.setText(antennaList.get(0).getStoreAreaOne());
+				combo_1.setText(antennaList.get(0).getStoreAreaTwo());
+				btnIsEnabled.setSelection(antennaList.get(0).isEnabled());
+				btnIsDoesNew.setSelection(antennaList.get(0).isEntryPoint());
+				combo_2.setText(antennaList.get(1).getStoreAreaOne());
+				combo_3.setText(antennaList.get(1).getStoreAreaTwo());
+				btnEnabled.setSelection(antennaList.get(1).isEnabled());
+				btnEntryPoint.setSelection(antennaList.get(1).isEntryPoint());
+				combo_4.setText(antennaList.get(2).getStoreAreaOne());
+				combo_5.setText(antennaList.get(2).getStoreAreaTwo());
+				btnEnabled_1.setSelection(antennaList.get(2).isEnabled());
+				btnEntryPoint_1.setSelection(antennaList.get(2).isEntryPoint());
+				combo_6.setText(antennaList.get(3).getStoreAreaOne());
+				combo_7.setText(antennaList.get(3).getStoreAreaTwo());
+				btnEnabled_2.setSelection(antennaList.get(3).isEnabled());
+				btnEntryPoint_2.setSelection(antennaList.get(3).isEntryPoint());
 			}
 			public void mouseUp(MouseEvent e) { }
 			public void mouseDoubleClick(MouseEvent e) { }
