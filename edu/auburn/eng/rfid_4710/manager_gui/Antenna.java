@@ -12,8 +12,6 @@ public class Antenna {
 		return enabled;
 	}
 
-
-
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
