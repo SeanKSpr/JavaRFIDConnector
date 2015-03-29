@@ -1,5 +1,8 @@
 package edu.auburn.eng.rfid_4710.manager_gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 //import swing2swt.layout.BorderLayout;
@@ -93,7 +96,7 @@ public class RFIDConfigurationManager {
 		text.setBounds(163, 36, 137, 21);
 		text.setMessage("Ex: 192.168.225.50");
 		
-		Button btnFuck = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		final Button btnFuck = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		btnFuck.setBounds(10, 99, 65, 16);
 		btnFuck.setText("Enabled");
 		
@@ -125,20 +128,6 @@ public class RFIDConfigurationManager {
 		combo_1.setBounds(494, 97, 91, 23);
 		combo_1.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
-		btnFuck.addSelectionListener(new SelectionListener() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-				//^ is XOR
-				combo.setEnabled(combo.getEnabled() ^ true);
-				combo_1.setEnabled(combo_1.getEnabled() ^ true);
-				btnIsDoesNew.setEnabled(btnIsDoesNew.getEnabled() ^ true);
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) { }
-		});
-		
 		ProgressBar progressBar = new ProgressBar(shlRfidConfigurationManager, SWT.NONE);
 		progressBar.setBounds(163, 225, 432, 152);
 		
@@ -162,7 +151,7 @@ public class RFIDConfigurationManager {
 		btnLoadStuff.setBounds(20, 391, 120, 25);
 		btnLoadStuff.setText("Load Configuration");
 		
-		Button btnEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		final Button btnEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		btnEnabled.setText("Enabled");
 		btnEnabled.setBounds(10, 128, 65, 16);
 		
@@ -170,7 +159,8 @@ public class RFIDConfigurationManager {
 		lblAntenna_1.setText("Antenna 2");
 		lblAntenna_1.setBounds(85, 129, 55, 15);
 		
-		Button btnEntryPoint = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		final Button btnEntryPoint = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		btnEntryPoint.setEnabled(false);
 		btnEntryPoint.setText("Entry point?");
 		btnEntryPoint.setBounds(156, 128, 93, 16);
 		
@@ -178,7 +168,8 @@ public class RFIDConfigurationManager {
 		lblBetween.setText("Between");
 		lblBetween.setBounds(255, 128, 55, 15);
 		
-		Combo combo_2 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		final Combo combo_2 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		combo_2.setEnabled(false);
 		combo_2.setBounds(316, 126, 91, 23);
 		combo_2.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -187,11 +178,12 @@ public class RFIDConfigurationManager {
 		lblAnd.setText("&&");
 		lblAnd.setBounds(423, 129, 55, 15);
 		
-		Combo combo_3 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		final Combo combo_3 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		combo_3.setEnabled(false);
 		combo_3.setBounds(494, 126, 91, 23);
 		combo_3.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
-		Button btnEnabled_1 = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		final Button btnEnabled_1 = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		btnEnabled_1.setText("Enabled");
 		btnEnabled_1.setBounds(10, 157, 65, 16);
 		
@@ -199,7 +191,8 @@ public class RFIDConfigurationManager {
 		lblAntenna_2.setText("Antenna 3");
 		lblAntenna_2.setBounds(85, 158, 55, 15);
 		
-		Button btnEntryPoint_1 = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		final Button btnEntryPoint_1 = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		btnEntryPoint_1.setEnabled(false);
 		btnEntryPoint_1.setText("Entry point?");
 		btnEntryPoint_1.setBounds(156, 157, 93, 16);
 		
@@ -207,7 +200,8 @@ public class RFIDConfigurationManager {
 		lblBetween_1.setText("Between");
 		lblBetween_1.setBounds(255, 157, 55, 15);
 		
-		Combo combo_4 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		final Combo combo_4 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		combo_4.setEnabled(false);
 		combo_4.setBounds(316, 155, 91, 23);
 		combo_4.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -216,16 +210,12 @@ public class RFIDConfigurationManager {
 		label_5.setText("&&");
 		label_5.setBounds(423, 158, 55, 15);
 		
-		Combo combo_5 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		final Combo combo_5 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		combo_5.setEnabled(false);
 		combo_5.setBounds(494, 155, 91, 23);
 		combo_5.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
-		Button btnEnabled_2 = new Button(shlRfidConfigurationManager, SWT.CHECK);
-		btnEnabled_2.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-			}
-		});
+		final Button btnEnabled_2 = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		btnEnabled_2.setText("Enabled");
 		btnEnabled_2.setBounds(10, 186, 65, 16);
 		
@@ -233,7 +223,8 @@ public class RFIDConfigurationManager {
 		lblAntenna_3.setText("Antenna 4");
 		lblAntenna_3.setBounds(85, 187, 55, 15);
 		
-		Button btnEntryPoint_2 = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		final Button btnEntryPoint_2 = new Button(shlRfidConfigurationManager, SWT.CHECK);
+		btnEntryPoint_2.setEnabled(false);
 		btnEntryPoint_2.setText("Entry point?");
 		btnEntryPoint_2.setBounds(156, 186, 93, 16);
 		
@@ -241,7 +232,8 @@ public class RFIDConfigurationManager {
 		lblBetween_2.setText("Between");
 		lblBetween_2.setBounds(255, 186, 55, 15);
 		
-		Combo combo_6 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		final Combo combo_6 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		combo_6.setEnabled(false);
 		combo_6.setBounds(316, 184, 91, 23);
 		combo_6.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
 		
@@ -250,9 +242,110 @@ public class RFIDConfigurationManager {
 		lblAnd_1.setText("&&");
 		lblAnd_1.setBounds(423, 187, 55, 15);
 		
-		Combo combo_7 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		final Combo combo_7 = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		combo_7.setEnabled(false);
 		combo_7.setBounds(494, 184, 91, 23);
 		combo_7.setItems(new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"});
+		
+		btnFuck.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				//^ is XOR
+				combo.setEnabled(combo.getEnabled() ^ true);
+				combo_1.setEnabled(combo_1.getEnabled() ^ true);
+				btnIsDoesNew.setEnabled(btnIsDoesNew.getEnabled() ^ true);
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) { }
+		});
+		btnEnabled.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				//^ is XOR
+				combo_2.setEnabled(combo_2.getEnabled() ^ true);
+				combo_3.setEnabled(combo_3.getEnabled() ^ true);
+				btnEntryPoint.setEnabled(btnEntryPoint.getEnabled() ^ true);
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) { }
+		});
+		btnEnabled_1.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				//^ is XOR
+				combo_4.setEnabled(combo_4.getEnabled() ^ true);
+				combo_5.setEnabled(combo_5.getEnabled() ^ true);
+				btnEntryPoint_1.setEnabled(btnEntryPoint_1.getEnabled() ^ true);
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) { }
+		});
+		btnEnabled_2.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				//^ is XOR
+				combo_6.setEnabled(combo_6.getEnabled() ^ true);
+				combo_7.setEnabled(combo_7.getEnabled() ^ true);
+				btnEntryPoint_2.setEnabled(btnEntryPoint_2.getEnabled() ^ true);
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) { }
+		});
+		
+		btnKillSelf.addMouseListener(new MouseListener() {
+			public void mouseDown(MouseEvent e) {
+				System.exit(0);
+			}
+			public void mouseDoubleClick(MouseEvent arg0) {	}
+			public void mouseUp(MouseEvent arg0) { }
+		});
+
+		btnSaveStuff.addMouseListener(new MouseListener() {
+			public void mouseDown(MouseEvent e) {
+				ArrayList<Antenna> antennaList = new ArrayList<Antenna>();
+				Antenna antenna1 = new Antenna();
+				antenna1.setStoreAreaOne(combo.getText());
+				antenna1.setStoreAreaTwo(combo_1.getText());
+				antenna1.setEnabled(btnFuck.getSelection());
+				antenna1.setEntryPoint(btnIsDoesNew.getSelection());
+				System.out.println("Antenna 1: " + antenna1.toString());
+				antennaList.add(antenna1);
+				Antenna antenna2 = new Antenna();
+				antenna2.setStoreAreaOne(combo_2.getText());
+				antenna2.setStoreAreaTwo(combo_3.getText());
+				antenna2.setEnabled(btnEnabled.getSelection());
+				antenna2.setEntryPoint(btnEntryPoint.getSelection());
+				System.out.println("Antenna 2: " + antenna2.toString());
+				antennaList.add(antenna2);
+				Antenna antenna3 = new Antenna();
+				antenna3.setStoreAreaOne(combo_4.getText());
+				antenna3.setStoreAreaTwo(combo_5.getText());
+				antenna3.setEnabled(btnEnabled_1.getSelection());
+				antenna3.setEntryPoint(btnEntryPoint_1.getSelection());
+				System.out.println("Antenna 3: " + antenna3.toString());
+				antennaList.add(antenna3);
+				Antenna antenna4 = new Antenna();
+				antenna4.setStoreAreaOne(combo_6.getText());
+				antenna4.setStoreAreaTwo(combo_7.getText());
+				antenna4.setEnabled(btnEnabled_2.getSelection());
+				antenna4.setEntryPoint(btnEntryPoint_2.getSelection());
+				System.out.println("Antenna 4: " + antenna4.toString());
+				antennaList.add(antenna4);				
+				
+				JSONConfigurationFile js = new JSONConfigurationFile();
+				ArrayList<String> serverInfo = new ArrayList<String>();
+				serverInfo.add("rfidb");
+				serverInfo.add("rfidb");
+				serverInfo.add("http://aurfid.herokuapp.com/");
+				//js.saveConfiguration(text.getText(), antennaList, serverInfo);
+				System.out.println(text.getText() + "\n\n" + antennaList.size() + "\n\n" + antennaList.get(0).toString() + "\n\n"
+						+ antennaList.get(1).toString() + "\n\n" + antennaList.get(2).toString() + "\n\n"
+						+ antennaList.get(3).toString() + "\n\n" + serverInfo.toString());
+			}
+			public void mouseUp(MouseEvent e) { }
+			public void mouseDoubleClick(MouseEvent e) { }
+		});
+		
 //		m_bindingContext = initDataBindings();
 
 	}

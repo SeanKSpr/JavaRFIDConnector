@@ -52,6 +52,10 @@ public class Antenna {
 		this.storeAreaTwo = storeAreaTwo;
 	}
 
+	public String toString() {
+		return Boolean.toString(enabled) + ", " + Boolean.toString(isEntryPoint) + ", " + storeAreaOne + ", " + storeAreaTwo;
+	}
+	
 	public String[] toStringArray() {
 		String[] antennaProperties = new String[4];
 		antennaProperties[0] = Boolean.toString(enabled);
