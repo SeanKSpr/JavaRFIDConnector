@@ -83,11 +83,12 @@ public class JavaRFIDConnector implements RFIDConnector {
                 throw new Exception("Must specify the hostname property of the reader");
             }
                      
-            for (int i = 0; i < this.readerList.size(); i++) {
-            	AuburnReader reader = readerList.get(i);
+            for (int readerID = 0; readerID < this.readerList.size(); readerID++) {
+            	AuburnReader reader = readerList.get(readerID);
 	            if (reader.getLocation() == null) {
 	            	throw new Exception("Must specify the location of the reader");
 	            }
+	            configureReaderSettings(readerID, reader);
 	            reader.start();
 	            Scanner s = new Scanner(System.in);
 	            s.nextLine();
@@ -159,13 +160,21 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * This function is used by the RFIDManagerWindow. It will pass the text stored in the ReaderLocation combo and this function
 	 * will take that string, transform it into its equivalent ReaderLocation enum, set up the reader information, and then add 
 	 * the reader to the list of RFID readers.
-	 * @param readerLocation The location of the RFID reader as a String. This parameter comes from the RFIDManagerWindow class's 
+	 * @param storeAreaOne The location of the RFID reader as a String. This parameter comes from the RFIDManagerWindow class's 
 	 * AntennaLocation Combo objects.
+	 * @param storeAreaTwo TODO
+	 * @param antennaID TODO
 	 */
-	public void addReader(String readerLocation) {
+	public void addReader(String storeAreaOne, String storeAreaTwo, int antennaID) {
 		AuburnReader reader = new AuburnReader();
-		ReaderLocationEnum location = ReaderLocationEnum.convertLocation(readerLocation);
+		ReaderLocation location = new ReaderLocation(storeAreaOne, storeAreaTwo);
+		//ReaderLocationEnum location = ReaderLocationEnum.convertLocation(storeAreaOne);
 		reader.setLocation(location);
+		
+		this.readerList.add(reader);
+	}
+
+	private void configureReaderSettings(int antennaID, AuburnReader reader) {
 		try {
 		reader.connect(hostname);
         Settings settings = reader.queryDefaultSettings();
@@ -179,11 +188,11 @@ public class JavaRFIDConnector implements RFIDConnector {
         // set some special settings for antenna 1
         AntennaConfigGroup antennas = settings.getAntennas();
         antennas.disableAll();
-        antennas.enableById(new short[]{1});
-        antennas.getAntenna((short) 1).setIsMaxRxSensitivity(false);
-        antennas.getAntenna((short) 1).setIsMaxTxPower(false);
-        antennas.getAntenna((short) 1).setTxPowerinDbm(20.0);
-        antennas.getAntenna((short) 1).setRxSensitivityinDbm(-70);
+        antennas.enableById(new short[]{(short) antennaID});
+        antennas.getAntenna((short) antennaID).setIsMaxRxSensitivity(false);
+        antennas.getAntenna((short) antennaID).setIsMaxTxPower(false);
+        antennas.getAntenna((short) antennaID).setTxPowerinDbm(20.0);
+        antennas.getAntenna((short) antennaID).setRxSensitivityinDbm(-70);
 
         reader.setTagReportListener(new TagReporter());
 
@@ -194,7 +203,6 @@ public class JavaRFIDConnector implements RFIDConnector {
             System.out.println(ex.getMessage());
             ex.printStackTrace(System.out);
         }
-		this.readerList.add(reader);
 	}
 	
 	/**

@@ -10,14 +10,14 @@ import com.impinj.octanesdk.ImpinjReader;
  *
  */
 public class AuburnReader extends ImpinjReader {
-	private ReaderLocationEnum location;
+	private ReaderLocation location;
 	
 	/**
 	 * Precondition:		AuburnReader hasn't been instantiated. 
 	 * Postcondition:		AuburnReader is instantiated with its reader location set to the input location
 	 * @param location the location of the RFID reader; see ReaderLocation enumeration for documentation.
 	 */
-	public AuburnReader(ReaderLocationEnum location) {
+	public AuburnReader(ReaderLocation location) {
 		super();
 		this.location = location;
 	}
@@ -35,7 +35,7 @@ public class AuburnReader extends ImpinjReader {
 	 * 
 	 * @return location of the RFID reader
 	 */
-	public ReaderLocationEnum getLocation() {
+	public ReaderLocation getLocation() {
 		return location;
 	}
 	
@@ -44,7 +44,7 @@ public class AuburnReader extends ImpinjReader {
 	 * Postcondition:	The location of the RFID reader will be changed to the input location; see ReaderLocation enumeration documentation for valid inputs.
 	 * @param location New location of the RFID reader
 	 */
-	public void setLocation(ReaderLocationEnum location) {
+	public void setLocation(ReaderLocation location) {
 		this.location = location;
 	}
 	

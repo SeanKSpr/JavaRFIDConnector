@@ -400,8 +400,8 @@ public class RFIDConfigurationManager {
 				JavaRFIDConnector jrc = new JavaRFIDConnector();
 				//AuburnReader ar = new AuburnReader();
 				
-				jrc.setHostname("192.168.250.50");
-				jrc.addReader("Store_Floor:Warehouse");
+				jrc.setHostname("192.168.220.50");
+				jrc.addReader("Store_Floor", "Warehouse", 1);
 				
 				Thread thread = new Thread(jrc);
 				thread.start();

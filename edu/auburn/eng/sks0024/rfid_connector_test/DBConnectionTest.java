@@ -211,7 +211,7 @@ public class DBConnectionTest {
 		assertTrue(success);
 		
 		tWrapper.setLocation(TagLocationEnum.BACK_ROOM);
-		tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
+		//TODO: tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
 		success = connector.updateTag(tWrapper, dbConnection);
 		assertTrue(success);
 		
@@ -246,7 +246,7 @@ public class DBConnectionTest {
 		boolean success = connector.insertTag(tWrapper, dbConnection);
 		
 		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
-		tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
+		//TODO:tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
 		success = connector.updateTag(tWrapper, dbConnection);
 		assertTrue(success);
 		
@@ -282,7 +282,7 @@ public class DBConnectionTest {
 		//assertTrue(success);
 		
 		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
-		tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
+		//TODO:tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
 		boolean success = connector.updateTag(tWrapper, dbConnection);
 		assertTrue(success);
 		
@@ -322,7 +322,7 @@ public class DBConnectionTest {
 		dbConnection = null;
 		
 		tWrapper.setLocation(TagLocationEnum.BACK_ROOM);
-		tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
+		//TODO:tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
 		boolean failure = !connector.updateTag(tWrapper, dbConnection);
 		assertTrue(failure);
 	}

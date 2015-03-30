@@ -14,7 +14,7 @@ public class TagWrapper {
 	private Tag tag;
 	private TagLocationEnum location;
 	private long timeSeen;
-	private ReaderLocationEnum locationScanned;
+	private ReaderLocation locationScanned;
 	
 	/**
 	 * Default constructor for TagWrapper. Creates a TagWrapper with all fields set to null.
@@ -110,7 +110,7 @@ public class TagWrapper {
 	 * Returns the location of the RFID reader which scanned the tag
 	 * @return Location of the RFID reader which scanned the tag 
 	 */
-	public ReaderLocationEnum getLocationScanned() {
+	public ReaderLocation getLocationScanned() {
 		return locationScanned;
 	}
 	
@@ -118,7 +118,7 @@ public class TagWrapper {
 	 * Sets the location of where the tag was scanned to the input 
 	 * @param locationScanned new location of where the tag was scanned (See ReaderLocation for valid values)
 	 */
-	public void setLocationScanned(ReaderLocationEnum locationScanned) {
+	public void setLocationScanned(ReaderLocation locationScanned) {
 		this.locationScanned = locationScanned;
 	}
 }

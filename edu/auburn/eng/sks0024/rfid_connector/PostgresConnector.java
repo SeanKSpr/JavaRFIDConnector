@@ -179,16 +179,16 @@ public class PostgresConnector implements RFIDDatabaseManager {
         return updateTagInDatabase(upc, serialNum, tag.getLocationScanned(), c);
 	}
 	
-	public boolean updateTagInDatabase(long upc, long serial, ReaderLocationEnum rl, Connection c) {
+	public boolean updateTagInDatabase(long upc, long serial, ReaderLocation readerLocation, Connection c) {
 		try {
 			Statement stmt = c.createStatement();
 
 			int id = getTagID(upc, serial, c);
 			String dbLocation = getTagLocation(id, c);
 			
-	        TagLocationEnum currLoc = TagLocationEnum.convertLocation(dbLocation);
-			TagLocationEnum newLoc = TagLocationEnum.getNewLocation(currLoc, rl);
-			String location = TagLocationEnum.convertLocation(newLoc);
+	        TagLocation currLoc = new TagLocation(dbLocation);
+			TagLocation newLoc = JavaRFIDConnector.getNewLocation(currLoc, readerLocation);
+			String location = newLoc.getName();
 			
 			//If invalid combination of reader location and current location, new location = current location, so we fail this condition.
 	        if (!dbLocation.equalsIgnoreCase(location) && !dbLocation.equalsIgnoreCase("out of store")) {
