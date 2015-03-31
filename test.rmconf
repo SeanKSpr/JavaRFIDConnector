@@ -1,1 +1,1 @@
-Test 2
+{"configurationFile":{"readerHost":"","antennaList":[{"enabled":true,"isEntryPoint":true,"storeAreaOne":"Store Floor","storeAreaTwo":"Back Room"},{"enabled":true,"isEntryPoint":false,"storeAreaOne":"Store Floor","storeAreaTwo":"Exit"},{"enabled":false,"isEntryPoint":false,"storeAreaOne":"","storeAreaTwo":""},{"enabled":false,"isEntryPoint":false,"storeAreaOne":"","storeAreaTwo":""}],"serverSetup":{"owner":"*********","password":"*********","url":"http://aurfid.herokuapp.com/"}}}
