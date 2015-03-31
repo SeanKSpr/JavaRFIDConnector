@@ -341,8 +341,8 @@ public class RFIDConfigurationManager {
 				JSONConfigurationFile js = new JSONConfigurationFile();
 				ArrayList<String> serverInfo = new ArrayList<String>();
 				ServerInfo si = new ServerInfo();
-				si.setOwner("rfidb");
-				si.setPassword("rfidb");
+				si.setOwner("*********");
+				si.setPassword("*********");
 				si.setUrl("http://aurfid.herokuapp.com/");
 				js.saveConfiguration(text.getText(), antennaList, si); //catch (Exception ex) { System.out.println(ex); return;}
 				/*System.out.println(text.getText() + "\n\n" + antennaList.size() + "\n\n" + antennaList.get(0).toString() + "\n\n"
