@@ -401,7 +401,7 @@ public class RFIDConfigurationManager {
 				//AuburnReader ar = new AuburnReader();
 				
 				jrc.setHostname("192.168.220.50");
-				jrc.addReader("Store_Floor", "Warehouse", 1);
+				jrc.addReader("Store_Floor", "Warehouse");
 				
 				Thread thread = new Thread(jrc);
 				thread.start();

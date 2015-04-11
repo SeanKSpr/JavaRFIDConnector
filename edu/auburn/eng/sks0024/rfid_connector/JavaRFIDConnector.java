@@ -1,6 +1,7 @@
 package edu.auburn.eng.sks0024.rfid_connector;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Timer;
 
@@ -18,10 +19,10 @@ import com.impinj.octanesdk.Settings;
  * ImpinjReader.queryDefaultSettings). In general, this class was drafted from the ReadTags.java file which is present in the
  * Impinj OctaneSDK samples folder. As of version 1.1 this class instantiates a TimerTask which will periodically update the
  * database with the latest tag information collected. 
- * NOTE: Currently this class does not support multiple readers, only a single reader.
+ * NOTE: Currently this class does not support multiple readers, only a single impinj reader that is connected to up to 4 RFID antennas.
  * 
- * @since  	1 	(2-23-2015)
- * @version 1.3	(3-14-2015)
+ * @since  	1.3 	(3-14-2015)
+ * @version 1.4		(4-11-2015)
  * @author Sean Spurlin
  */
 public class JavaRFIDConnector implements RFIDConnector {
@@ -160,12 +161,10 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * This function is used by the RFIDManagerWindow. It will pass the text stored in the ReaderLocation combo and this function
 	 * will take that string, transform it into its equivalent ReaderLocation enum, set up the reader information, and then add 
 	 * the reader to the list of RFID readers.
-	 * @param storeAreaOne The location of the RFID reader as a String. This parameter comes from the RFIDManagerWindow class's 
-	 * AntennaLocation Combo objects.
-	 * @param storeAreaTwo TODO
-	 * @param antennaID TODO
+	 * @param storeAreaOne One of the locations the rfid reader sits between
+	 * @param storeAreaTwo  The other location the rfid sits between
 	 */
-	public void addReader(String storeAreaOne, String storeAreaTwo, int antennaID) {
+	public void addReader(String storeAreaOne, String storeAreaTwo) {
 		AuburnReader reader = new AuburnReader();
 		ReaderLocation location = new ReaderLocation(storeAreaOne, storeAreaTwo);
 		//ReaderLocationEnum location = ReaderLocationEnum.convertLocation(storeAreaOne);
@@ -173,7 +172,30 @@ public class JavaRFIDConnector implements RFIDConnector {
 		
 		this.readerList.add(reader);
 	}
-
+	
+	/**
+	 * Method which takes in a list of TagLocations and a list of ReaderLocations and associates the two lists together in order to generate a HashMap of
+	 * TagLocation transitions aka the store layout map. 
+	 * @param tagLocations List of possible locations tags can be located in the store
+	 * @param readerLocations List of possible locations readers can be located in the store
+	 * @return a map which contains all the valid tag location transitions through the store.
+	 */
+	public HashMap<StoreConfigurationKey, TagLocation> generateStoreMap(List<TagLocation> tagLocations, List<ReaderLocation> readerLocations) {
+		for (TagLocation tagLocation : tagLocations) {
+			for (ReaderLocation readerLocation : readerLocations) {
+				if (tagLocation.getName().equals(readerLocation.getStoreAreaOne())) {
+					StoreConfigurationKey key = new StoreConfigurationKey(tagLocation, readerLocation);
+					storeConfigurationMap.put(key, new TagLocation(readerLocation.getStoreAreaTwo()));
+				}
+				else if (tagLocation.getName().equals(readerLocation.getStoreAreaTwo())) {
+					StoreConfigurationKey key = new StoreConfigurationKey(tagLocation, readerLocation);
+					storeConfigurationMap.put(key, new TagLocation(readerLocation.getStoreAreaOne()));
+				}
+			}
+		}
+		return storeConfigurationMap;
+	}
+	
 	private void configureReaderSettings(int antennaID, AuburnReader reader) {
 		try {
 		reader.connect(hostname);

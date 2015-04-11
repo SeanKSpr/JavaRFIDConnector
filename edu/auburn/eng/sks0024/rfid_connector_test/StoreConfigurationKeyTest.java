@@ -2,10 +2,13 @@ package edu.auburn.eng.sks0024.rfid_connector_test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.junit.Test;
 
+import edu.auburn.eng.sks0024.rfid_connector.JavaRFIDConnector;
 import edu.auburn.eng.sks0024.rfid_connector.ReaderLocation;
 import edu.auburn.eng.sks0024.rfid_connector.StoreConfigurationKey;
 import edu.auburn.eng.sks0024.rfid_connector.TagLocation;
@@ -101,6 +104,7 @@ public class StoreConfigurationKeyTest {
 	
 	@Test
 	public void nominalGetLocation() {
+		JavaRFIDConnector connector = new JavaRFIDConnector();
 		TagLocation locA = new TagLocation("a");
 		TagLocation locB = new TagLocation("b");
 		TagLocation locC = new TagLocation("c");
@@ -120,8 +124,7 @@ public class StoreConfigurationKeyTest {
 		StoreConfigurationKey key6 = new StoreConfigurationKey(locD, readCD);
 		StoreConfigurationKey key7 = new StoreConfigurationKey(locD, readDE);
 		StoreConfigurationKey key8 = new StoreConfigurationKey(locE, readDE);
-		HashMap<StoreConfigurationKey, TagLocation> storeLayout = setUpStoreConfigurationHashMap();
-		
+		HashMap<StoreConfigurationKey, TagLocation> storeLayout = generateStoreMap();
 		assertTrue(storeLayout.get(key1).getName().equals("b"));
 		assertTrue(storeLayout.get(key2).getName().equals("a"));
 		assertTrue(storeLayout.get(key3).getName().equals("c"));
@@ -130,6 +133,8 @@ public class StoreConfigurationKeyTest {
 		assertTrue(storeLayout.get(key6).getName().equals("c"));
 		assertTrue(storeLayout.get(key7).getName().equals("e"));
 		assertTrue(storeLayout.get(key8).getName().equals("d"));
+		
+		
 		
 	}
 	
@@ -217,5 +222,69 @@ public class StoreConfigurationKeyTest {
 		storeLayout.put(key8, locD);
 		
 		return storeLayout;
+	}
+	
+	@Test
+	public void generateMapTest() {
+		JavaRFIDConnector connector = new JavaRFIDConnector();
+		List<TagLocation> tagLocations = new ArrayList<TagLocation>();
+		List<ReaderLocation> readerLocations = new ArrayList<ReaderLocation>();
+		
+		TagLocation locA = new TagLocation("a");
+		TagLocation locB = new TagLocation("b");
+		TagLocation locC = new TagLocation("c");
+		TagLocation locD = new TagLocation("d");
+		TagLocation locE = new TagLocation("e");
+		
+		ReaderLocation readAB = new ReaderLocation("a", "b");
+		ReaderLocation readBC = new ReaderLocation("b", "c");
+		ReaderLocation readCD = new ReaderLocation("c", "d");
+		ReaderLocation readDE = new ReaderLocation("d", "e");
+		
+		tagLocations.add(locA);
+		tagLocations.add(locB);
+		tagLocations.add(locC);
+		tagLocations.add(locD);
+		tagLocations.add(locE);
+		
+		readerLocations.add(readAB);
+		readerLocations.add(readBC);
+		readerLocations.add(readCD);
+		readerLocations.add(readDE);
+		
+		HashMap<StoreConfigurationKey, TagLocation> map = connector.generateStoreMap(tagLocations, readerLocations);
+		
+	}
+	
+	private HashMap<StoreConfigurationKey, TagLocation> generateStoreMap() {
+		JavaRFIDConnector connector = new JavaRFIDConnector();
+		List<TagLocation> tagLocations = new ArrayList<TagLocation>();
+		List<ReaderLocation> readerLocations = new ArrayList<ReaderLocation>();
+		
+		TagLocation locA = new TagLocation("a");
+		TagLocation locB = new TagLocation("b");
+		TagLocation locC = new TagLocation("c");
+		TagLocation locD = new TagLocation("d");
+		TagLocation locE = new TagLocation("e");
+		
+		ReaderLocation readAB = new ReaderLocation("a", "b");
+		ReaderLocation readBC = new ReaderLocation("b", "c");
+		ReaderLocation readCD = new ReaderLocation("c", "d");
+		ReaderLocation readDE = new ReaderLocation("d", "e");
+		
+		tagLocations.add(locA);
+		tagLocations.add(locB);
+		tagLocations.add(locC);
+		tagLocations.add(locD);
+		tagLocations.add(locE);
+		
+		readerLocations.add(readAB);
+		readerLocations.add(readBC);
+		readerLocations.add(readCD);
+		readerLocations.add(readDE);
+		
+		HashMap<StoreConfigurationKey, TagLocation> map = connector.generateStoreMap(tagLocations, readerLocations);
+		assertEquals(JavaRFIDConnector.getNewLocation(locA, readAB), new TagLocation("b"));
+		return map;
 	}
 }
