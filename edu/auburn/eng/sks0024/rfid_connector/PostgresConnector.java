@@ -112,12 +112,12 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	 * @param c The current Connection to the database
 	 * @return True if the insertion was successful, False otherwise
 	 */
-	public boolean insertTag(TagWrapper tag, Connection c){
+	public boolean insertTag(TagWrapper tag, Connection c, String location){
 
 		try {
 		    long upc = Long.parseLong(EPCConverter.getUPC(tag.getTag().getEpc().toWordList())); //get upc from this
 		    long serialNum = (EPCConverter.getSerial(tag.getTag().getEpc().toWordList()));
-			addTagToDatabase(upc, serialNum, c);
+			addTagToDatabase(upc, serialNum, c, location);
 			return true;
 		} catch (Exception e) {
 			System.out.println("Error occurred while inserting new value into the database");
@@ -126,7 +126,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		}
 	}
 	
-	public boolean addTagToDatabase(long tagUPC, long tagSerial, Connection c){
+	public boolean addTagToDatabase(long tagUPC, long tagSerial, Connection c, String location){
 		try {
 			if (findTagInDatabase(tagUPC, tagSerial, c)) {
 				return false;
@@ -134,7 +134,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			Statement stmt = c.createStatement();
 			int id = getUPCId(tagUPC, c);
 			String sql = "INSERT into products(upc_description_id, serial_num, location) values " //+ " (upc_id, serial, location)"
-			+ "(" + id + ", " + tagSerial + ", '" + TagLocationEnum.convertLocation(TagLocationEnum.BACK_ROOM) + "')";
+			+ "(" + id + ", " + tagSerial + ", '" + location + "')";
 			stmt.executeUpdate(sql);
 			
 			stmt.close();
@@ -162,6 +162,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		}
 	}
 	
+	
 	/**
 	 * Function:		updateTag
 	 * 
@@ -179,16 +180,16 @@ public class PostgresConnector implements RFIDDatabaseManager {
         return updateTagInDatabase(upc, serialNum, tag.getLocationScanned(), c);
 	}
 	
-	public boolean updateTagInDatabase(long upc, long serial, ReaderLocation readerLocation, Connection c) {
+	public boolean updateTagInDatabase(long upc, long serial, ReaderLocation rl, Connection c) {
 		try {
 			Statement stmt = c.createStatement();
 
 			int id = getTagID(upc, serial, c);
 			String dbLocation = getTagLocation(id, c);
 			
-	        TagLocation currLoc = new TagLocation(dbLocation);
-			TagLocation newLoc = JavaRFIDConnector.getNewLocation(currLoc, readerLocation);
-			String location = newLoc.getName();
+			TagLocation tl = new TagLocation(dbLocation);
+			
+			String location = JavaRFIDConnector.getNewLocation(tl, rl).getName();
 			
 			//If invalid combination of reader location and current location, new location = current location, so we fail this condition.
 	        if (!dbLocation.equalsIgnoreCase(location) && !dbLocation.equalsIgnoreCase("out of store")) {

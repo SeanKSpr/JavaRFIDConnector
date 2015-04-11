@@ -39,7 +39,7 @@ public interface RFIDDatabaseManager {
 	 * @param c Current connection to our database
 	 * @return True if the insertion was successful, False otherwise
 	 */
-	public boolean insertTag(TagWrapper tag, Connection c);
+	public boolean insertTag(TagWrapper tag, Connection c, String location);
 	
 	/**
 	 * Function:		updateTag

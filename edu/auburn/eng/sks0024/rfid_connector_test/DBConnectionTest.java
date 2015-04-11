@@ -124,7 +124,7 @@ public class DBConnectionTest {
 		}
 		((MyTag) tag).assignEPC(epc);
 		TagWrapper tWrapper = new TagWrapper(tag);
-		boolean success = connector.insertTag(tWrapper, dbConnection);
+		boolean success = connector.insertTag(tWrapper, dbConnection, "back room");
 		assertTrue(success);
 	}
 	
@@ -150,8 +150,8 @@ public class DBConnectionTest {
 		}
 		((MyTag) tag).assignEPC(epc);
 		TagWrapper tWrapper = new TagWrapper(tag);
-		connector.insertTag(tWrapper, dbConnection);
-		boolean failure = connector.insertTag(tWrapper, dbConnection);
+		connector.insertTag(tWrapper, dbConnection, "back room");
+		boolean failure = connector.insertTag(tWrapper, dbConnection, "back room");
 		assertTrue(failure);
 	}
 	
@@ -180,7 +180,7 @@ public class DBConnectionTest {
 		
 		dbConnection = null;
 		
-		boolean failure = connector.insertTag(tWrapper, dbConnection);
+		boolean failure = connector.insertTag(tWrapper, dbConnection, "back room");
 		assertTrue(failure);
 	}
 	
@@ -207,7 +207,7 @@ public class DBConnectionTest {
 		((MyTag) tag).assignEPC(epc);
 		TagWrapper tWrapper = new TagWrapper(tag);
 		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
-		boolean success = connector.insertTag(tWrapper, dbConnection);
+		boolean success = connector.insertTag(tWrapper, dbConnection, "back room");
 		assertTrue(success);
 		
 		tWrapper.setLocation(TagLocationEnum.BACK_ROOM);
@@ -243,7 +243,7 @@ public class DBConnectionTest {
 		((MyTag) tag).assignEPC(epc);
 		TagWrapper tWrapper = new TagWrapper(tag);
 		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
-		boolean success = connector.insertTag(tWrapper, dbConnection);
+		boolean success = connector.insertTag(tWrapper, dbConnection, "back room");
 		
 		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
 		//TODO:tWrapper.setLocationScanned(ReaderLocationEnum.BACKROOM_WAREHOUSE);
@@ -315,7 +315,7 @@ public class DBConnectionTest {
 		((MyTag) tag).assignEPC(epc);
 		TagWrapper tWrapper = new TagWrapper(tag);
 		tWrapper.setLocation(TagLocationEnum.WAREHOUSE);
-		boolean success = connector.insertTag(tWrapper, dbConnection);
+		boolean success = connector.insertTag(tWrapper, dbConnection, "back room");
 		assertTrue(success);
 		
 		//Lost connection

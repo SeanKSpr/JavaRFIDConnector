@@ -35,7 +35,7 @@ public class DBUpdateTimer extends TimerTask {
 		for (TagWrapper tag : tagBatch) {
 			System.out.println("Updating Database Tag: " + tag.getTag().getEpc().toString() + " Time: " + tag.getTimeSeen());
 			if(!dbManager.updateTag(tag, dbConnection)) {
-				dbManager.insertTag(tag, dbConnection);
+				dbManager.insertTag(tag, dbConnection, "back room");
 			};
 		}
 		//For testing reasons (not that it really matters if this is displayed on the console)
