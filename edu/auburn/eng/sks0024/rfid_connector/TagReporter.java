@@ -28,9 +28,9 @@ public class TagReporter implements TagReportListener {
 		TagWrapper wrappedTag;
 		for (Tag t : report.getTags()) {
 			wrappedTag = new TagWrapper(t, (AuburnReader)reader);
-			
 			if (!DuplicateReadDetector.isDuplicateRead(wrappedTag)) {
 				DuplicateReadDetector.addWrappedTag(wrappedTag);
+				System.out.println(t.getAntennaPortNumber());
 				System.out.println(DuplicateReadDetector.getTagBatchTimeInfo());
 			}
 			else {//TESTING PURPOSES ONLY

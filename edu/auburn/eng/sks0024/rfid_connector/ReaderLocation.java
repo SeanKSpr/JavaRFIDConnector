@@ -21,6 +21,11 @@ public class ReaderLocation {
 		this.storeAreaTwo = storeAreaTwo;
 	}
 	
+	@Override
+	public String toString() {
+		return "Reader is located between: " + storeAreaOne + " and " + storeAreaTwo;
+	}
+
 	/**
 	 * Overloaded equals to compare two ReaderLocations by their storeAreaOne and storeAreaTwo. If these two fields
 	 * match, then the ReaderLocations are considered to be the same.

@@ -1,28 +1,26 @@
 package edu.auburn.eng.rfid_4710.manager_gui;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-//import swing2swt.layout.BorderLayout;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
-//import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 //import org.eclipse.swt.layout.RowData;
 //import swing2swt.layout.BoxLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Display;
+//import swing2swt.layout.BorderLayout;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Shell;
+//import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 
-import edu.auburn.eng.sks0024.rfid_connector.*;
+import edu.auburn.eng.sks0024.rfid_connector.JavaRFIDConnector;
 //import org.eclipse.core.databinding.DataBindingContext;
 //import org.eclipse.core.databinding.observable.value.IObservableValue;
 //import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -395,14 +393,15 @@ public class RFIDConfigurationManager {
 			public void mouseDoubleClick(MouseEvent e) { }
 		});
 		
+		//LAUNCH PROGRAM
 		btnRunAway.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent arg0) {
 				JavaRFIDConnector jrc = new JavaRFIDConnector();
 				//AuburnReader ar = new AuburnReader();
 				
-				jrc.setHostname("192.168.220.50");
-				jrc.addReader("Store_Floor", "Warehouse");
-				
+				jrc.setHostname("192.168.225.50");
+				jrc.addReader("Store_Floor", "Warehouse", 1);
+				jrc.addReader("Warehouse", "Out_of_store", 4);
 				Thread thread = new Thread(jrc);
 				thread.start();
 			}
