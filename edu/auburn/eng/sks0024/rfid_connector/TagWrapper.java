@@ -12,7 +12,7 @@ import com.impinj.octanesdk.Tag;
  */
 public class TagWrapper {
 	private Tag tag;
-	private TagLocationEnum location;
+	private TagLocation location;
 	private long timeSeen;
 	private ReaderLocation locationScanned;
 	
@@ -31,7 +31,7 @@ public class TagWrapper {
 	 */
 	public TagWrapper(Tag tag) {
 		this.tag = tag;
-		location = TagLocationEnum.WAREHOUSE;
+		location = null;
 		this.setTimeSeen(System.currentTimeMillis());
 	}
 	
@@ -44,7 +44,7 @@ public class TagWrapper {
 	 */
 	public TagWrapper(Tag tag, AuburnReader reader) {
 		this.tag = tag;
-		location = TagLocationEnum.WAREHOUSE;
+		location = null;
 		this.setTimeSeen(System.currentTimeMillis());
 		this.locationScanned = reader.getLocation();
 	}
@@ -68,7 +68,7 @@ public class TagWrapper {
 	 * Returns the location of the wrapped tag
 	 * @return the location of the wrapped tag
 	 */
-	public TagLocationEnum getLocation() {
+	public TagLocation getLocation() {
 		return location;
 	}
 
@@ -76,7 +76,7 @@ public class TagWrapper {
 	 * Sets the location of the wrapped tag to be that of the input location
 	 * @param location the new location of the wrapped tag
 	 */
-	public void setLocation(TagLocationEnum location) {
+	public void setLocation(TagLocation location) {
 		this.location = location;
 	}
 	
@@ -86,7 +86,7 @@ public class TagWrapper {
 	 * @return False of the tag's location isn't out of the store; True otherwise.
 	 */
 	public boolean isInStock() {
-		return location != TagLocationEnum.OUT_OF_STORE;
+		return location != null;
 	}
 	
 	/**

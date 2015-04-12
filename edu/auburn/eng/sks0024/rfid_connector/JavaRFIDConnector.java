@@ -45,6 +45,15 @@ public class JavaRFIDConnector implements RFIDConnector {
 	private ArrayList<AuburnReader> readerList = new ArrayList<AuburnReader>();
 	private static HashMap<StoreConfigurationKey, TagLocation> storeConfigurationMap = new HashMap<StoreConfigurationKey, TagLocation>();
 			
+	public static HashMap<StoreConfigurationKey, TagLocation> getStoreConfigurationMap() {
+		return storeConfigurationMap;
+	}
+
+	public static void setStoreConfigurationMap(
+			HashMap<StoreConfigurationKey, TagLocation> storeConfigurationMap) {
+		JavaRFIDConnector.storeConfigurationMap = storeConfigurationMap;
+	}
+
 	/**
 	 * Default constructor which creates a new TagReader with fields set to null.
 	 */
