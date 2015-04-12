@@ -33,14 +33,14 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		Connection c = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres","forcecommit");
-			//c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfidb","rfidweb", "rfidweb");
+			//c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres","forcecommit");
+			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres", "password");
 			
 			//Added by Sean for testing purposes////////////////////////////////////////////
-			Properties connectionProperties = c.getClientInfo();
-			connectionProperties.setProperty("url", "jdbc:postgresql://localhost:5432/postgres");
-			connectionProperties.setProperty("user", "postgres");
-			c.setClientInfo(connectionProperties);
+			//Properties connectionProperties = c.getClientInfo();
+			//connectionProperties.setProperty("url", "jdbc:postgresql://localhost:5432/postgres");
+			//connectionProperties.setProperty("user", "postgres");
+			//c.setClientInfo(connectionProperties);
 			////////////////////////////////////////////////////////////////////////////////
 			
 			c.setAutoCommit(false);
@@ -189,11 +189,13 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			
 			TagLocation tl = new TagLocation(dbLocation);
 			
-			String location = JavaRFIDConnector.getNewLocation(tl, rl).getName();
+			String newLoc = dbLocation;
+			TagLocation location = JavaRFIDConnector.getNewLocation(tl, rl);
+			if(location != null) { newLoc = location.getName(); }
 			
 			//If invalid combination of reader location and current location, new location = current location, so we fail this condition.
-	        if (!dbLocation.equalsIgnoreCase(location) && !dbLocation.equalsIgnoreCase("out of store")) {
-		        String sql = "UPDATE PRODUCTS set LOCATION = '" + location + "' where ID=" + id + ";";
+	        if (!dbLocation.equalsIgnoreCase(newLoc) && !dbLocation.equalsIgnoreCase("out of store")) {
+		        String sql = "UPDATE PRODUCTS set LOCATION = '" + newLoc + "' where ID=" + id + ";";
 		        System.out.println(sql);
 				stmt.executeUpdate(sql);
 				
@@ -274,11 +276,11 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		ResultSet rs = stmt.executeQuery(sql);
 		if (!rs.next()) { //condition passes if no valid rows in rs
 			stmt.close();
-			System.out.println("Did not find Tag");
+			//System.out.println("Did not find Tag");
 			return false;
 		}
 		stmt.close();
-		System.out.println("Found Tag");
+		//System.out.println("Found Tag");
 		return true;
 	}
 	
