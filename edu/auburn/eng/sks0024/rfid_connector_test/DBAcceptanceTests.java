@@ -37,14 +37,21 @@ public class DBAcceptanceTests {
 		List<TagLocation> tagLocations = new ArrayList<TagLocation>();
 		List<ReaderLocation> readerLocations = new ArrayList<ReaderLocation>();
 				
-		TagLocation locA = new TagLocation(locations[0]);
-		TagLocation locB = new TagLocation(locations[1]);
-		TagLocation locC = new TagLocation(locations[2]);
-		TagLocation locD = new TagLocation(locations[3]);
+		TagLocation warehouse = new TagLocation(locations[0]);
+		TagLocation backroom = new TagLocation(locations[1]);
+		TagLocation storefloor = new TagLocation(locations[2]);
+		TagLocation outofstore = new TagLocation(locations[3]);
+		tagLocations.add(warehouse);
+		tagLocations.add(backroom);
+		tagLocations.add(storefloor);
+		tagLocations.add(outofstore);
 		
-		ReaderLocation readAB = new ReaderLocation(locations[0], locations[1]);
-		ReaderLocation readBC = new ReaderLocation(locations[1], locations[2]);
-		ReaderLocation readCD = new ReaderLocation(locations[2], locations[3]);
+		ReaderLocation warehouse_backroom = new ReaderLocation(locations[0], locations[1]);
+		ReaderLocation backroom_storefloor = new ReaderLocation(locations[1], locations[2]);
+		ReaderLocation storefloor_outofstore = new ReaderLocation(locations[2], locations[3]);
+		readerLocations.add(warehouse_backroom);
+		readerLocations.add(backroom_storefloor);
+		readerLocations.add(storefloor_outofstore);
 		
 		return connector.generateStoreMap(tagLocations, readerLocations);
 	}
@@ -60,7 +67,9 @@ public class DBAcceptanceTests {
 		boolean success;
 		
 		success = conn.addTagToDatabase(upc1, firstSerials[0], c, locations[1]);
+		System.out.println("Added tag 1: " + success);
 		success &= conn.addTagToDatabase(upc2, firstSerials[1], c, locations[1]);
+		System.out.println("Added tag 2: " + success);
 		
 		if(!success) {
 			System.out.println("Test Tags added incorrectly");
@@ -76,7 +85,9 @@ public class DBAcceptanceTests {
 		boolean success;
 		try {
 			success = conn.findTagInDatabase(upc1, firstSerials[0], c);
+			System.out.println("1: " + success);
 			success &= conn.findTagInDatabase(upc2, firstSerials[1], c);
+			System.out.println("2: " + success);
 			if(!success) {
 				System.out.println("Test Tags unable to be found");
 			}
@@ -91,15 +102,17 @@ public class DBAcceptanceTests {
 	//Make sure no errors occur when searching for Tags that don't exist, and make sure only
 	//    the Tags specified in insertTest() were added.
 	public boolean findNonexistentTest() {
-		boolean failure;
+		boolean success;
 		try {
-			failure = conn.findTagInDatabase(upc1, firstSerials[1], c);
-			failure &= conn.findTagInDatabase(upc2, firstSerials[0], c);
+			success = !(conn.findTagInDatabase(upc1, firstSerials[1], c));
+			System.out.println("2: " + success);
+			success &= !(conn.findTagInDatabase(upc2, firstSerials[0], c));
+			System.out.println("2: " + success);
 		} catch (Exception e) {
 			System.out.println("Error occurred while looking for test Tags not in database");
-			failure = true;
+			success = false;
 		}
-		return !failure;
+		return success;
 	}
 	
 	//Test to make sure location of new items is as specified within the test that added them.
@@ -152,7 +165,7 @@ public class DBAcceptanceTests {
 		boolean failure;
 		//Both Tags should be on the store floor, so the reader location listed is invalid for those Tags.
 		failure = conn.updateTagInDatabase(upc1, firstSerials[0], new ReaderLocation(locations[0], locations[1]), c);
-		failure &= conn.updateTagInDatabase(upc2, firstSerials[1], new ReaderLocation(locations[1], locations[2]), c);
+		failure &= conn.updateTagInDatabase(upc2, firstSerials[1], new ReaderLocation(locations[0], locations[1]), c);
 		
 		//Need to make sure the location of neither Tag was somehow changed; both should still be on the store floor.
 		return !failure && getUpdatedLocationsTest();		
@@ -234,21 +247,21 @@ public class DBAcceptanceTests {
 		int id2 = conn.getTagID(upc2, dupeSerials[0], c);
 		String loc2 = conn.getTagLocation(id2, c);
 		int id3 = conn.getTagID(upc1, dupeSerials[1], c);
-		String loc3 = conn.getTagLocation(id1, c);
+		String loc3 = conn.getTagLocation(id3, c);
 		int id4 = conn.getTagID(upc2, dupeSerials[1], c);
-		String loc4 = conn.getTagLocation(id2, c);
+		String loc4 = conn.getTagLocation(id4, c);
 		int id5 = conn.getTagID(upc1, dupeSerials[4], c);
-		String loc5 = conn.getTagLocation(id1, c);
+		String loc5 = conn.getTagLocation(id5, c);
 		int id6 = conn.getTagID(upc2, dupeSerials[4], c);
-		String loc6 = conn.getTagLocation(id2, c);
+		String loc6 = conn.getTagLocation(id6, c);
 		int id7 = conn.getTagID(upc1, dupeSerials[2], c);
-		String loc7 = conn.getTagLocation(id1, c);
+		String loc7 = conn.getTagLocation(id7, c);
 		int id8 = conn.getTagID(upc2, dupeSerials[2], c);
-		String loc8 = conn.getTagLocation(id2, c);
+		String loc8 = conn.getTagLocation(id8, c);
 		int id9 = conn.getTagID(upc1, dupeSerials[3], c);
-		String loc9 = conn.getTagLocation(id1, c);
+		String loc9 = conn.getTagLocation(id9, c);
 		int id10 = conn.getTagID(upc2, dupeSerials[3], c);
-		String loc10 = conn.getTagLocation(id2, c);
+		String loc10 = conn.getTagLocation(id10, c);
 		
 		success &= (loc1.equalsIgnoreCase("on store floor") && loc2.equalsIgnoreCase("on store floor")
 				 && loc3.equalsIgnoreCase("on store floor") && loc4.equalsIgnoreCase("on store floor")
