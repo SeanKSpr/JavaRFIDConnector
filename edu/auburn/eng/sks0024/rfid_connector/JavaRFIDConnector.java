@@ -77,7 +77,8 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * are thrown if the host name of the reader or its location haven't been set.
 	 */
     public void run() {
-        try {                      
+        try {          
+        	System.out.println("We running this shit now");
             if (hostname == null) {
                 throw new Exception("Must specify the hostname property of the reader");
             }
@@ -125,6 +126,7 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * @param hostname the IP/host name of the physical RFID reader
 	 */
 	public void setHostname(String hostname) {
+		System.out.println("Setting Hostname to" + hostname);
 		this.hostname = hostname;
 	}
 	
