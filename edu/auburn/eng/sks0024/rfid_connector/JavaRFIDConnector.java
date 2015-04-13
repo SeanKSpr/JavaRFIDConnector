@@ -159,10 +159,26 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * Adds a new antenna and associated ReaderLocation to the dictionary of the AuburnReader being
 	 * maintained by the JavaRFIDConnector. 
 	 * @param storeAreaOne One of the locations the rfid reader sits between
-	 * @param storeAreaTwo  The other location the rfid sits between
+	 * @param storeAreaTwo  The other location the rfid reader sits between
+	 * @param antennaID The identifier for the rfid antenna this location information is to be associated with
 	 */
 	public void addReader(String storeAreaOne, String storeAreaTwo, int antennaID) {
 		ReaderLocation location = new ReaderLocation(storeAreaOne, storeAreaTwo);
+		this.reader.addAntenna(antennaID, location);
+	}
+	
+	/**
+	 * Adds a new entry point antenna and associated ReaderLocation to the dictionary of the AuburnReader being maintained
+	 * by the JavaRFIDConnector.
+	 * @param storeAreaOne One of the locations the rfid reader sits between
+	 * @param storeAreaTwo The other location the rfid reader sits between
+	 * @param antennaID The identifier for the rfid antenna this location information is to be associated with
+	 * @param insertionLocation The location where tags should be inserted if they are scanned by this antenna
+	 */
+	public void addEntryPointReader(String storeAreaOne, String storeAreaTwo, int antennaID, String insertionLocation) {
+		ReaderLocation location = new ReaderLocation(storeAreaOne, storeAreaTwo);
+		location.setEntryPoint(true);
+		location.setInsertionPoint(new TagLocation(insertionLocation));
 		this.reader.addAntenna(antennaID, location);
 	}
 	

@@ -67,5 +67,21 @@ public class AntennaDictionaryTest {
 		assertEquals(reader.getLocation(3), null);
 		assertEquals(reader.getLocation(4), warehouse_outOfStore);
 	}
+	
+	@Test
+	public void dictionaryInsertionPointTest() {
+		AuburnReader reader = new AuburnReader();
+		JavaRFIDConnector connector = new JavaRFIDConnector("192.168.225.50", reader);
+		ReaderLocation storefloor_backroom, warehouse_outOfStore;
+		storefloor_backroom = new ReaderLocation("storefloor", "backroom");
+		warehouse_outOfStore = new ReaderLocation("warehouse", "out of store");
+		connector.addEntryPointReader("backroom", "storefloor", 1, "storefloor");
+		connector.addEntryPointReader("warehouse", "out of store", 4, "warehouse");
+		
+		Assert.assertEquals(reader.getLocation(1), storefloor_backroom);
+		assertEquals(reader.getLocation(2), null);
+		assertEquals(reader.getLocation(3), null);
+		assertEquals(reader.getLocation(4), warehouse_outOfStore);
+	}
 
 }
