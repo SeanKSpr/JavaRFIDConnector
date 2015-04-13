@@ -3,10 +3,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-//import java.util.List;
-import java.util.Properties;
 
 import edu.auburn.eng.sks0024.rfid_connector_test.DBAcceptanceTests;
+//import java.util.List;
 
 /**
  * PostgresConnector is the implementation of RFIDDatabaseManager used to write to our database. Currently based
@@ -33,16 +32,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		Connection c = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			//c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres","forcecommit");
-			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres", "password");
-			
-			//Added by Sean for testing purposes////////////////////////////////////////////
-			//Properties connectionProperties = c.getClientInfo();
-			//connectionProperties.setProperty("url", "jdbc:postgresql://localhost:5432/postgres");
-			//connectionProperties.setProperty("user", "postgres");
-			//c.setClientInfo(connectionProperties);
-			////////////////////////////////////////////////////////////////////////////////
-			
+			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres", "password");		
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 		} catch (Exception e) {
@@ -52,31 +42,19 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	}
 	
 	/**
-	 * This is an acceptance test for determining that the open function of
-	 * the PostgresConnector is functioning properly. The test consists of having
-	 * taking the parameters which are input by the tester/user and establishing a 
-	 * connection to a postgreSQL database. If an exception isn't thrown, then the 
-	 * connection has been established successfully. The parameters are saved in
-	 * Properties for the connection. 
-	 * @param user The user name of the postgreSQL database owner
-	 * @param url The URL to the database
-	 * @param password The password for accessing the database
-	 * @return
+	 * Opens a connection to a specific PostgreSQL database
+	 * @param url the url to the database
+	 * @param owner the owner/user name of the database
+	 * @param password the password to the database
+	 * @return a connection to the database
 	 */
-	public Connection openTest(String user, String url, String password) {
+	public Connection open(String url, String owner, String password) {
 		Connection c = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection(url, user,password);
-			
-			Properties connectionProperties = c.getClientInfo();
-			connectionProperties.setProperty("url", url);
-			connectionProperties.setProperty("user", user);
-			connectionProperties.setProperty("password", password);
-			
-			c.setClientInfo(connectionProperties);
-		
+			c = DriverManager.getConnection(url, owner, password);		
 			c.setAutoCommit(false);
+			System.out.println("Opened database successfully");
 		} catch (Exception e) {
 			System.out.println("Exception occurred while opening db connection");
 		}

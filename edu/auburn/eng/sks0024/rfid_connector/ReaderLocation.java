@@ -3,13 +3,14 @@ package edu.auburn.eng.sks0024.rfid_connector;
 /**
  * ReaderLocation is a data class which keeps track of the two locations that an RFID reader sits between.
  * This class is used to determine how RFID tags transition throughout the store.
- * @version 1 (3-14-2015)
+ * @version 1.1 (4-13-2015)
  * @since 1 (3-14-2015)
- * @author Sean Spurlin
+ * @author Sean Spurlin & Jared Watkins
  */
 public class ReaderLocation {
 	private String storeAreaOne, storeAreaTwo;
-	
+	private boolean isEntryPoint;
+	private TagLocation insertionPoint;
 	/**
 	 * Constructor which takes in the two locations that the RFID reader sits between and assigns them to the 
 	 * location fields of the ReaderLocation object.
@@ -109,5 +110,39 @@ public class ReaderLocation {
 	 */
 	public void setStoreAreaTwo(String storeAreaTwo) {
 		this.storeAreaTwo = storeAreaTwo;
+	}
+	
+	/**
+	 * Getter method for obtaining whether or not a scanner at this particular location is an entry point
+	 * scanner is allowed to insert new tags into the database on a scan.
+	 * @return True if this ReaderLocation is an entry point location; False otherwise
+	 */
+	public boolean isEntryPoint() {
+		return isEntryPoint;
+	}
+	
+	/**
+	 * Setter method for setting whether this ReaderLocation is an entry point location
+	 * @param isEntryPoint the new value for isEntryPoint
+	 */
+	public void setEntryPoint(boolean isEntryPoint) {
+		this.isEntryPoint = isEntryPoint;
+	}
+	
+	/**
+	 * Getter method to retrieve where to insert a new tag. If isEntryPoint is set to false, then this field
+	 * should remain null.
+	 * @return the location a tag should be inserted into
+	 */
+	public TagLocation getInsertionPoint() {
+		return insertionPoint;
+	}
+	
+	/**
+	 * Setter method for modifying the location a tag should be inserted into
+	 * @param insertionPoint the new location a tag should be inserted into
+	 */
+	public void setInsertionPoint(TagLocation insertionPoint) {
+		this.insertionPoint = insertionPoint;
 	}
 }

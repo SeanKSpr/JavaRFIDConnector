@@ -30,7 +30,9 @@ public class TagReporter implements TagReportListener {
 			wrappedTag = new TagWrapper(t, (AuburnReader)reader);
 			if (!DuplicateReadDetector.isDuplicateRead(wrappedTag)) {
 				DuplicateReadDetector.addWrappedTag(wrappedTag);
-				System.out.println(t.getAntennaPortNumber());
+				
+				System.out.println(wrappedTag.getLocationScanned().toString());
+				
 				System.out.println(DuplicateReadDetector.getTagBatchTimeInfo());
 			}
 			else {//TESTING PURPOSES ONLY

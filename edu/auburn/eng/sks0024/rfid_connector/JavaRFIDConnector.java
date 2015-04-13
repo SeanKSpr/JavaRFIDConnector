@@ -1,5 +1,4 @@
 package edu.auburn.eng.sks0024.rfid_connector;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -15,10 +14,9 @@ import com.impinj.octanesdk.Settings;
 /**
  * JavaRFIDConnector is an implementation of the RFIDReader interface. This is the class that connects with the RFID Reader hardware
  * (currently Impinj Speedway Revolution). After making a connection with the reader, it begins reading RFID data from 
- * standard input which is handled by an onTagReportListener. The RFID read settings are set to their default (see OctaneSDK
- * ImpinjReader.queryDefaultSettings). In general, this class was drafted from the ReadTags.java file which is present in the
+ * standard input which is handled by an onTagReportListener. In general, this class was drafted from the ReadTags.java file which is present in the
  * Impinj OctaneSDK samples folder. As of version 1.1 this class instantiates a TimerTask which will periodically update the
- * database with the latest tag information collected. 
+ * database with the latest tag information collected. In version 1.4 a dictionary was added associating RFID antennas with their designated location. 
  * NOTE: Currently this class does not support multiple readers, only a single impinj reader that is connected to up to 4 RFID antennas.
  * 
  * @since  	1.3 	(3-14-2015)
@@ -26,59 +24,50 @@ import com.impinj.octanesdk.Settings;
  * @author Sean Spurlin
  */
 public class JavaRFIDConnector implements RFIDConnector {
-	
-	/**
-	 * Driver method for the JavaConnector. It is currently hardcoded to interface with Speedway Revolution IP 192.168.225.50 which
-	 * is assumed to be a reader located between the store floor and the backroom. After connecting to the reader, the reader starts up and
-	 * begins receiving tag reports from the RFID reader.
-	 * @param args Command line arguments (unsed)
-	 */
-	public static void main (String args[]) {
-		JavaRFIDConnector reader = new JavaRFIDConnector();
-		//reader.readerBootstrap("192.168.225.50", ReaderLocation.FLOOR_BACKROOM);
-		reader.run();
-		
-		
-	}
-	
 	private String hostname, readerName;
-	private ArrayList<AuburnReader> readerList = new ArrayList<AuburnReader>();
+	private AuburnReader reader;
 	private static HashMap<StoreConfigurationKey, TagLocation> storeConfigurationMap = new HashMap<StoreConfigurationKey, TagLocation>();
 			
-	public static HashMap<StoreConfigurationKey, TagLocation> getStoreConfigurationMap() {
-		return storeConfigurationMap;
-	}
-
-	public static void setStoreConfigurationMap(
-			HashMap<StoreConfigurationKey, TagLocation> storeConfigurationMap) {
-		JavaRFIDConnector.storeConfigurationMap = storeConfigurationMap;
-	}
 
 	/**
-	 * Default constructor which creates a new TagReader with fields set to null.
+	 * Default constructor which creates a new JavaRFIDConnector with fields set to null and a default AuburnReader.
 	 */
 	public JavaRFIDConnector() {
 		this.hostname = null;
 		this.readerName = null;
+		this.setReader(new AuburnReader());
 	}
 	
 	/**
-	 * Constructor which creates a new TagReader with the input host name and every other field null.
+	 * Constructor which creates a new JavaRFIDConnector with the input host name and a default AuburnReader.
 	 * @param hostname IP address/host name of the physical RFID reader which we are connecting.
 	 */
 	public JavaRFIDConnector(String hostname) {
 		this.hostname = hostname;
 		this.readerName = null;
+		this.setReader(new AuburnReader());
 	}
 	
 	/**
-	 * Constructor which creates a new TagReader with the input host name and reader name and the reader location set to null.
+	 * Constructor which creates a new JavaRFIDConnector with the input host name and reader and a default AuburnReader
 	 * @param hostname IP address/host name of the physical RFID reader which we are connecting.
 	 * @param readerName A user specified name for the reader (currently unused)
 	 */
 	public JavaRFIDConnector(String hostname, String readerName) {
 		this.hostname = hostname;
 		this.readerName = readerName;
+		this.setReader(new AuburnReader());
+	}
+	
+	/**
+	 * Constructor which creates a new JavaRFIDConnector with the input host name and AuburnReader. 
+	 * @param hostname the Host name/IP of the physical Impinj RFID Scanner 
+	 * @param reader the virtual representation of the Impinj RFID Scanner which includes fields and functions which allow the user
+	 * to know where RFID antennas are located.
+	 */
+	public JavaRFIDConnector(String hostname, AuburnReader reader) {
+		this.hostname = hostname;
+		this.reader = reader;
 	}
 	
 	/**
@@ -92,13 +81,8 @@ public class JavaRFIDConnector implements RFIDConnector {
             if (hostname == null) {
                 throw new Exception("Must specify the hostname property of the reader");
             }
-                     
-            	AuburnReader reader = readerList.get(0);
-	            if (reader.getLocation() == null) {
-	            	throw new Exception("Must specify the location of the reader");
-	            }
-	            configureReaderSettings(new short[]{1,4}, reader);
-	            //configureReaderSettings(4, reader);
+            	short[] antennaListForConfiguring = getAntennaListForConfiguring();
+	            configureReaderSettings(antennaListForConfiguring, reader);
 	            reader.start();
 	            Scanner s = new Scanner(System.in);
 	            s.nextLine();
@@ -113,6 +97,20 @@ public class JavaRFIDConnector implements RFIDConnector {
             ex.printStackTrace(System.out);
         }
     }
+    
+    /**
+     * Obtains the key set from the AuburnReader's dictionary. This key set contains all the RFID antennas IDs which have been plugged in to the
+     * Impinj RFID Scanner. We take this set and convert it into a short array and return it.
+     * @return a short array containing the antenna IDs of those RFID antennas which are connected.
+     */
+	private short[] getAntennaListForConfiguring() {
+		Short[] antennaIDs = (Short[]) reader.getAntennaDictionary().keySet().toArray();
+		short[] antennaListForConfiguring = new short[antennaIDs.length];
+		for (int i = 0; i < antennaListForConfiguring.length; i++) {
+			antennaListForConfiguring[i] = antennaIDs[i];
+		}
+		return antennaListForConfiguring;
+	}
     
     /**
      * Gets the IP/Host name of the reader
@@ -158,27 +156,14 @@ public class JavaRFIDConnector implements RFIDConnector {
 	}
 	
 	/**
-	 * getReaderList returns the list of RFID readers/antennas which have been connected
-	 * @return List of connected RFID readers
-	 */
-	public ArrayList<AuburnReader> getReaderList() {
-		return readerList;
-	}
-	
-	/**
-	 * This function is used by the RFIDManagerWindow. It will pass the text stored in the ReaderLocation combo and this function
-	 * will take that string, transform it into its equivalent ReaderLocation enum, set up the reader information, and then add 
-	 * the reader to the list of RFID readers.
+	 * Adds a new antenna and associated ReaderLocation to the dictionary of the AuburnReader being
+	 * maintained by the JavaRFIDConnector. 
 	 * @param storeAreaOne One of the locations the rfid reader sits between
 	 * @param storeAreaTwo  The other location the rfid sits between
 	 */
 	public void addReader(String storeAreaOne, String storeAreaTwo, int antennaID) {
-		AuburnReader reader = new AuburnReader();
 		ReaderLocation location = new ReaderLocation(storeAreaOne, storeAreaTwo);
-		//ReaderLocationEnum location = ReaderLocationEnum.convertLocation(storeAreaOne);
-		reader.setLocation(location);
-		reader.setAntennaID(antennaID);
-		this.readerList.add(reader);
+		this.reader.addAntenna(antennaID, location);
 	}
 	
 	/**
@@ -208,8 +193,8 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * Function which takes in an AuburnReader along with an antennaID so that it can associated the reader
 	 * object with the physical RFID antenna and set up some antenna properties such as power and sensitivity
 	 * and also configure the TagReports that the AuburnReader will be receiving.
-	 * @param antennaID The ID for the rfid antenna the AuburnReader object is to be associated with. This ID typically
-	 * corresponds to the ANT port on the back of the Impinj Reader.
+	 * @param antennaIDs an array containing IDs to those RFID antennas which are plugged into the Impinj RFID
+	 * scanner and are to be set up.
 	 * @param reader This is the RFID Reader object which will be receiving messages from the physical Impinj Reader
 	 * in order to get rfid tag data.
 	 */
@@ -258,11 +243,45 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * Returns a new tag location based on the input current tag location and where the tag was scanned.
 	 * If the transition isn't valid then this function returns null.
 	 * This function was introduced in version 1.3 to facilitate user defined tag location areas and transitions.
-	 * @param currentLocation
-	 * @param locationScanned
-	 * @return
+	 * @param currentLocation the current location of the RFID tag
+	 * @param locationScanned the location where the RFID tag was scanned
+	 * @return the new location the RFID tag can be located
 	 */
 	public static TagLocation getNewLocation(TagLocation currentLocation, ReaderLocation locationScanned) {
 		return storeConfigurationMap.get(new StoreConfigurationKey(currentLocation, locationScanned));
+	}
+	
+	/**
+	 * Getter function for retrieving the AuburnReader being maintained by this JavaRFIDConnector
+	 * @return the AuburnReader of this class
+	 */
+	public AuburnReader getReader() {
+		return reader;
+	}
+	
+	/**
+	 * Setter function for assigning the AuburnReader of this class to a new AuburnReader
+	 * @param reader a new AuburnReader
+	 */
+	public void setReader(AuburnReader reader) {
+		this.reader = reader;
+	}
+	
+	/**
+	 * Returns the store configuration map containing keys of <TagLocation, ReaderLocation> and values of <TagLocation> such that
+	 * if a Tag is scanned at a particular ReaderLocation the Tag will transition to a new location.
+	 * @return the store configuration map
+	 */
+	public static HashMap<StoreConfigurationKey, TagLocation> getStoreConfigurationMap() {
+		return storeConfigurationMap;
+	}
+	
+	/**
+	 * Setter method for modifying the store configuration map
+	 * @param storeConfigurationMap a new store configuration map to overwrite the preexisting one within this object.
+	 */
+	public static void setStoreConfigurationMap(
+			HashMap<StoreConfigurationKey, TagLocation> storeConfigurationMap) {
+		JavaRFIDConnector.storeConfigurationMap = storeConfigurationMap;
 	}
 }

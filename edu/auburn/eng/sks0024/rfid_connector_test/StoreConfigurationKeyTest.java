@@ -104,7 +104,6 @@ public class StoreConfigurationKeyTest {
 	
 	@Test
 	public void nominalGetLocation() {
-		JavaRFIDConnector connector = new JavaRFIDConnector();
 		TagLocation locA = new TagLocation("a");
 		TagLocation locB = new TagLocation("b");
 		TagLocation locC = new TagLocation("c");
@@ -189,6 +188,7 @@ public class StoreConfigurationKeyTest {
 		assertTrue(storeLayout.get(key10).getName().equals("d"));
 	}
 	
+	@SuppressWarnings("unused")
 	private HashMap<StoreConfigurationKey, TagLocation> setUpStoreConfigurationHashMap() {
 		TagLocation locA = new TagLocation("a");
 		TagLocation locB = new TagLocation("b");
@@ -252,6 +252,7 @@ public class StoreConfigurationKeyTest {
 		readerLocations.add(readCD);
 		readerLocations.add(readDE);
 		
+		@SuppressWarnings("unused")
 		HashMap<StoreConfigurationKey, TagLocation> map = connector.generateStoreMap(tagLocations, readerLocations);
 		
 	}

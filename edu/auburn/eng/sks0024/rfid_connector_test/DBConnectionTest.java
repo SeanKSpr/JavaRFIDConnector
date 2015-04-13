@@ -1,10 +1,12 @@
 package edu.auburn.eng.sks0024.rfid_connector_test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +29,11 @@ import edu.auburn.eng.sks0024.rfid_connector.TagWrapper;
 public class DBConnectionTest {
 	@Test
 	public void testNominalConnection() {
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String owner = "postgres";
+		String password = "forcecommit";
 		PostgresConnector connector = new PostgresConnector();
-		Connection dbConnection = connector.open();
+		Connection dbConnection = connector.open(url, owner, password);
 		Properties connectionProperties = null;
 		try {
 			connectionProperties = dbConnection.getClientInfo();
@@ -53,7 +58,7 @@ public class DBConnectionTest {
 		password = scan.nextLine();
 		scan.close();
 		
-		Connection dbConnection = connector.openTest(user, url, password);
+		Connection dbConnection = openTest(user, url, password);
 		Properties connectionProperties = null;
 		try {
 			connectionProperties = dbConnection.getClientInfo();
@@ -84,18 +89,17 @@ public class DBConnectionTest {
 	}
 	@Test
 	public void testCloseConnection() {
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String owner = "postgres";
+		String password = "forcecommit";
 		PostgresConnector connector = new PostgresConnector();
-		Connection dbConnection = connector.open();
-		Properties connectionProperties = null;
+		Connection dbConnection = connector.open(url, owner, password);
 		try {
-			connectionProperties = dbConnection.getClientInfo();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			assertNotNull(dbConnection.getSchema());
+		} catch (SQLException e1) {
 			fail();
+			e1.printStackTrace();
 		}
-		assertEquals(connectionProperties.getProperty("user"), "postgres");
-		assertEquals(connectionProperties.getProperty("url"), "jdbc:postgresql://localhost:5432/postgres");
-		
 		connector.close(dbConnection);
 		try {
 			dbConnection.getClientInfo();
@@ -106,8 +110,11 @@ public class DBConnectionTest {
 	
 	@Test
 	public void testDatabaseInsertNewTag() {
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String owner = "postgres";
+		String password = "forcecommit";
 		PostgresConnector connector = new PostgresConnector();
-		Connection dbConnection = connector.open();
+		Connection dbConnection = connector.open(url, owner, password);
 		MyTag tag = new MyTag();
 		TagData epc = tag.getEpc();
 		List<Integer> epcList = new ArrayList<Integer>();
@@ -132,11 +139,11 @@ public class DBConnectionTest {
 	
 	@Test
 	public void testDatabaseInsertDuplicateTag() {
-		TagLocation backroom = new TagLocation("back room");
-		TagLocation warehouse = new TagLocation("warehouse");
-		ReaderLocation backroom_warehouse = new ReaderLocation(backroom.getName(), warehouse.getName());
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String owner = "postgres";
+		String password = "forcecommit";
 		PostgresConnector connector = new PostgresConnector();
-		Connection dbConnection = connector.open();
+		Connection dbConnection = connector.open(url, owner, password);
 		MyTag tag = new MyTag();
 		TagData epc = tag.getEpc();
 		List<Integer> epcList = new ArrayList<Integer>();
@@ -162,8 +169,11 @@ public class DBConnectionTest {
 	
 	@Test
 	public void testDatabaseInsertConnectionLost() {
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String owner = "postgres";
+		String password = "forcecommit";
 		PostgresConnector connector = new PostgresConnector();
-		Connection dbConnection = connector.open();
+		Connection dbConnection = connector.open(url, owner, password);
 		MyTag tag = new MyTag();
 		TagData epc = tag.getEpc();
 		List<Integer> epcList = new ArrayList<Integer>();
@@ -194,8 +204,11 @@ public class DBConnectionTest {
 		TagLocation backroom = new TagLocation("back room");
 		TagLocation warehouse = new TagLocation("warehouse");
 		ReaderLocation backroom_warehouse = new ReaderLocation(backroom.getName(), warehouse.getName());
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String owner = "postgres";
+		String password = "forcecommit";
 		PostgresConnector connector = new PostgresConnector();
-		Connection dbConnection = connector.open();
+		Connection dbConnection = connector.open(url, owner, password);
 		MyTag tag = new MyTag();
 		TagData epc = tag.getEpc();
 		List<Integer> epcList = new ArrayList<Integer>();
@@ -234,10 +247,12 @@ public class DBConnectionTest {
 		TagLocation backroom = new TagLocation("back room");
 		TagLocation warehouse = new TagLocation("warehouse");
 		ReaderLocation backroom_warehouse = new ReaderLocation(backroom.getName(), warehouse.getName());
-		JavaRFIDConnector javaConnector = new JavaRFIDConnector();
 		JavaRFIDConnector.setStoreConfigurationMap(map);
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String owner = "postgres";
+		String password = "forcecommit";
 		PostgresConnector connector = new PostgresConnector();
-		Connection dbConnection = connector.open();
+		Connection dbConnection = connector.open(url, owner, password);
 		MyTag tag = new MyTag();
 		TagData epc = tag.getEpc();
 		List<Integer> epcList = new ArrayList<Integer>();
@@ -273,10 +288,12 @@ public class DBConnectionTest {
 		TagLocation out_of_store = new TagLocation("out of store");
 		TagLocation warehouse = new TagLocation("warehouse");
 		TagLocation backroom = new TagLocation("back room");
-		ReaderLocation outOfStore_warehouse = new ReaderLocation(out_of_store.getName(), warehouse.getName());
 		ReaderLocation backroom_warehouse = new ReaderLocation(backroom.getName(), warehouse.getName());
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String owner = "postgres";
+		String password = "forcecommit";
 		PostgresConnector connector = new PostgresConnector();
-		Connection dbConnection = connector.open();
+		Connection dbConnection = connector.open(url, owner, password);
 		MyTag tag = new MyTag();
 		TagData epc = tag.getEpc();
 		List<Integer> epcList = new ArrayList<Integer>();
@@ -315,8 +332,11 @@ public class DBConnectionTest {
 		TagLocation warehouse = new TagLocation("warehouse");
 		TagLocation backroom = new TagLocation("backroom");
 		ReaderLocation backroom_warehouse = new ReaderLocation(warehouse.getName(), backroom.getName());
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String owner = "postgres";
+		String password = "forcecommit";
 		PostgresConnector connector = new PostgresConnector();
-		Connection dbConnection = connector.open();
+		Connection dbConnection = connector.open(url, owner, password);
 		MyTag tag = new MyTag();
 		TagData epc = tag.getEpc();
 		List<Integer> epcList = new ArrayList<Integer>();
@@ -380,4 +400,36 @@ public class DBConnectionTest {
 		storeMap.put(key8, warehouse);
 		return storeMap;
 		}
+	
+	/**
+	 * This is an acceptance test for determining that the open function of
+	 * the PostgresConnector is functioning properly. The test consists of having
+	 * taking the parameters which are input by the tester/user and establishing a 
+	 * connection to a postgreSQL database. If an exception isn't thrown, then the 
+	 * connection has been established successfully. The parameters are saved in
+	 * Properties for the connection. 
+	 * @param user The user name of the postgreSQL database owner
+	 * @param url The URL to the database
+	 * @param password The password for accessing the database
+	 * @return
+	 */
+	public Connection openTest(String user, String url, String password) {
+		Connection c = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+			c = DriverManager.getConnection(url, user,password);
+			
+			Properties connectionProperties = c.getClientInfo();
+			connectionProperties.setProperty("url", url);
+			connectionProperties.setProperty("user", user);
+			connectionProperties.setProperty("password", password);
+			
+			c.setClientInfo(connectionProperties);
+		
+			c.setAutoCommit(false);
+		} catch (Exception e) {
+			System.out.println("Exception occurred while opening db connection");
+		}
+		return c;
+	}
 }

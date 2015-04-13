@@ -54,7 +54,7 @@ public final class DuplicateReadDetector {
 			timeList += "EPC: " + tw.getTag().getEpc().toString() +  " Time: " + tw.getTimeSeen() + "\n"
 					+ "Antenna ID: " + tw.getLocationScanned().toString();
 		}
-		timeList += "**********END**********\n";
+		timeList += "\n**********END**********\n";
 		return timeList;
 	}
 	
@@ -103,10 +103,6 @@ public final class DuplicateReadDetector {
 		}
 		long previousReadTime = previousRead.getTimeSeen();
 		long latestReadTime = latestRead.getTimeSeen();
-		
-		//TESTING PURPOSES DELETE LATER
-		//long result = latestReadTime - previousReadTime;
-
 		if (latestReadTime - previousReadTime < READ_DUPLICATE_TIME_WINDOW) {
 			return true;
 		}

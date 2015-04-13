@@ -13,19 +13,6 @@ import edu.auburn.eng.sks0024.rfid_connector.DuplicateReadDetector;
 import edu.auburn.eng.sks0024.rfid_connector.TagWrapper;
 
 public class DuplicateReadDetectorTest {
-	/*
-	 * public static boolean epcEqual(List<Integer> tagEPC1, List<Integer> tagEPC2) {
-		if (tagEPC1.size() != tagEPC2.size()) {
-			return false;
-		}
-		for (int i = 0; i < tagEPC1.size(); i++) {
-			if (tagEPC1.get(i).intValue() != tagEPC2.get(i).intValue()) {
-				return false;
-			}
-		}
-		return true;
-	}
-	 */
 	@Test
 	public void testEpcEqualDiffSize() {
 		LinkedList<Integer> tagEPC1, tagEPC2;

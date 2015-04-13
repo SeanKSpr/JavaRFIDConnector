@@ -44,9 +44,10 @@ public class TagWrapper {
 	 */
 	public TagWrapper(Tag tag, AuburnReader reader) {
 		this.tag = tag;
+		int antennaIDThatScannedTag = tag.getAntennaPortNumber();
 		location = null;
 		this.setTimeSeen(System.currentTimeMillis());
-		this.locationScanned = reader.getLocation();
+		this.locationScanned = reader.getLocation(antennaIDThatScannedTag);
 	}
 	/**
 	 * Returns the tag field of the TagWrapper
