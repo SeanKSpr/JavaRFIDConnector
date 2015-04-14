@@ -17,7 +17,8 @@ public class Antenna {
 	private boolean isEntryPoint;
 	private String storeAreaOne;
 	private String storeAreaTwo;
-	
+	private int antennaID;
+	private String insertionLocation;
 	/**
 	 * returns true if the antenna is enabled, false otherwise
 	 * @return returns true if the antenna is enabled, false otherwise
@@ -111,5 +112,38 @@ public class Antenna {
 			list.add(antenna.toStringArray());
 		}
 		return list;
+	}
+	
+	/**
+	 * Getter method for returning the ID of the antenna
+	 * @return Identifier for the antenna
+	 */
+	public int getAntennaID() {
+		return antennaID;
+	}
+	
+	/**
+	 * Setter method for setting the antenna ID
+	 * @param antennaID the identifier for the antenna
+	 */
+	public void setAntennaID(int antennaID) {
+		this.antennaID = antennaID;
+	}
+	
+	/**
+	 * Getter method for returning where a tag should be inserted by an entry point antenna
+	 * @return the location a tag should be inserted into if scanned by an entry point antenna
+	 */
+	public String getInsertionLocation() {
+		return insertionLocation;
+	}
+	
+	/**
+	 * Setter method for modifying which location a tag should be inserted into if it is scanned by an 
+	 * entry point antenna
+	 * @param insertionLocation the new location that the tag should be inserted into.
+	 */
+	public void setInsertionLocation(String insertionLocation) {
+		this.insertionLocation = insertionLocation;
 	}
 }

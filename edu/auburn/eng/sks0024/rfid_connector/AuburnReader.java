@@ -13,13 +13,13 @@ import com.impinj.octanesdk.ImpinjReader;
  *
  */
 public class AuburnReader extends ImpinjReader {
-	private HashMap<Integer, ReaderLocation> antennaDictionary;
+	private HashMap<Short, ReaderLocation> antennaDictionary;
 	
 	/**
 	 * Constructor which generates a new AuburnReader with a new dictionary
 	 */
 	public AuburnReader() {
-		antennaDictionary = new HashMap<Integer, ReaderLocation>();
+		antennaDictionary = new HashMap<Short, ReaderLocation>();
 	}
 	
 	/**
@@ -30,8 +30,8 @@ public class AuburnReader extends ImpinjReader {
 	 */
 	public AuburnReader(ReaderLocation location, int antennaID) {
 		super();
-		antennaDictionary = new HashMap<Integer, ReaderLocation>();
-		antennaDictionary.put(antennaID, location);
+		antennaDictionary = new HashMap<Short, ReaderLocation>();
+		antennaDictionary.put((short)antennaID, location);
 	}
 	/**
 	 * Returns the ReaderLocation associated with the passed antennaID
@@ -49,14 +49,14 @@ public class AuburnReader extends ImpinjReader {
 	 * @param location the location of that RFID antenna
 	 */
 	public void addAntenna(int antennaID, ReaderLocation location) {
-		antennaDictionary.put(antennaID, location);
+		antennaDictionary.put((short)antennaID, location);
 	}
 	
 	/**
 	 * Getter function for obtaining the antenna dictionary
 	 * @return the dictionary of antennas and their associated locations
 	 */
-	public HashMap<Integer, ReaderLocation> getAntennaDictionary() {
+	public HashMap<Short, ReaderLocation> getAntennaDictionary() {
 		return antennaDictionary;
 	}
 	
@@ -64,7 +64,7 @@ public class AuburnReader extends ImpinjReader {
 	 * Setter function for setting the antenna dictionary to a new dictionary
 	 * @param antennaDictionary a dictionary containing antennaIDs as keys which are each associated with a ReaderLocation
 	 */
-	public void setAntennaDictionary(HashMap<Integer, ReaderLocation> antennaDictionary) {
+	public void setAntennaDictionary(HashMap<Short, ReaderLocation> antennaDictionary) {
 		this.antennaDictionary = antennaDictionary;
 	}
 	

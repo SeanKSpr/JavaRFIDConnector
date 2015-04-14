@@ -2,6 +2,7 @@ package edu.auburn.eng.sks0024.rfid_connector;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Timer;
 
 import com.impinj.octanesdk.AntennaConfigGroup;
@@ -105,7 +106,9 @@ public class JavaRFIDConnector implements RFIDConnector {
      * @return a short array containing the antenna IDs of those RFID antennas which are connected.
      */
 	private short[] getAntennaListForConfiguring() {
-		Short[] antennaIDs = (Short[]) reader.getAntennaDictionary().keySet().toArray();
+		Set<Short> antennaKeySet = reader.getAntennaDictionary().keySet();
+		Short[] antennaIDs = new Short[antennaKeySet.size()];
+		antennaIDs = antennaKeySet.toArray(antennaIDs);
 		short[] antennaListForConfiguring = new short[antennaIDs.length];
 		for (int i = 0; i < antennaListForConfiguring.length; i++) {
 			antennaListForConfiguring[i] = antennaIDs[i];
@@ -126,7 +129,7 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * @param hostname the IP/host name of the physical RFID reader
 	 */
 	public void setHostname(String hostname) {
-		System.out.println("Setting Hostname to" + hostname);
+		System.out.println("Setting Hostname to " + hostname);
 		this.hostname = hostname;
 	}
 	
