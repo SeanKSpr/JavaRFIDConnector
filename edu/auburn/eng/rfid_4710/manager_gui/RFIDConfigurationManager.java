@@ -36,6 +36,7 @@ public class RFIDConfigurationManager {
 	private Combo ant1StoreAreaTwo, ant2StoreAreaTwo, ant3StoreAreaTwo, ant4StoreAreaTwo;
 	private Button btnKillSelf, btnRunAway;
 	private Button btnSaveStuff, btnLoadStuff;
+	private Text insertionLocation;
 	
 	
 	/**
@@ -271,6 +272,9 @@ public class RFIDConfigurationManager {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) { }
 		});
+		
+		insertionLocation = new Text(shlRfidConfigurationManager, SWT.BORDER);
+		insertionLocation.setBounds(614, 99, 73, 21);
 	}
 
 	private void createLoadButton() {
@@ -419,6 +423,7 @@ public class RFIDConfigurationManager {
 		ant1StoreAreaOne.setEnabled(ant1IsEnabled.getSelection());
 		ant1StoreAreaTwo.setEnabled(ant1IsEnabled.getSelection());
 		ant1IsEntryPoint.setEnabled(ant1IsEnabled.getSelection());
+		insertionLocation.setText(antennaOne.getInsertionLocation());
 	}
 
 	private void loadAntennaTwoProperties(Antenna antennaTwo) {

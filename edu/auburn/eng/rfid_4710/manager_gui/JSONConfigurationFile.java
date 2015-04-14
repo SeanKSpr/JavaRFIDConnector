@@ -143,10 +143,12 @@ public class JSONConfigurationFile implements ConfigurationFile{
 		JsonObject jsonAntenna;
 		for (Antenna antennaProperties : antennaList) {
 			jsonAntenna = new JsonObject();
+			jsonAntenna.addProperty("antennaID", antennaProperties.getAntennaID());
 			jsonAntenna.addProperty("enabled", antennaProperties.isEnabled());
 			jsonAntenna.addProperty("isEntryPoint", antennaProperties.isEntryPoint());
 			jsonAntenna.addProperty("storeAreaOne", antennaProperties.getStoreAreaOne());
 			jsonAntenna.addProperty("storeAreaTwo", antennaProperties.getStoreAreaTwo());
+			jsonAntenna.addProperty("insertionLocation", antennaProperties.getInsertionLocation());
 			jsonAntennas.add(jsonAntenna);
 		}
 		jsonObj.add("antennaList", jsonAntennas);
@@ -207,6 +209,8 @@ public class JSONConfigurationFile implements ConfigurationFile{
 			antenna.setEntryPoint(jsonAntenna.get("isEntryPoint").getAsBoolean());
 			antenna.setStoreAreaOne(jsonAntenna.get("storeAreaOne").getAsString());
 			antenna.setStoreAreaTwo(jsonAntenna.get("storeAreaTwo").getAsString());
+			antenna.setAntennaID(jsonAntenna.get("antennaID").getAsInt());
+			antenna.setInsertionLocation(jsonAntenna.get("insertionLocation").getAsString());
 			antennaList.add(antenna);
 		}
 		return antennaList;
@@ -243,10 +247,5 @@ public class JSONConfigurationFile implements ConfigurationFile{
 
 		configFile.displayErrorBox("Opening File", "Error message goes here");
 		configFile.getConfigFilePath();
-		//String savePath = configFile.saveFile();
-		//FileWriter writer = new FileWriter(savePath);
-		//writer.write("Test 2");
-		//writer.flush();
-		//writer.close();
 	}
 }
