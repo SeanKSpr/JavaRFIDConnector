@@ -10,7 +10,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
@@ -37,6 +36,9 @@ public class RFIDConfigurationManager {
 	private Button btnKillSelf, btnRunAway;
 	private Button btnSaveStuff, btnLoadStuff;
 	private Text insertionLocation;
+	private Text dbOwner;
+	private Text dbPassword;
+	private Text dbURL;
 	
 	
 	/**
@@ -81,6 +83,7 @@ public class RFIDConfigurationManager {
 		createAntennaThreeUI();
 		createAntennaFourUI();	
 		createConsoleUI();
+		createDatabaseUI();
 	}
 	
 	/**
@@ -88,12 +91,12 @@ public class RFIDConfigurationManager {
 	 */
 	private void createHostnameUI() {
 		Label lblHostname = new Label(shlRfidConfigurationManager, SWT.NONE);
-		lblHostname.setBounds(20, 39, 137, 15);
+		lblHostname.setBounds(10, 10, 137, 15);
 		lblHostname.setText("Reader Hostname/IP");
 		
 		hostnameText = new Text(shlRfidConfigurationManager, SWT.BORDER);
 		hostnameText.setToolTipText("");
-		hostnameText.setBounds(163, 36, 137, 21);
+		hostnameText.setBounds(10, 31, 137, 21);
 		hostnameText.setMessage("Ex: 192.168.225.50");
 	}
 	
@@ -102,12 +105,30 @@ public class RFIDConfigurationManager {
 	 * standard out by the JavaRFIDConnector
 	 */
 	private void createConsoleUI() {
-		styledText = new StyledText(shlRfidConfigurationManager, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP);
+		styledText = new StyledText(shlRfidConfigurationManager, SWT.BORDER | SWT.WRAP);
 		styledText.setBounds(20, 237, 656, 188);
 		
 		Label lblConsole = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblConsole.setBounds(20, 216, 55, 15);
 		lblConsole.setText("Console");
+		
+		Label lblDatabaseInformation = new Label(shlRfidConfigurationManager, SWT.NONE);
+		lblDatabaseInformation.setBounds(177, 10, 137, 15);
+		lblDatabaseInformation.setText("Database Information");	
+	}
+
+	private void createDatabaseUI() {
+		dbOwner = new Text(shlRfidConfigurationManager, SWT.BORDER);
+		dbOwner.setMessage("owner/username");
+		dbOwner.setBounds(177, 31, 111, 21);
+		
+		dbPassword = new Text(shlRfidConfigurationManager, SWT.BORDER | SWT.PASSWORD);
+		dbPassword.setMessage("password");
+		dbPassword.setBounds(316, 31, 76, 21);
+		
+		dbURL = new Text(shlRfidConfigurationManager, SWT.BORDER);
+		dbURL.setMessage("URL");
+		dbURL.setBounds(423, 31, 76, 21);
 	}
 	
 	/**
@@ -537,7 +558,12 @@ public class RFIDConfigurationManager {
 	}
 	
 	private void loadServerInfoProperties(ServerInfo serverInfo) {
-		// TODO Auto-generated method stub
+		String owner = serverInfo.getOwner();
+		String password = serverInfo.getPassword();
+		String url = serverInfo.getUrl();
+		dbOwner.setText(owner);
+		dbPassword.setText(password);
+		dbURL.setText(url);
 		
 	}
 	
@@ -591,9 +617,13 @@ public class RFIDConfigurationManager {
 	 */
 	private ServerInfo getServerInfoFromFields() {
 		ServerInfo si = new ServerInfo();
-		si.setOwner("*********");
-		si.setPassword("*********");
-		si.setUrl("http://aurfid.herokuapp.com/");
+		String owner = dbOwner.getText();
+		String password = dbPassword.getText();
+		String url = dbURL.getText();
+		si.setOwner(owner);
+		si.setPassword(password);
+		//"http://aurfid.herokuapp.com/"
+		si.setUrl(url);
 		return si;
 	}
 	
