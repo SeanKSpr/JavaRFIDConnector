@@ -40,8 +40,8 @@ public class RFIDConfigurationManager {
 	
 	
 	/**
-	 * Launch the application.
-	 * @param args
+	 * Runs the SWT RFID Configuration Manager
+	 * @param args Command line arguments (not used)
 	 */
 	public static void main(String[] args) {
 		RFIDConfigurationManager window = new RFIDConfigurationManager();
@@ -50,7 +50,8 @@ public class RFIDConfigurationManager {
 	}
 
 	/**
-	 * Open the window.
+	 * Redirects console output from standard out to a console in the GUI. Also creates all the GUI elements which
+	 * constitute the configuration manager. Afterwards, while the GUI isn't closed it will continually refresh the page.
 	 */
 	public void open() {
 		Display display = Display.getDefault();
@@ -66,7 +67,7 @@ public class RFIDConfigurationManager {
 	}
 
 	/**
-	 * Create contents of the window.
+	 * Creates all the GUI elements of the configuration manager
 	 */
 	protected void createContents() {
 		setupConfigManagerShell();
@@ -81,7 +82,10 @@ public class RFIDConfigurationManager {
 		createAntennaFourUI();	
 		createConsoleUI();
 	}
-
+	
+	/**
+	 * Creates the GUI elements related to the hostname text field.
+	 */
 	private void createHostnameUI() {
 		Label lblHostname = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblHostname.setBounds(20, 39, 137, 15);
@@ -92,7 +96,11 @@ public class RFIDConfigurationManager {
 		hostnameText.setBounds(163, 36, 137, 21);
 		hostnameText.setMessage("Ex: 192.168.225.50");
 	}
-
+	
+	/**
+	 * Creates the GUI elements related to the console view. This view displays everything which is sent to 
+	 * standard out by the JavaRFIDConnector
+	 */
 	private void createConsoleUI() {
 		styledText = new StyledText(shlRfidConfigurationManager, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP);
 		styledText.setBounds(20, 237, 656, 188);
@@ -101,7 +109,10 @@ public class RFIDConfigurationManager {
 		lblConsole.setBounds(20, 216, 55, 15);
 		lblConsole.setText("Console");
 	}
-
+	
+	/**
+	 * Creates all the GUI elements related to setting up RFID antenna number 4.
+	 */
 	private void createAntennaFourUI() {
 		ant4IsEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant4IsEnabled.setText("Enabled");
@@ -144,7 +155,10 @@ public class RFIDConfigurationManager {
 			public void widgetDefaultSelected(SelectionEvent arg0) { }
 		});
 	}
-
+	
+	/**
+	 * Creates all the GUI elements related to setting up RFID antenna number 3.
+	 */
 	private void createAntennaThreeUI() {
 		ant3IsEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant3IsEnabled.setText("Enabled");
@@ -187,7 +201,10 @@ public class RFIDConfigurationManager {
 			public void widgetDefaultSelected(SelectionEvent arg0) { }
 		});
 	}
-
+	
+	/**
+	 * Creates all the GUI elements related to setting up RFID antenna number 2.
+	 */
 	private void createAntennaTwoUI() {
 		ant2IsEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant2IsEnabled.setText("Enabled");
@@ -230,7 +247,10 @@ public class RFIDConfigurationManager {
 			public void widgetDefaultSelected(SelectionEvent arg0) { }
 		});
 	}
-
+	
+	/**
+	 * Creates all the GUI elements related to setting up RFID antenna number 1.
+	 */
 	private void createAntennaOneUI() {
 		ant1IsEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant1IsEnabled.setBounds(10, 99, 65, 16);
@@ -277,6 +297,10 @@ public class RFIDConfigurationManager {
 		insertionLocation.setBounds(614, 99, 73, 21);
 	}
 
+	/**
+	 * Creates the load button and sets its  mouseDown controller to load an RFID configuration file
+	 * to populate the GUIs and setup the antenna information.
+	 */
 	private void createLoadButton() {
 		btnLoadStuff = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnLoadStuff.setToolTipText("Load existing configuration");
@@ -290,7 +314,11 @@ public class RFIDConfigurationManager {
 			public void mouseDoubleClick(MouseEvent e) { }
 		});
 	}
-
+	
+	/**
+	 * Creates the save button and sets its mouseDown controller to save the antenna
+	 * GUI fields as a configuration file
+	 */
 	private void createSaveButton() {
 		btnSaveStuff = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnSaveStuff.setToolTipText("Save the entered configuration for later use");
@@ -307,7 +335,10 @@ public class RFIDConfigurationManager {
 			public void mouseDoubleClick(MouseEvent e) { }
 		});
 	}
-
+	
+	/**
+	 * Creates the execute button and sets its mouseDown controller to begin executing the JavaRFIDConnector
+	 */
 	private void createExecuteButton() {
 		btnRunAway = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnRunAway.setToolTipText("Will run Java Connector with current settings");
@@ -321,7 +352,10 @@ public class RFIDConfigurationManager {
 			public void mouseUp(MouseEvent arg0) { }
 		});
 	}
-
+	
+	/**
+	 * Creates the quit button and sets its mouseDown controller to exit the program
+	 */
 	private void createQuitButton() {
 		btnKillSelf = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnKillSelf.setToolTipText("Closes the application");
@@ -335,7 +369,11 @@ public class RFIDConfigurationManager {
 			public void mouseUp(MouseEvent arg0) { }
 		});
 	}
-
+	
+	/**
+	 * Creates the SWT shell that the configuration manager runs in and sets a mouseDown controller so that
+	 * whenever the user clicks the shell, it forces focus on the shell.
+	 */
 	private void setupConfigManagerShell() {
 		shlRfidConfigurationManager = new Shell();
 		shlRfidConfigurationManager.setImage(SWTResourceManager.getImage("C:\\Users\\Berter\\Documents\\219442-p-4x.jpg"));
@@ -353,6 +391,10 @@ public class RFIDConfigurationManager {
 		});
 	}
 	
+	/**
+	 * Redirects the standard output stream so that instead of displaying to the Java console, it
+	 * will display the information in the GUI console for the user to see.
+	 */
 	private void redirectSystemStreams() {
 		  OutputStream out = new OutputStream() {
 		    @Override
@@ -375,6 +417,10 @@ public class RFIDConfigurationManager {
 		  System.setErr(new PrintStream(out, true));
 		}
 	
+	/**
+	 * Updates the GUI console with the latest information which is being sent to the standard output stream.
+	 * @param text The text to be added to the GUI console.
+	 */
 	private void updateConsole(final String text) {
 		Display.getDefault().syncExec(new Runnable() {
 		    public void run() {
@@ -383,6 +429,11 @@ public class RFIDConfigurationManager {
 		});
 	}
 	
+	/**
+	 * Extracts all the information from the Antenna fields in order to generate a list of
+	 * Antenna objects.
+	 * @return an ArrayList of Antenna objects which are created from the Antenna GUI contents.
+	 */
 	private ArrayList<Antenna> getAntennaListFromFields() {
 		ArrayList<Antenna> antennaList = new ArrayList<Antenna>();
 		Antenna antenna1 = new Antenna();
@@ -414,7 +465,11 @@ public class RFIDConfigurationManager {
 		antennaList.add(antenna4);	
 		return antennaList;
 	}
-
+	
+	/**
+	 * Loads an Antenna object's fields to its related GUI fields in the configuration manager
+	 * @param antennaOne an Antenna which relates to the Antenna 1 GUI fields
+	 */
 	private void loadAntennaOneProperties(Antenna antennaOne) {
 		ant1StoreAreaOne.setText(antennaOne.getStoreAreaOne());
 		ant1StoreAreaTwo.setText(antennaOne.getStoreAreaTwo());
@@ -425,7 +480,11 @@ public class RFIDConfigurationManager {
 		ant1IsEntryPoint.setEnabled(ant1IsEnabled.getSelection());
 		insertionLocation.setText(antennaOne.getInsertionLocation());
 	}
-
+	
+	/**
+	 * Loads an Antenna object's fields to its related GUI fields in the configuration manager
+	 * @param antennaOne an Antenna which relates to the Antenna 2 GUI fields
+	 */
 	private void loadAntennaTwoProperties(Antenna antennaTwo) {
 		ant2StoreAreaOne.setText(antennaTwo.getStoreAreaOne());
 		ant2StoreAreaTwo.setText(antennaTwo.getStoreAreaTwo());
@@ -435,7 +494,11 @@ public class RFIDConfigurationManager {
 		ant2StoreAreaTwo.setEnabled(ant2IsEnabled.getSelection());
 		ant2IsEntryPoint.setEnabled(ant2IsEnabled.getSelection());
 	}
-
+	
+	/**
+	 * Loads an Antenna object's fields to its related GUI fields in the configuration manager
+	 * @param antennaOne an Antenna which relates to the Antenna 3 GUI fields
+	 */
 	private void loadAntennaThreeProperties(Antenna antennaThree) {
 		ant3StoreAreaOne.setText(antennaThree.getStoreAreaOne());
 		ant3StoreAreaTwo.setText(antennaThree.getStoreAreaTwo());
@@ -445,7 +508,11 @@ public class RFIDConfigurationManager {
 		ant3StoreAreaTwo.setEnabled(ant3IsEnabled.getSelection());
 		ant3IsEntryPoint.setEnabled(ant3IsEnabled.getSelection());
 	}
-
+	
+	/**
+	 * Loads an Antenna object's fields to its related GUI fields in the configuration manager
+	 * @param antennaOne an Antenna which relates to the Antenna 4 GUI fields
+	 */
 	private void loadAntennaFourProperties(Antenna antennaFour) {
 		ant4StoreAreaOne.setText(antennaFour.getStoreAreaOne());
 		ant4StoreAreaTwo.setText(antennaFour.getStoreAreaTwo());
@@ -455,7 +522,10 @@ public class RFIDConfigurationManager {
 		ant4StoreAreaTwo.setEnabled(ant4IsEnabled.getSelection());
 		ant4IsEntryPoint.setEnabled(ant4IsEnabled.getSelection());
 	}
-
+	
+	/**
+	 * Loads a configuration file and uses it to populate the Antenna and Server GUI fields
+	 */
 	private void populateManagerFromConfigFile() {
 		JSONConfigurationFile js = new JSONConfigurationFile();
 		try {js.loadConfiguration();} catch (LoadCancelledException ex) { System.out.println(ex); return; }
@@ -470,7 +540,11 @@ public class RFIDConfigurationManager {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	/**
+	 * Takes a list of Antenna objects and loads each of them into their related GUI fields.
+	 * @param antennaList an ArrayList of Antenna objects which are to be loaded to the Antenna fields
+	 */
 	private void loadAntennaProperties(ArrayList<Antenna> antennaList) {
 		Antenna antennaOne = antennaList.get(0);
 		loadAntennaOneProperties(antennaOne);
@@ -484,7 +558,11 @@ public class RFIDConfigurationManager {
 		Antenna antennaFour = antennaList.get(3);
 		loadAntennaFourProperties(antennaFour);
 	}
-
+	
+	/**
+	 * Pulls information from the hostname, antenna, and server information GUI fields 
+	 * in order to set up the JavaRFIDConnector and launch it.
+	 */
 	private void launchJavaRFIDConnector() {
 		JavaRFIDConnector jrc = new JavaRFIDConnector();
 		List<Antenna> antennaList = getAntennaListFromFields();			
@@ -505,6 +583,12 @@ public class RFIDConfigurationManager {
 		thread.start();
 	}
 	
+	/**
+	 * Pulls the fields from the server information GUI fields in order to create a ServerInfo object
+	 * which is then returned.
+	 * @return a ServerInfo object containing all the server information data stored in the configuration
+	 * manager.
+	 */
 	private ServerInfo getServerInfoFromFields() {
 		ServerInfo si = new ServerInfo();
 		si.setOwner("*********");
@@ -512,28 +596,40 @@ public class RFIDConfigurationManager {
 		si.setUrl("http://aurfid.herokuapp.com/");
 		return si;
 	}
-
+	
+	/**
+	 * Toggles the GUI elements related to Antenna 4 from enabled to disabled an disabled to enabled.
+	 */
 	private void toggleAntenna4Fields() {
 		//^ is XOR
 		ant4StoreAreaOne.setEnabled(ant4StoreAreaOne.getEnabled() ^ true);
 		ant4StoreAreaTwo.setEnabled(ant4StoreAreaTwo.getEnabled() ^ true);
 		ant4IsEntryPoint.setEnabled(ant4IsEntryPoint.getEnabled() ^ true);
 	}
-
+	
+	/**
+	 * Toggles the GUI elements related to Antenna 3 from enabled to disabled an disabled to enabled.
+	 */
 	private void toggleAntenna3Fields() {
 		//^ is XOR
 		ant3StoreAreaOne.setEnabled(ant3StoreAreaOne.getEnabled() ^ true);
 		ant3StoreAreaTwo.setEnabled(ant3StoreAreaTwo.getEnabled() ^ true);
 		ant3IsEntryPoint.setEnabled(ant3IsEntryPoint.getEnabled() ^ true);
 	}
-
+	
+	/**
+	 * Toggles the GUI elements related to Antenna 2 from enabled to disabled an disabled to enabled.
+	 */
 	private void toggleAntenna2Fields() {
 		//^ is XOR
 		ant2StoreAreaOne.setEnabled(ant2StoreAreaOne.getEnabled() ^ true);
 		ant2StoreAreaTwo.setEnabled(ant2StoreAreaTwo.getEnabled() ^ true);
 		ant2IsEntryPoint.setEnabled(ant2IsEntryPoint.getEnabled() ^ true);
 	}
-
+	
+	/**
+	 * Toggles the GUI elements related to Antenna 1 from enabled to disabled an disabled to enabled.
+	 */
 	private void toggleAntenna1Fields() {
 		//^ is XOR
 		ant1StoreAreaOne.setEnabled(ant1StoreAreaOne.getEnabled() ^ true);
