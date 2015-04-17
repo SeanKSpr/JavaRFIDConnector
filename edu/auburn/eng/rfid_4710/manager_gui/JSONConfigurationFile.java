@@ -190,6 +190,9 @@ public class JSONConfigurationFile implements ConfigurationFile{
 	 */
 	public String getHostname() {
 		JsonObject configurationFile = jsonConfig.get("configurationFile").getAsJsonObject();
+		if (configurationFile.get("readerHost").isJsonNull()) {
+			return "";
+		}
 		return configurationFile.get("readerHost").getAsString();
 	}
 	
@@ -205,12 +208,42 @@ public class JSONConfigurationFile implements ConfigurationFile{
 		for (JsonElement antennaProperties : antennasInJson) {
 			antenna = new Antenna();
 			JsonObject jsonAntenna = antennaProperties.getAsJsonObject();
-			antenna.setEnabled(jsonAntenna.get("enabled").getAsBoolean());
-			antenna.setEntryPoint(jsonAntenna.get("isEntryPoint").getAsBoolean());
-			antenna.setStoreAreaOne(jsonAntenna.get("storeAreaOne").getAsString());
-			antenna.setStoreAreaTwo(jsonAntenna.get("storeAreaTwo").getAsString());
+			if (jsonAntenna.get("enabled").isJsonNull()) {
+				antenna.setEnabled(false);
+			}
+			else {
+				antenna.setEnabled(jsonAntenna.get("enabled").getAsBoolean());
+			}
+			
+			if (jsonAntenna.get("isEntryPoint").isJsonNull()) {
+				antenna.setEntryPoint(false);
+			}
+			else {
+				antenna.setEntryPoint(jsonAntenna.get("isEntryPoint").getAsBoolean());
+			}
+			
+			if (jsonAntenna.get("storeAreaOne").isJsonNull()) {
+				antenna.setStoreAreaOne("");
+			}
+			else {
+				antenna.setStoreAreaOne(jsonAntenna.get("storeAreaOne").getAsString());
+			}
+			
+			if (jsonAntenna.get("storeAreaTwo").isJsonNull()) {
+				antenna.setStoreAreaTwo("");
+			}
+			else {
+				antenna.setStoreAreaTwo(jsonAntenna.get("storeAreaTwo").getAsString());
+			}
+			
 			antenna.setAntennaID(jsonAntenna.get("antennaID").getAsInt());
-			antenna.setInsertionLocation(jsonAntenna.get("insertionLocation").getAsString());
+			
+			if (jsonAntenna.get("insertionLocation").isJsonNull()) {
+				antenna.setInsertionLocation("");
+			}
+			else {
+				antenna.setInsertionLocation(jsonAntenna.get("insertionLocation").getAsString());
+			}
 			antennaList.add(antenna);
 		}
 		return antennaList;
@@ -224,9 +257,27 @@ public class JSONConfigurationFile implements ConfigurationFile{
 		ServerInfo serverInfo = new ServerInfo();
 		JsonObject configurationFile = jsonConfig.get("configurationFile").getAsJsonObject();
 		JsonObject serverInfoInJson = configurationFile.get("serverSetup").getAsJsonObject();
-		serverInfo.setOwner(serverInfoInJson.get("owner").getAsString());
-		serverInfo.setPassword(serverInfoInJson.get("password").getAsString());
-		serverInfo.setUrl(serverInfoInJson.get("url").getAsString());
+		
+		if (serverInfoInJson.get("owner").isJsonNull()) {
+			serverInfo.setOwner("");
+		}
+		else {
+			serverInfo.setOwner(serverInfoInJson.get("owner").getAsString());
+		}
+		
+		if (serverInfoInJson.get("password").isJsonNull()) {
+			serverInfo.setPassword("");
+		}
+		else {
+			serverInfo.setPassword(serverInfoInJson.get("password").getAsString());
+		}
+		
+		if (serverInfoInJson.get("url").isJsonNull()) {
+			serverInfo.setUrl("");
+		}
+		else {
+			serverInfo.setUrl(serverInfoInJson.get("url").getAsString());
+		}
 		return serverInfo;
 	}
 
