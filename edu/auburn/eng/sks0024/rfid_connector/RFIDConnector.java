@@ -23,7 +23,8 @@ public interface RFIDConnector extends Runnable{
 	 * 
 	 * Precondition:	 The RFID reader is connected to the computer running this software
 	 * Postcondition:	 The software RFID reader knows the hostname of the Impinj RFID reader and a Timer has been set 
-	 * to update the database periodically with the Tags read by the RFID reader.
+	 * to update the database periodically with the Tags read by the RFID reader. The database information has been set
+	 * in the RFIDDatabaseManager implementation class.
 	 * @param hostname - The IP address/hostname of the hardware RFID reader
 	 * @param serverInformation The server information needed to connect to the UPC database
 	 */

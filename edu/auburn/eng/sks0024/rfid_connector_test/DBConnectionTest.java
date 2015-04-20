@@ -21,6 +21,7 @@ import com.impinj.octanesdk.TagData;
 
 import edu.auburn.eng.sks0024.rfid_connector.JavaRFIDConnector;
 import edu.auburn.eng.sks0024.rfid_connector.PostgresConnector;
+import edu.auburn.eng.sks0024.rfid_connector.RFIDDatabaseManager;
 import edu.auburn.eng.sks0024.rfid_connector.ReaderLocation;
 import edu.auburn.eng.sks0024.rfid_connector.StoreConfigurationKey;
 import edu.auburn.eng.sks0024.rfid_connector.TagLocation;
@@ -47,7 +48,7 @@ public class DBConnectionTest {
 	
 	@Test
 	public void EstablishConnectionAccept() {
-		PostgresConnector connector = new PostgresConnector();
+		RFIDDatabaseManager connector = new PostgresConnector();
 		String user, url, password;
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Enter the user name for the database owner: ");
@@ -76,7 +77,7 @@ public class DBConnectionTest {
 		
 	}
 
-	private void closeConnectionAccept(PostgresConnector connector,
+	private void closeConnectionAccept(RFIDDatabaseManager connector,
 			String user, String url, String password, Connection dbConnection) {
 		connector.close(dbConnection);
 		try {

@@ -152,14 +152,17 @@ public class JavaRFIDConnector implements RFIDConnector {
 	}
 	
 	/**
-	 * Bootstrapping function which is required to set up the reader's host name and location.
+	 * Bootstrapping function which is required to setup the hostname of the impinj rfid reader, the 
+	 * server information needed by the PostgresConnector, and schedule the DBUpdateTimer so that we
+	 * send new Tags to the database periodically.
 	 */
 	public void connectorBootstrap(String hostname, ServerInfo serverInformation) {
 		Timer timer = new Timer();
 		DBUpdateTimer updateTimer = new DBUpdateTimer();
 		timer.scheduleAtFixedRate(updateTimer, DBUpdateTimer.TIMER_DELAY, DBUpdateTimer.TIMER_DELAY);
 		this.hostname = hostname;
-		PostgresConnector.setServerInformation(serverInformation);
+		PostgresConnector connector = new PostgresConnector();
+		connector.setServerInformation(serverInformation);
 	}
 	
 	/**

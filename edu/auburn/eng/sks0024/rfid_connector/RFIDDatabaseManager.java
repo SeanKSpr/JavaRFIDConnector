@@ -1,5 +1,7 @@
 package edu.auburn.eng.sks0024.rfid_connector;
 import java.sql.Connection;
+
+import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 /**
  * RFIDDatabaseManager is a generic interface for interacting with a database. I based it off a database helper that
  * I used for an android project so it might not be entirely correct for this application. Feel free to correct it.
@@ -83,5 +85,19 @@ public interface RFIDDatabaseManager {
 	 * @return Tag associated with the id
 	 */
 	public TagWrapper getTag(long id, Connection c);
+	
+	/**
+	 * Assigns the passed serverInformation to the implementing class in some way. This is to allow another class to help setup
+	 * the RFIDDatabaseManager implementing class.
+	 * @param serverInformation Information required to connect to the database.
+	 */
+	public abstract void setServerInformation(ServerInfo serverInformation);
+	
+	/**
+	 * Retrieves the current server information of the implementing class to the caller. This information includes everything needed
+	 * in order to establish a typical connection to a database (e.g. name of database/table, password for access, and url of the database).
+	 * @return the server information associated with the implementing class.
+	 */
+	public abstract ServerInfo getServerInformation();
 	
 }

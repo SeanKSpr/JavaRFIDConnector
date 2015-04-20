@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 import edu.auburn.eng.sks0024.rfid_connector_test.DBAcceptanceTests;
-//import java.util.List;
+
 
 /**
  * PostgresConnector is the implementation of RFIDDatabaseManager used to write to our database. Currently based
@@ -369,7 +369,8 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	 * Getter method for retrieving the current server information such as owner, password, and url.
 	 * @return Server/database information
 	 */
-	public static ServerInfo getServerInformation() {
+	@Override
+	public ServerInfo getServerInformation() {
 		return serverInformation;
 	}
 	
@@ -377,7 +378,8 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	 * Setter method for modifying the server information
 	 * @param serverInformation new server information 
 	 */
-	public static void setServerInformation(ServerInfo serverInformation) {
+	@Override
+	public void setServerInformation(ServerInfo serverInformation) {
 		PostgresConnector.serverInformation = serverInformation;
 	}
 }
