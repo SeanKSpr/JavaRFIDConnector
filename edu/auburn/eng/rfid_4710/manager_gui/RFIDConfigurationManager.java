@@ -22,7 +22,15 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import edu.auburn.eng.sks0024.rfid_connector.JavaRFIDConnector;
 
-
+/**
+ * RFIDConfigurationManager is an SWT implemented GUI which provides a front-end to the user of the JavaRFIDConnector project. This GUI allows the user
+ * to setup the store layout (along with how tag's transition), the hostname for the Impinj RFID Reader, and the server/database information needed
+ * to connect to the user's database. This GUI also provides functionality which allows the user to save and load custom configuration files which will
+ * allow the user to save their configurations and load them in the future to cut down on time spent during configuration.
+ * @author Jared Watkins & Sean Spurlin
+ * @version 1.3 (4-20-2015)
+ * @since 1.2 (4-16-2015)
+ */
 public class RFIDConfigurationManager {
 
 	private static final String[] COMMON_LOCATIONS = new String[] {"Warehouse", "Loading Area", "Store Floor", "Back Room", "Exit"};
@@ -341,7 +349,6 @@ public class RFIDConfigurationManager {
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub	
 			}
 		});
 		
@@ -648,7 +655,9 @@ public class RFIDConfigurationManager {
 	private void launchJavaRFIDConnector() {
 		JavaRFIDConnector jrc = new JavaRFIDConnector();
 		List<Antenna> antennaList = getAntennaListFromFields();			
-		jrc.setHostname("192.168.225.50");
+		String hostname = hostnameText.getText();
+		ServerInfo serverInfo = getServerInfoFromFields();
+		jrc.connectorBootstrap(hostname, serverInfo);
 		for (Antenna antenna : antennaList) {
 			if (antenna.isEnabled()) {
 				if (antenna.isEntryPoint()) {
@@ -659,8 +668,6 @@ public class RFIDConfigurationManager {
 				}
 			}
 		}
-		jrc.addReader("Store_Floor", "Warehouse", 1);
-		jrc.addReader("Warehouse", "Out_of_store", 4);
 		Thread thread = new Thread(jrc);
 		thread.start();
 	}
@@ -723,18 +730,34 @@ public class RFIDConfigurationManager {
 		ant1IsEntryPoint.setEnabled(ant1IsEntryPoint.getEnabled() ^ true);
 	}
 	
+	/**
+	 * Toggles the insertion location for antenna 1 from on to off and off to on whenever the
+	 * isEntryPoint checkbox for antenna 1 is unchecked or checked respectively.
+	 */
 	private void toggleAntenna1InsertionField() {
 		ant1InsertionLocation.setEnabled(ant1InsertionLocation.getEnabled() ^ true);
 	}
 	
+	/**
+	 * Toggles the insertion location for antenna 2 from on to off and off to on whenever the
+	 * isEntryPoint checkbox for antenna 2 is unchecked or checked respectively.
+	 */
 	private void toggleAntenna2InsertionField() {
 		ant2InsertionLocation.setEnabled(ant2InsertionLocation.getEnabled() ^ true);
 	}
 	
+	/**
+	 * Toggles the insertion location for antenna 3 from on to off and off to on whenever the
+	 * isEntryPoint checkbox for antenna 3 is unchecked or checked respectively.
+	 */
 	private void toggleAntenna3InsertionField() {
 		ant3InsertionLocation.setEnabled(ant3InsertionLocation.getEnabled() ^ true);
 	}
 	
+	/**
+	 * Toggles the insertion location for antenna 4 from on to off and off to on whenever the
+	 * isEntryPoint checkbox for antenna 4 is unchecked or checked respectively.
+	 */
 	private void toggleAntenna4InsertionField() {
 		ant4InsertionLocation.setEnabled(ant4InsertionLocation.getEnabled() ^ true);
 	}

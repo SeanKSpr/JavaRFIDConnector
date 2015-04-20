@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 import edu.auburn.eng.sks0024.rfid_connector_test.DBAcceptanceTests;
 //import java.util.List;
 
@@ -18,7 +19,7 @@ import edu.auburn.eng.sks0024.rfid_connector_test.DBAcceptanceTests;
  */
 
 public class PostgresConnector implements RFIDDatabaseManager {
-
+	private static ServerInfo serverInformation;
 	/**
 	 * Function:		open
 	 * 
@@ -362,5 +363,21 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		
 		//display final database configuration
 		dbat.displayAllTest();
+	}
+	
+	/**
+	 * Getter method for retrieving the current server information such as owner, password, and url.
+	 * @return Server/database information
+	 */
+	public static ServerInfo getServerInformation() {
+		return serverInformation;
+	}
+	
+	/**
+	 * Setter method for modifying the server information
+	 * @param serverInformation new server information 
+	 */
+	public static void setServerInformation(ServerInfo serverInformation) {
+		PostgresConnector.serverInformation = serverInformation;
 	}
 }

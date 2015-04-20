@@ -12,6 +12,8 @@ import com.impinj.octanesdk.ReportConfig;
 import com.impinj.octanesdk.ReportMode;
 import com.impinj.octanesdk.Settings;
 
+import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
+
 /**
  * JavaRFIDConnector is an implementation of the RFIDReader interface. This is the class that connects with the RFID Reader hardware
  * (currently Impinj Speedway Revolution). After making a connection with the reader, it begins reading RFID data from 
@@ -152,12 +154,12 @@ public class JavaRFIDConnector implements RFIDConnector {
 	/**
 	 * Bootstrapping function which is required to set up the reader's host name and location.
 	 */
-	public void connectorBootstrap(String hostname) {
+	public void connectorBootstrap(String hostname, ServerInfo serverInformation) {
 		Timer timer = new Timer();
 		DBUpdateTimer updateTimer = new DBUpdateTimer();
 		timer.scheduleAtFixedRate(updateTimer, DBUpdateTimer.TIMER_DELAY, DBUpdateTimer.TIMER_DELAY);
 		this.hostname = hostname;
-		
+		PostgresConnector.setServerInformation(serverInformation);
 	}
 	
 	/**
