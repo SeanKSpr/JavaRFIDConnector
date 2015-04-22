@@ -1,4 +1,5 @@
 package edu.auburn.eng.sks0024.rfid_connector;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -12,6 +13,7 @@ import com.impinj.octanesdk.ReportConfig;
 import com.impinj.octanesdk.ReportMode;
 import com.impinj.octanesdk.Settings;
 
+import edu.auburn.eng.rfid_4710.manager_gui.Antenna;
 import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 
 /**
@@ -155,14 +157,68 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * Bootstrapping function which is required to setup the hostname of the impinj rfid reader, the 
 	 * server information needed by the PostgresConnector, and schedule the DBUpdateTimer so that we
 	 * send new Tags to the database periodically.
+	 * @param antennaList 
 	 */
-	public void connectorBootstrap(String hostname, ServerInfo serverInformation) {
+	public void connectorBootstrap(String hostname, ServerInfo serverInformation, List<Antenna> antennaList) {
+		setupDatabaseUpdater();
+		this.hostname = hostname;
+		setupDatabaseInformation(serverInformation);
+		setupAntennas(antennaList);
+		setupStoreConfigMap();
+	}
+	
+	/**
+	 * Sets up the store configuration map. This function is to be called by the connectorBootstrap and is how the store configuration map
+	 * will be created during actual client usage. This function uses the AuburnReader's dictionary (which is setup in the connectorBootstrap)
+	 * in order to get a list of ReaderLocations and TagLocations. These lists are then passed to generateStoreMap in order to actually construct
+	 * the store configuration map.
+	 */
+	private void setupStoreConfigMap() {
+		ArrayList<ReaderLocation> readerLocations = new ArrayList<ReaderLocation>();
+		ArrayList<TagLocation> tagLocations = new ArrayList<TagLocation>();
+		readerLocations.addAll(this.reader.getAntennaDictionary().values());
+		for (ReaderLocation readerLocation : readerLocations) {
+			tagLocations.add(new TagLocation(readerLocation.getStoreAreaOne()));
+			tagLocations.add(new TagLocation(readerLocation.getStoreAreaTwo()));
+		}
+		generateStoreMap(tagLocations, readerLocations);
+	}
+	
+	/**
+	 * Takes a list of Antenna objects and adds entries to the AuburnReader based on the information contained within the objects.
+	 * This sets up the AuburnReader's dictionary.
+	 * @param antennaList list of Antennas to be added to the AuburnReader
+	 */
+	private void setupAntennas(List<Antenna> antennaList) {
+		for (Antenna antenna : antennaList) {
+			if (antenna.isEnabled()) {
+				if (antenna.isEntryPoint()) {
+					addEntryPointReader(antenna.getStoreAreaOne(), antenna.getStoreAreaTwo(), antenna.getAntennaID(), antenna.getInsertionLocation());
+				}
+				else {
+					addReader(antenna.getStoreAreaOne(), antenna.getStoreAreaTwo(), antenna.getAntennaID());
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Simply takes the ServerInfo object and uses it to bootstrap the PostgresConnector.
+	 * @param serverInformation information about the database to be connected. Information includes database name, password, and url.
+	 */
+	private void setupDatabaseInformation(ServerInfo serverInformation) {
+		PostgresConnector connector = new PostgresConnector();
+		connector.setServerInformation(serverInformation);
+	}
+	
+	/**
+	 * Sets up the DBUpdateTimer which will periodically send read Tags to the PostgresConnector in order to be inserted or updated in the
+	 * database.
+	 */
+	private void setupDatabaseUpdater() {
 		Timer timer = new Timer();
 		DBUpdateTimer updateTimer = new DBUpdateTimer();
 		timer.scheduleAtFixedRate(updateTimer, DBUpdateTimer.TIMER_DELAY, DBUpdateTimer.TIMER_DELAY);
-		this.hostname = hostname;
-		PostgresConnector connector = new PostgresConnector();
-		connector.setServerInformation(serverInformation);
 	}
 	
 	/**

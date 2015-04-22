@@ -59,6 +59,14 @@ public class TagLocation {
 	}
 	
 	/**
+	 * Overwritten toString in order to print off TagLocation followed by the name of the TagLocation.
+	 */
+	@Override
+	public String toString() {
+		return "TagLocation: " + name;
+	}
+
+	/**
 	 * A setter function for setting the name field of the TagLocation
 	 * @param name Name of the TagLocation
 	 */

@@ -33,7 +33,11 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		Connection c = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres", "password");		
+			//c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres", "password");	
+			String url = serverInformation.getUrl();
+			String owner = serverInformation.getOwner();
+			String password = serverInformation.getPassword();
+			c = DriverManager.getConnection(url, owner, password);
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 		} catch (Exception e) {

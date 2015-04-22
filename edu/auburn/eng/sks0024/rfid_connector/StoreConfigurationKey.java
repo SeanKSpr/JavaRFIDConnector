@@ -19,6 +19,14 @@ public class StoreConfigurationKey {
 	private ReaderLocation readerLocation;
 	
 	/**
+	 * Overriding toString to call the toString of tagLocation followed by the toString of readerLocation.
+	 */
+	@Override
+	public String toString() {
+		return "StoreConfigurationKey: <" + tagLocation + ", " + readerLocation + ">"; 
+	}
+
+	/**
 	 * Constructor for StoreConfigurationKey which takes in the two components of the key: the TagLocation and ReaderLocation and saves them as variables
 	 * @param tagLocation A tag location
 	 * @param readerLocation A reader location 

@@ -146,4 +146,11 @@ public class Antenna {
 	public void setInsertionLocation(String insertionLocation) {
 		this.insertionLocation = insertionLocation;
 	}
+
+	@Override
+	public String toString() {
+		return "Antenna " + antennaID + ": isEnabled = " + isEnabled + "| isEntryPoint = " + isEntryPoint 
+				+ "| storeAreaOne = " + storeAreaOne + "| storeAreaTwo = " + storeAreaTwo
+				+ "| insertionLocation = " + insertionLocation;
+	}
 }

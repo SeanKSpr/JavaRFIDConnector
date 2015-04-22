@@ -1,182 +1,48 @@
 package edu.auburn.eng.sks0024.rfid_connector_test;
 
-import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Scanner;
 
 import org.junit.Test;
 
-import edu.auburn.eng.sks0024.rfid_connector.ReaderLocationEnum;
-import edu.auburn.eng.sks0024.rfid_connector.TagLocationEnum;
+import edu.auburn.eng.sks0024.rfid_connector.JavaRFIDConnector;
+import edu.auburn.eng.sks0024.rfid_connector.ReaderLocation;
+import edu.auburn.eng.sks0024.rfid_connector.StoreConfigurationKey;
+import edu.auburn.eng.sks0024.rfid_connector.TagLocation;
 
 public class TagLocationTest {
-	
-	////Jargon for these tests/////////////////////////
-	//
-	///////Tag Locations
-	// SF = Store Floor
-	// BR = Back Room
-	// WH = Warehouse
-	// OOS = Out of store
-	//
-	///////Reader locations 
-	// SE = Store Entrance
-	// SB = Store Backroom
-	// BW = Backroom Warehouse
-	// WO = Warehouse outside
-	//
-	///////////////////////////////////////////////////
+
 	@Test
-	public void testInstance01NewLocation() {
-		TagLocationEnum location = TagLocationEnum.BACK_ROOM;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.BACKROOM_WAREHOUSE;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
+	public void TagUpdateLocationAcceptance() {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("*********ENTER STORE LOCATIONS************");
+		int numOfAntennasToSetup = 4;
+		String storeAreaOne, storeAreaTwo;
+		List<ReaderLocation> readerLocations = new ArrayList<ReaderLocation>();
+		List<TagLocation> tagLocations = new ArrayList<TagLocation>();
+		for (int i = 0; i  < numOfAntennasToSetup; i++) {
+			System.out.print("Antenna " + (i + 1) + " store area one: ");
+			storeAreaOne = scan.nextLine();
+			System.out.print("Antenna " + (i + 1) + " store area two: ");
+			storeAreaTwo = scan.nextLine();
+			readerLocations.add(new ReaderLocation(storeAreaOne, storeAreaTwo));
+			tagLocations.add(new TagLocation(storeAreaOne));
+			tagLocations.add(new TagLocation(storeAreaTwo));
+		}
+		scan.close();
+		JavaRFIDConnector rfidConnector = new JavaRFIDConnector();
+		HashMap<StoreConfigurationKey, TagLocation> storeConfigMap = rfidConnector.generateStoreMap(tagLocations, readerLocations);
 		
-		assertEquals(TagLocationEnum.WAREHOUSE, newLocation);
+		int transitionNum = 1;
+		for (Entry<StoreConfigurationKey, TagLocation> mapEntry : storeConfigMap.entrySet()) {
+			System.out.println("Transition " + transitionNum + ": |Old Location: " + mapEntry.getKey().getTagLocation()
+					+ " |Location Scanned: " + mapEntry.getKey().getReaderLocation()
+					+ " |New Location: " + mapEntry.getValue());
+			transitionNum++;
+		}
 	}
-	
-	//All these tests need to be renamed because the second part of the SF_BR the BR should be a ReaderLoc abbreviation.
-	@Test
-	public void testNewLocationSF_SE() {
-		TagLocationEnum location = TagLocationEnum.STORE_FLOOR;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.STORE_ENTRANCE;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.OUT_OF_STORE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationSF_SB() {
-		TagLocationEnum location = TagLocationEnum.STORE_FLOOR;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.FLOOR_BACKROOM;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.BACK_ROOM, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationSF_BW() {
-		TagLocationEnum location = TagLocationEnum.STORE_FLOOR;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.BACKROOM_WAREHOUSE;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.STORE_FLOOR, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationSF_WO() {
-		TagLocationEnum location = TagLocationEnum.STORE_FLOOR;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.WAREHOUSE_LOADING;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.OUT_OF_STORE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationBR_SE() {
-		TagLocationEnum location = TagLocationEnum.BACK_ROOM;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.STORE_ENTRANCE;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.BACK_ROOM, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationBR_SB() {
-		TagLocationEnum location = TagLocationEnum.BACK_ROOM;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.FLOOR_BACKROOM;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.STORE_FLOOR, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationBR_BW() {
-		TagLocationEnum location = TagLocationEnum.BACK_ROOM;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.BACKROOM_WAREHOUSE;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.WAREHOUSE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationBR_WO() {
-		TagLocationEnum location = TagLocationEnum.BACK_ROOM;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.WAREHOUSE_LOADING;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.OUT_OF_STORE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationWH_SE() {
-		TagLocationEnum location = TagLocationEnum.WAREHOUSE;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.STORE_ENTRANCE;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.WAREHOUSE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationWH_SB() {
-		TagLocationEnum location = TagLocationEnum.WAREHOUSE;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.FLOOR_BACKROOM;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.WAREHOUSE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationWH_BW() {
-		TagLocationEnum location = TagLocationEnum.WAREHOUSE;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.BACKROOM_WAREHOUSE;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.BACK_ROOM, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationWH_WO() {
-		TagLocationEnum location = TagLocationEnum.WAREHOUSE;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.WAREHOUSE_LOADING;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.OUT_OF_STORE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationOOS_SE() {
-		TagLocationEnum location = TagLocationEnum.OUT_OF_STORE;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.STORE_ENTRANCE;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.OUT_OF_STORE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationOOS_SB() {
-		TagLocationEnum location = TagLocationEnum.OUT_OF_STORE;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.FLOOR_BACKROOM;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.OUT_OF_STORE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationOOS_BW() {
-		TagLocationEnum location = TagLocationEnum.OUT_OF_STORE;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.BACKROOM_WAREHOUSE;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.OUT_OF_STORE, newLocation);
-	}
-	
-	@Test
-	public void testNewLocationOOS_WO() {
-		TagLocationEnum location = TagLocationEnum.OUT_OF_STORE;
-		ReaderLocationEnum readerLoc = ReaderLocationEnum.WAREHOUSE_LOADING;
-		TagLocationEnum newLocation = TagLocationEnum.getNewLocation(location, readerLoc);
-		
-		assertEquals(TagLocationEnum.WAREHOUSE, newLocation);
-	}
-	
+
 }
-	

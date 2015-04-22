@@ -657,17 +657,7 @@ public class RFIDConfigurationManager {
 		List<Antenna> antennaList = getAntennaListFromFields();			
 		String hostname = hostnameText.getText();
 		ServerInfo serverInfo = getServerInfoFromFields();
-		jrc.connectorBootstrap(hostname, serverInfo);
-		for (Antenna antenna : antennaList) {
-			if (antenna.isEnabled()) {
-				if (antenna.isEntryPoint()) {
-					jrc.addEntryPointReader(antenna.getStoreAreaOne(), antenna.getStoreAreaTwo(), antenna.getAntennaID(), antenna.getInsertionLocation());
-				}
-				else {
-					jrc.addReader(antenna.getStoreAreaOne(), antenna.getStoreAreaTwo(), antenna.getAntennaID());
-				}
-			}
-		}
+		jrc.connectorBootstrap(hostname, serverInfo, antennaList);
 		Thread thread = new Thread(jrc);
 		thread.start();
 	}

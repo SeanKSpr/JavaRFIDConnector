@@ -1,5 +1,8 @@
 package edu.auburn.eng.sks0024.rfid_connector;
 
+import java.util.List;
+
+import edu.auburn.eng.rfid_4710.manager_gui.Antenna;
 import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 
 /**
@@ -27,6 +30,7 @@ public interface RFIDConnector extends Runnable{
 	 * in the RFIDDatabaseManager implementation class.
 	 * @param hostname - The IP address/hostname of the hardware RFID reader
 	 * @param serverInformation The server information needed to connect to the UPC database
+	 * @param antennaList List of Antenna objects to be added to be used during the execution
 	 */
-	public void connectorBootstrap(String hostname, ServerInfo serverInformation);
+	public void connectorBootstrap(String hostname, ServerInfo serverInformation, List<Antenna> antennaList);
 }

@@ -24,7 +24,7 @@ public class ReaderLocation {
 	
 	@Override
 	public String toString() {
-		return "Reader is located between: " + storeAreaOne + " and " + storeAreaTwo;
+		return "Reader between: <" + storeAreaOne + ", " + storeAreaTwo + ">";
 	}
 
 	/**

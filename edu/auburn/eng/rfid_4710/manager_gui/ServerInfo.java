@@ -75,4 +75,9 @@ public class ServerInfo {
 		serverInfoAsString.add(url);
 		return serverInfoAsString;
 	}
+
+	@Override
+	public String toString() {
+		return "Server owner = " + owner + "| server password = " + password + "| server url = " + url;
+	}
 }
