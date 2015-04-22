@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 import edu.auburn.eng.sks0024.rfid_connector.*;
 
 public class DBAcceptanceTests {
@@ -26,6 +27,11 @@ public class DBAcceptanceTests {
 		dupeSerials = new int[]{2, 17, 38, 9, 12};
 		firstSerials = new int[]{5, 13};
 		conn = pc;
+		ServerInfo server = new ServerInfo();
+		server.setUrl("jdbc:postgresql://localhost:5432/rfiddb");
+		server.setOwner("postgres");
+		server.setPassword("password");
+		conn.setServerInformation(server);
 		c = pc.open();
 		
 		locations = new String[]{"warehouse","back room","on store floor","out of store"};

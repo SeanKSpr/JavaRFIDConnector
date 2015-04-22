@@ -25,15 +25,16 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	 * 
 	 * Open new connection to our PostgreSQL database
 	 * 
-	 * Precondition:	Connection to database hasn't been established
-	 * Postcondition:	Connection to database is established
+	 * Precondition:	Connection to database hasn't been established, and server information has been entered by the user
+	 * Postcondition:	Connection to database is established with given server information
 	 * @return The newly established Connection to the database
 	 */
 	public Connection open() {
 		Connection c = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres", "password");		
+			c = DriverManager.getConnection(serverInformation.getUrl(), serverInformation.getOwner(), serverInformation.getPassword());
+			//c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres", "password");		
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 		} catch (Exception e) {
@@ -42,6 +43,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		return c;
 	}
 	
+	// We shouldn't call this function anymore since we have the ServerInfo object now
 	/**
 	 * Opens a connection to a specific PostgreSQL database
 	 * @param url the url to the database
