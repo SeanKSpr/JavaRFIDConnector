@@ -26,10 +26,10 @@ public class AntennaDictionaryTest {
 		reader.addAntenna(4, warehouse_outOfStore);
 		
 		connector.setReader(reader);
-		Assert.assertEquals(reader.getLocation(1).toString(), (storefloor_backroom.toString()));
-		assertEquals(reader.getLocation(2).toString(), backroom_warehouse.toString());
-		assertEquals(reader.getLocation(3).toString(), storefloor_outOfStore.toString());
-		assertEquals(reader.getLocation(4).toString(), warehouse_outOfStore.toString());
+		Assert.assertEquals(reader.getLocation((short) 1).toString(), (storefloor_backroom.toString()));
+		assertEquals(reader.getLocation((short) 2).toString(), backroom_warehouse.toString());
+		assertEquals(reader.getLocation((short) 3).toString(), storefloor_outOfStore.toString());
+		assertEquals(reader.getLocation((short) 4).toString(), warehouse_outOfStore.toString());
 	}
 	
 	@Test
@@ -46,10 +46,10 @@ public class AntennaDictionaryTest {
 		connector.addReader("storefloor", "out of store", 3);
 		connector.addReader("warehouse", "out of store", 4);
 		
-		Assert.assertEquals(reader.getLocation(1), storefloor_backroom);
-		assertEquals(reader.getLocation(2), backroom_warehouse);
-		assertEquals(reader.getLocation(3), storefloor_outOfStore);
-		assertEquals(reader.getLocation(4), warehouse_outOfStore);
+		Assert.assertEquals(reader.getLocation((short) 1), storefloor_backroom);
+		assertEquals(reader.getLocation((short) 2), backroom_warehouse);
+		assertEquals(reader.getLocation((short) 3), storefloor_outOfStore);
+		assertEquals(reader.getLocation((short) 4), warehouse_outOfStore);
 	}
 	
 	@Test
@@ -62,10 +62,10 @@ public class AntennaDictionaryTest {
 		connector.addReader("backroom", "storefloor", 1);
 		connector.addReader("warehouse", "out of store", 4);
 		
-		Assert.assertEquals(reader.getLocation(1), storefloor_backroom);
-		assertEquals(reader.getLocation(2), null);
-		assertEquals(reader.getLocation(3), null);
-		assertEquals(reader.getLocation(4), warehouse_outOfStore);
+		Assert.assertEquals(reader.getLocation((short) 1), storefloor_backroom);
+		assertEquals(reader.getLocation((short) 2), null);
+		assertEquals(reader.getLocation((short) 3), null);
+		assertEquals(reader.getLocation((short) 4), warehouse_outOfStore);
 	}
 	
 	@Test
@@ -78,10 +78,10 @@ public class AntennaDictionaryTest {
 		connector.addEntryPointReader("backroom", "storefloor", 1, "storefloor");
 		connector.addEntryPointReader("warehouse", "out of store", 4, "warehouse");
 		
-		Assert.assertEquals(reader.getLocation(1), storefloor_backroom);
-		assertEquals(reader.getLocation(2), null);
-		assertEquals(reader.getLocation(3), null);
-		assertEquals(reader.getLocation(4), warehouse_outOfStore);
+		Assert.assertEquals(reader.getLocation((short) 1), storefloor_backroom);
+		assertEquals(reader.getLocation((short) 2), null);
+		assertEquals(reader.getLocation((short) 3), null);
+		assertEquals(reader.getLocation((short) 4), warehouse_outOfStore);
 	}
 
 }

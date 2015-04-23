@@ -29,17 +29,17 @@ public class DBUpdateTimer extends TimerTask {
 	 */
 	public void updateDatabase() {
 		RFIDDatabaseManager dbManager = new PostgresConnector();
-		Connection dbConnection = dbManager.open();
+		//Connection dbConnection = dbManager.open();
 		
 		Collection<TagWrapper> tagBatch = DuplicateReadDetector.getBatchCopy();
-		for (TagWrapper tag : tagBatch) {
+		/*for (TagWrapper tag : tagBatch) {
 			System.out.println("Updating Database Tag: " + tag.getTag().getEpc().toString() + " Time: " + tag.getTimeSeen());
 			if(!dbManager.updateTag(tag, dbConnection)) {
 				if (tag.getLocationScanned().isEntryPoint()) {
 					dbManager.insertTag(tag, dbConnection, tag.getLocationScanned().getInsertionPoint().getName());
 				}
 			};
-		}
+		}*/
 		//For testing reasons (not that it really matters if this is displayed on the console)
 		if (tagBatch.isEmpty()) {
 			System.out.println("Nothing in the tag batch");

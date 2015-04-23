@@ -31,7 +31,7 @@ public class TagReporter implements TagReportListener {
 			if (!DuplicateReadDetector.isDuplicateRead(wrappedTag)) {
 				DuplicateReadDetector.addWrappedTag(wrappedTag);
 				
-				System.out.println(wrappedTag.getLocationScanned().toString());
+				System.out.println(wrappedTag.getLocationScanned());
 				
 				System.out.println(DuplicateReadDetector.getTagBatchTimeInfo());
 			}

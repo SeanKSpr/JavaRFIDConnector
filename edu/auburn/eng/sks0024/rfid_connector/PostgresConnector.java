@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Properties;
 
 import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 import edu.auburn.eng.sks0024.rfid_connector_test.DBAcceptanceTests;
@@ -34,7 +35,11 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		try {
 			Class.forName("org.postgresql.Driver");
 			c = DriverManager.getConnection(serverInformation.getUrl(), serverInformation.getOwner(), serverInformation.getPassword());
-			//c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/rfiddb","postgres", "password");		
+			Properties connectionProperties = new Properties();
+			connectionProperties.setProperty("user", serverInformation.getOwner());
+			connectionProperties.setProperty("password", serverInformation.getPassword());
+			connectionProperties.setProperty("url", serverInformation.getUrl());
+			c.setClientInfo(connectionProperties);
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 		} catch (Exception e) {
@@ -55,7 +60,12 @@ public class PostgresConnector implements RFIDDatabaseManager {
 		Connection c = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection(url, owner, password);		
+			c = DriverManager.getConnection(url, owner, password);
+			Properties connectionProperties = new Properties();
+			connectionProperties.put("user", owner);
+			connectionProperties.put("password", password);
+			connectionProperties.put("url", url);
+			c.setClientInfo(connectionProperties);
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 		} catch (Exception e) {

@@ -38,7 +38,7 @@ public class AuburnReader extends ImpinjReader {
 	 * @param  antennaID the identifier for an RFID antenna
 	 * @return location of the RFID reader
 	 */
-	public ReaderLocation getLocation(int antennaID) {
+	public ReaderLocation getLocation(Short antennaID) {
 		return antennaDictionary.get(antennaID);
 	}
 	

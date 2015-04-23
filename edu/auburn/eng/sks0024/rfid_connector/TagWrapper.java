@@ -47,7 +47,8 @@ public class TagWrapper {
 		int antennaIDThatScannedTag = tag.getAntennaPortNumber();
 		location = null;
 		this.setTimeSeen(System.currentTimeMillis());
-		this.locationScanned = reader.getLocation(antennaIDThatScannedTag);
+		ReaderLocation locationScanned = reader.getLocation((short) antennaIDThatScannedTag);
+		this.locationScanned = locationScanned;
 	}
 	/**
 	 * Returns the tag field of the TagWrapper
