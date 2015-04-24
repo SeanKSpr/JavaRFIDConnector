@@ -1,7 +1,10 @@
 package edu.auburn.eng.rfid_4710.manager_gui;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -20,6 +23,7 @@ public class StoreLayoutWindow {
 	private Text text_5;
 	private Text text_6;
 	private Text text_7;
+	private ArrayList<String> storeLayout;
 
 	/**
 	 * Launch the application.
@@ -47,6 +51,17 @@ public class StoreLayoutWindow {
 				display.sleep();
 			}
 		}
+	}
+	
+	public ArrayList<String> getCustomLayout() {
+		storeLayout = RFIDConfigurationManager.readStoreLocations();
+		try {
+			StoreLayoutWindow window = new StoreLayoutWindow();
+			window.open();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return storeLayout;
 	}
 
 	/**
@@ -120,12 +135,54 @@ public class StoreLayoutWindow {
 		Button btnSaveLayout = new Button(shlCreateStoreLayout, SWT.NONE);
 		btnSaveLayout.setBounds(357, 216, 75, 25);
 		btnSaveLayout.setText("Save Layout");
+		btnSaveLayout.addMouseListener(new MouseListener() {
+			public void mouseDown(MouseEvent e) {
+				storeLayout = getLocationListFromFields();
+				RFIDConfigurationManager.createStoreLocations(storeLayout);
+				shlCreateStoreLayout.dispose();
+			}
+			public void mouseUp(MouseEvent e) { }
+			public void mouseDoubleClick(MouseEvent e) { }
+		});
 		
 		Button btnCancel = new Button(shlCreateStoreLayout, SWT.NONE);
 		btnCancel.setBounds(442, 216, 75, 25);
 		btnCancel.setText("Cancel");
+		btnCancel.addMouseListener(new MouseListener() {
+			public void mouseDown(MouseEvent e) {
+				shlCreateStoreLayout.dispose();
+			}
+			public void mouseUp(MouseEvent e) { }
+			public void mouseDoubleClick(MouseEvent e) { }
+		});
+	}
 
-		List<String> currentContents = RFIDConfigurationManager.readStoreLocations();
-		
+	private ArrayList<String> getLocationListFromFields() {
+		ArrayList<String> locations = new ArrayList<String>();
+		if (!text.getText().trim().equals("") && !locations.contains(text.getText())) {
+			locations.add(text.getText());
+		}
+		if (!text_1.getText().trim().equals("") && !locations.contains(text_1.getText())) {
+			locations.add(text_1.getText());
+		}
+		if (!text_2.getText().trim().equals("") && !locations.contains(text_2.getText())) {
+			locations.add(text_2.getText());
+		}
+		if (!text_3.getText().trim().equals("") && !locations.contains(text_3.getText())) {
+			locations.add(text_3.getText());
+		}
+		if (!text_4.getText().trim().equals("") && !locations.contains(text_4.getText())) {
+			locations.add(text_4.getText());
+		}
+		if (!text_5.getText().trim().equals("") && !locations.contains(text_5.getText())) {
+			locations.add(text_5.getText());
+		}
+		if (!text_6.getText().trim().equals("") && !locations.contains(text_6.getText())) {
+			locations.add(text_6.getText());
+		}
+		if (!text_7.getText().trim().equals("") && !locations.contains(text_7.getText())) {
+			locations.add(text_7.getText());
+		}
+		return locations;
 	}
 }

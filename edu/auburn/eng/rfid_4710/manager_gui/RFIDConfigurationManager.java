@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,23 +44,24 @@ public class RFIDConfigurationManager {
 	private Combo ant1StoreAreaTwo, ant2StoreAreaTwo, ant3StoreAreaTwo, ant4StoreAreaTwo;
 	private Button btnKillSelf, btnRunAway;
 	private Button btnSaveStuff, btnLoadStuff;
-	private Text ant1InsertionLocation;
+	private Combo ant1InsertionLocation;
 	private Text dbOwner;
 	private Text dbPassword;
 	private Text dbURL;
 	private Text ant2InsertionLocation;
 	private Text ant3InsertionLocation;
 	private Text ant4InsertionLocation;
-	private static List<String> storeLocations = null;
+	private static ArrayList<String> storeLocations;
 	private Button btnNewButton;
 	private Label lblAddItemsTo;
 	private Label label;
 	
-	public static void createStoreLocations(List<String> inputLocations) {
+	
+	public static void createStoreLocations(ArrayList<String> inputLocations) {
 		storeLocations = inputLocations;
 	}
 	
-	public static List<String> readStoreLocations() {
+	public static ArrayList<String> readStoreLocations() {
 		return storeLocations == null? new ArrayList<String>() : storeLocations;
 	}
 	
@@ -79,6 +82,7 @@ public class RFIDConfigurationManager {
 	public void open() {
 		Display display = Display.getDefault();
 		redirectSystemStreams();
+		storeLocations = new ArrayList<String>(0);
 		createContents();
 		shlRfidConfigurationManager.open();
 		shlRfidConfigurationManager.layout();
@@ -151,9 +155,19 @@ public class RFIDConfigurationManager {
 		dbURL.setMessage("URL");
 		dbURL.setBounds(449, 31, 161, 21);
 		
+		//MOVE THIS and rename
 		btnNewButton = new Button(shlRfidConfigurationManager, SWT.NONE);
-		btnNewButton.setBounds(20, 604, 120, 25);
+		btnNewButton.setBounds(37, 604, 120, 25);
 		btnNewButton.setText("Enter Store Layout");
+		btnNewButton.addMouseListener(new MouseListener() {
+			public void mouseDown(MouseEvent e) {
+				StoreLayoutWindow subwindow = new StoreLayoutWindow();
+				subwindow.getCustomLayout();
+				populateAndResetDDLs();
+			}
+			public void mouseUp(MouseEvent e) { }
+			public void mouseDoubleClick(MouseEvent e) { }
+		});
 		
 		lblAddItemsTo = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAddItemsTo.setBounds(385, 252, 85, 15);
@@ -162,6 +176,23 @@ public class RFIDConfigurationManager {
 		label = new Label(shlRfidConfigurationManager, SWT.NONE);
 		label.setText("Add Items To");
 		label.setBounds(385, 192, 85, 15);
+	}
+	
+	private void populateAndResetDDLs() {
+		if (storeLocations == null) { return; }
+		
+		for(String s : storeLocations) {
+			System.out.println(s);
+		}
+		System.out.println("Length: " + storeLocations.size());
+		ant1StoreAreaOne.setItems(storeLocations.toArray(new String[]{}));
+		ant1StoreAreaTwo.setItems(storeLocations.toArray(new String[]{}));
+		ant2StoreAreaOne.setItems(storeLocations.toArray(new String[]{}));
+		ant2StoreAreaTwo.setItems(storeLocations.toArray(new String[]{}));
+		ant3StoreAreaOne.setItems(storeLocations.toArray(new String[]{}));
+		ant3StoreAreaTwo.setItems(storeLocations.toArray(new String[]{}));
+		ant4StoreAreaOne.setItems(storeLocations.toArray(new String[]{}));
+		ant4StoreAreaTwo.setItems(storeLocations.toArray(new String[]{}));
 	}
 	
 	/**
@@ -381,7 +412,12 @@ public class RFIDConfigurationManager {
 		ant1StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant1StoreAreaOne.setEnabled(ant1IsEnabled.getSelection());
 		ant1StoreAreaOne.setBounds(316, 97, 91, 23);
-		ant1StoreAreaOne.setItems(COMMON_LOCATIONS);
+		ant1StoreAreaOne.setItems(storeLocations.toArray(new String[]{}));
+		ant1StoreAreaOne.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				ant1InsertionLocation.setItems(new String[] { ant1StoreAreaOne.getText(), ant1StoreAreaTwo.getText() });
+			}
+		});
 		
 		Label lblAnd1 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAnd1.setAlignment(SWT.CENTER);
@@ -392,10 +428,17 @@ public class RFIDConfigurationManager {
 		ant1StoreAreaTwo.setEnabled(ant1IsEnabled.getSelection());
 		ant1StoreAreaTwo.setBounds(494, 97, 91, 23);
 		ant1StoreAreaTwo.setItems(COMMON_LOCATIONS);
+		ant1StoreAreaTwo.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				ant1InsertionLocation.setItems(new String[] { ant1StoreAreaOne.getText(), ant1StoreAreaTwo.getText() });
+			}
+		});
 			
-		ant1InsertionLocation = new Text(shlRfidConfigurationManager, SWT.BORDER);
+		ant1InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		boolean temp = ant1IsEntryPoint.getSelection();
+		ant1InsertionLocation.setEnabled(ant1IsEntryPoint.getSelection());
 		ant1InsertionLocation.setBounds(611, 97, 75, 21);
-		ant1InsertionLocation.setEnabled(false);
+		ant1InsertionLocation.setItems(COMMON_LOCATIONS);
 	}
 
 	/**
@@ -405,7 +448,7 @@ public class RFIDConfigurationManager {
 	private void createLoadButton() {
 		btnLoadStuff = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnLoadStuff.setToolTipText("Load existing configuration");
-		btnLoadStuff.setBounds(20, 560, 120, 25);
+		btnLoadStuff.setBounds(37, 560, 120, 25);
 		btnLoadStuff.setText("Load Configuration");
 		btnLoadStuff.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
@@ -423,7 +466,7 @@ public class RFIDConfigurationManager {
 	private void createSaveButton() {
 		btnSaveStuff = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnSaveStuff.setToolTipText("Save the entered configuration for later use");
-		btnSaveStuff.setBounds(20, 516, 120, 25);
+		btnSaveStuff.setBounds(37, 516, 120, 25);
 		btnSaveStuff.setText("Save Configuration");
 		btnSaveStuff.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
@@ -443,7 +486,7 @@ public class RFIDConfigurationManager {
 	private void createExecuteButton() {
 		btnRunAway = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnRunAway.setToolTipText("Will run Java Connector with current settings");
-		btnRunAway.setBounds(494, 536, 75, 25);
+		btnRunAway.setBounds(494, 560, 75, 25);
 		btnRunAway.setText("Execute");
 		btnRunAway.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent arg0) {
@@ -460,7 +503,7 @@ public class RFIDConfigurationManager {
 	private void createQuitButton() {
 		btnKillSelf = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnKillSelf.setToolTipText("Closes the application");
-		btnKillSelf.setBounds(611, 536, 75, 25);
+		btnKillSelf.setBounds(611, 560, 75, 25);
 		btnKillSelf.setText("Quit");
 		btnKillSelf.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
