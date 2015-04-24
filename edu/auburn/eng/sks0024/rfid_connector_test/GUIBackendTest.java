@@ -23,7 +23,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import edu.auburn.eng.rfid_4710.manager_gui.Antenna;
 import edu.auburn.eng.rfid_4710.manager_gui.JSONConfigurationFile;
 import edu.auburn.eng.rfid_4710.manager_gui.LoadCancelledException;
-import edu.auburn.eng.rfid_4710.manager_gui.RFIDConfigurationManager;
 import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 
 public class GUIBackendTest {

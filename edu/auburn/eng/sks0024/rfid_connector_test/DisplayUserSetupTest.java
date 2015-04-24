@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -23,7 +22,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import edu.auburn.eng.rfid_4710.manager_gui.Antenna;
 import edu.auburn.eng.rfid_4710.manager_gui.JSONConfigurationFile;
 import edu.auburn.eng.rfid_4710.manager_gui.LoadCancelledException;
-import edu.auburn.eng.rfid_4710.manager_gui.RFIDConfigurationManager;
 import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 
 public class DisplayUserSetupTest {

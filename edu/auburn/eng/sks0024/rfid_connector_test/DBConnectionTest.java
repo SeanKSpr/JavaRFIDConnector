@@ -433,4 +433,20 @@ public class DBConnectionTest {
 		}
 		return c;
 	}
+	
+	@Test
+	public void insertExistingTagIntoDatabase() {
+		Connection c = null;
+		PostgresConnector connector = new PostgresConnector();
+		String url = "jdbc:postgresql://ec2-54-204-45-65.compute-1.amazonaws.com:5432/"
+				+ "d35psfqmhibmau"
+				+ "?user=ctokvlhjrdnfmh"
+				+ "&password=LVX-RUHYaGT1iSjenf3OX-WbAI"
+				+ "&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+		String owner = "ctokvlhjrdnfmh";
+		String password = "LVX-RUHYaGT1iSjenf3OX-WbAI";
+		c = connector.open(url, owner, password);
+		
+		connector.addTagToDatabase(51071851756L, 309L, c, "in_store");
+	}
 }

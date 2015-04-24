@@ -158,13 +158,6 @@ public final class EPCConverter {
 	 * @return The header bits of the EPC
 	 */
 	private static int extractHeader(List<Integer> epc) {
-		//Need to extract first 8 bits. These are located in the first index of the list
-		//Each index of the list contains a Word (4 hexadecimal digits/16 binary digits)
-		//So chop off the first two hexadecimal digits
-		//Just save the first 8 bits (these will be returned)
-		//And the first 8 bits of the first index of the list with 0
-		//Return the saved bits
-		
 		int bits0Thru15 = epc.get(0);
 		int bits0Thru7 = bits0Thru15 >>> 8;
 		epc.set(0, bits0Thru15 & 0x00ff);
