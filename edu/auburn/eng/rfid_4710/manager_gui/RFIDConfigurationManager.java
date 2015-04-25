@@ -56,6 +56,8 @@ public class RFIDConfigurationManager {
 	private Button btnEnterStoreLayout;
 	private Label lblAddItemsTo_4;
 	private Label lblAddItemsTo_3;
+	private Label lblAddItemsTo_2;
+	private Label lblAddItemsTo_1;
 	
 	
 	public static void createStoreLocations(ArrayList<String> inputLocations) {
@@ -118,12 +120,12 @@ public class RFIDConfigurationManager {
 	 */
 	private void createHostnameUI() {
 		Label lblHostname = new Label(shlRfidConfigurationManager, SWT.NONE);
-		lblHostname.setBounds(10, 10, 137, 15);
+		lblHostname.setBounds(37, 23, 137, 15);
 		lblHostname.setText("Reader Hostname/IP");
 		
 		hostnameText = new Text(shlRfidConfigurationManager, SWT.BORDER);
 		hostnameText.setToolTipText("");
-		hostnameText.setBounds(10, 31, 137, 21);
+		hostnameText.setBounds(37, 52, 137, 21);
 		hostnameText.setMessage("Ex: 192.168.225.50");
 	}
 	
@@ -133,37 +135,29 @@ public class RFIDConfigurationManager {
 	 */
 	private void createConsoleUI() {
 		styledText = new StyledText(shlRfidConfigurationManager, SWT.BORDER | SWT.WRAP);
-		styledText.setBounds(20, 306, 656, 188);
+		styledText.setBounds(31, 476, 671, 188);
 		
 		Label lblConsole = new Label(shlRfidConfigurationManager, SWT.NONE);
-		lblConsole.setBounds(20, 285, 104, 15);
+		lblConsole.setBounds(36, 455, 104, 15);
 		lblConsole.setText("Console Output");
 		
 		Label lblDatabaseInformation = new Label(shlRfidConfigurationManager, SWT.NONE);
-		lblDatabaseInformation.setBounds(177, 10, 137, 15);
+		lblDatabaseInformation.setBounds(235, 23, 137, 15);
 		lblDatabaseInformation.setText("Database Information");	
 	}
 
 	private void createDatabaseUI() {
 		dbOwner = new Text(shlRfidConfigurationManager, SWT.BORDER);
 		dbOwner.setMessage("owner/username");
-		dbOwner.setBounds(177, 31, 111, 21);
+		dbOwner.setBounds(234, 52, 111, 21);
 		
 		dbPassword = new Text(shlRfidConfigurationManager, SWT.BORDER | SWT.PASSWORD);
 		dbPassword.setMessage("password");
-		dbPassword.setBounds(316, 31, 104, 21);
+		dbPassword.setBounds(374, 52, 104, 21);
 		
 		dbURL = new Text(shlRfidConfigurationManager, SWT.BORDER);
 		dbURL.setMessage("URL");
-		dbURL.setBounds(449, 31, 161, 21);
-		
-		lblAddItemsTo_4 = new Label(shlRfidConfigurationManager, SWT.NONE);
-		lblAddItemsTo_4.setBounds(385, 252, 85, 15);
-		lblAddItemsTo_4.setText("Add Items To");
-		
-		lblAddItemsTo_3 = new Label(shlRfidConfigurationManager, SWT.NONE);
-		lblAddItemsTo_3.setText("Add Items To");
-		lblAddItemsTo_3.setBounds(385, 192, 85, 15);
+		dbURL.setBounds(505, 52, 161, 21);
 	}
 
 	private void createEnterStoreLayoutButton() {
@@ -173,7 +167,7 @@ public class RFIDConfigurationManager {
 			public void widgetSelected(SelectionEvent arg0) {
 			}
 		});
-		btnEnterStoreLayout.setBounds(37, 604, 120, 25);
+		btnEnterStoreLayout.setBounds(37, 780, 120, 25);
 		btnEnterStoreLayout.setText("Enter Store Layout");
 		btnEnterStoreLayout.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
@@ -189,10 +183,6 @@ public class RFIDConfigurationManager {
 	private void populateAndResetDDLs() {
 		if (storeLocations == null) { return; }
 		
-		for(String s : storeLocations) {
-			System.out.println(s);
-		}
-		System.out.println("Length: " + storeLocations.size());
 		ant1StoreAreaOne.setItems(storeLocations.toArray(new String[]{}));
 		ant1StoreAreaTwo.setItems(storeLocations.toArray(new String[]{}));
 		ant2StoreAreaOne.setItems(storeLocations.toArray(new String[]{}));
@@ -209,7 +199,7 @@ public class RFIDConfigurationManager {
 	private void createAntennaFourUI() {
 		ant4IsEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant4IsEnabled.setText("Enabled");
-		ant4IsEnabled.setBounds(37, 225, 65, 16);
+		ant4IsEnabled.setBounds(37, 367, 65, 16);
 		ant4IsEnabled.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
@@ -221,12 +211,12 @@ public class RFIDConfigurationManager {
 		
 		Label lblAntenna4 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAntenna4.setText("Antenna 4");
-		lblAntenna4.setBounds(117, 225, 55, 15);
+		lblAntenna4.setBounds(119, 368, 55, 15);
 		
 		ant4IsEntryPoint = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant4IsEntryPoint.setEnabled(ant4IsEnabled.getSelection());
 		ant4IsEntryPoint.setText("Entry point?");
-		ant4IsEntryPoint.setBounds(269, 250, 93, 16);
+		ant4IsEntryPoint.setBounds(314, 412, 93, 16);
 		ant4IsEntryPoint.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -239,11 +229,11 @@ public class RFIDConfigurationManager {
 		
 		Label lblBetwixt_4 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblBetwixt_4.setText("Between");
-		lblBetwixt_4.setBounds(194, 225, 55, 15);
+		lblBetwixt_4.setBounds(206, 368, 55, 15);
 		
 		ant4StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant4StoreAreaOne.setEnabled(ant4IsEnabled.getSelection());
-		ant4StoreAreaOne.setBounds(271, 222, 91, 23);
+		ant4StoreAreaOne.setBounds(301, 365, 91, 23);
 		ant4StoreAreaOne.setItems(COMMON_LOCATIONS);
 		ant4StoreAreaOne.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
@@ -254,11 +244,11 @@ public class RFIDConfigurationManager {
 		Label lblAnd4 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAnd4.setAlignment(SWT.CENTER);
 		lblAnd4.setText("And");
-		lblAnd4.setBounds(392, 225, 55, 15);
+		lblAnd4.setBounds(436, 368, 55, 15);
 		
 		ant4StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant4StoreAreaTwo.setEnabled(ant4IsEnabled.getSelection());
-		ant4StoreAreaTwo.setBounds(478, 222, 91, 23);
+		ant4StoreAreaTwo.setBounds(547, 365, 91, 23);
 		ant4StoreAreaTwo.setItems(COMMON_LOCATIONS);
 		ant4StoreAreaTwo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
@@ -266,9 +256,13 @@ public class RFIDConfigurationManager {
 			}
 		});
 		
+		lblAddItemsTo_4 = new Label(shlRfidConfigurationManager, SWT.NONE);
+		lblAddItemsTo_4.setBounds(436, 413, 85, 15);
+		lblAddItemsTo_4.setText("Add Items To");
+		
 		ant4InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant4InsertionLocation.setEnabled(ant4IsEntryPoint.getSelection());
-		ant4InsertionLocation.setBounds(493, 250, 76, 21);
+		ant4InsertionLocation.setBounds(562, 410, 76, 21);
 		ant4InsertionLocation.setItems(COMMON_LOCATIONS);
 	}
 	
@@ -278,7 +272,7 @@ public class RFIDConfigurationManager {
 	private void createAntennaThreeUI() {
 		ant3IsEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant3IsEnabled.setText("Enabled");
-		ant3IsEnabled.setBounds(37, 165, 65, 16);
+		ant3IsEnabled.setBounds(37, 280, 65, 16);
 		ant3IsEnabled.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
@@ -290,12 +284,12 @@ public class RFIDConfigurationManager {
 		
 		Label lblAntenna3 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAntenna3.setText("Antenna 3");
-		lblAntenna3.setBounds(117, 165, 55, 15);
+		lblAntenna3.setBounds(119, 281, 55, 15);
 		
 		ant3IsEntryPoint = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant3IsEntryPoint.setEnabled(ant3IsEnabled.getSelection());
 		ant3IsEntryPoint.setText("Entry point?");
-		ant3IsEntryPoint.setBounds(269, 190, 93, 16);
+		ant3IsEntryPoint.setBounds(314, 322, 93, 16);
 		ant3IsEntryPoint.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -308,11 +302,11 @@ public class RFIDConfigurationManager {
 		
 		Label lblBetwixt_3 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblBetwixt_3.setText("Between");
-		lblBetwixt_3.setBounds(194, 165, 55, 15);
+		lblBetwixt_3.setBounds(206, 281, 55, 15);
 		
 		ant3StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant3StoreAreaOne.setEnabled(ant3IsEnabled.getSelection());
-		ant3StoreAreaOne.setBounds(269, 162, 91, 23);
+		ant3StoreAreaOne.setBounds(301, 278, 91, 23);
 		ant3StoreAreaOne.setItems(COMMON_LOCATIONS);
 		ant3StoreAreaOne.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
@@ -323,11 +317,11 @@ public class RFIDConfigurationManager {
 		Label lblAnd3 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAnd3.setAlignment(SWT.CENTER);
 		lblAnd3.setText("And");
-		lblAnd3.setBounds(392, 165, 55, 15);
+		lblAnd3.setBounds(436, 281, 55, 15);
 		
 		ant3StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant3StoreAreaTwo.setEnabled(ant3IsEnabled.getSelection());
-		ant3StoreAreaTwo.setBounds(478, 162, 91, 23);
+		ant3StoreAreaTwo.setBounds(547, 278, 91, 23);
 		ant3StoreAreaTwo.setItems(COMMON_LOCATIONS);
 		ant3StoreAreaTwo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
@@ -335,9 +329,13 @@ public class RFIDConfigurationManager {
 			}
 		});
 		
+		lblAddItemsTo_3 = new Label(shlRfidConfigurationManager, SWT.NONE);
+		lblAddItemsTo_3.setText("Add Items To");
+		lblAddItemsTo_3.setBounds(436, 323, 85, 15);
+		
 		ant3InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant3InsertionLocation.setEnabled(ant3IsEntryPoint.getSelection());
-		ant3InsertionLocation.setBounds(494, 190, 76, 21);
+		ant3InsertionLocation.setBounds(562, 320, 76, 21);
 		ant3InsertionLocation.setItems(COMMON_LOCATIONS);
 	}
 	
@@ -347,7 +345,7 @@ public class RFIDConfigurationManager {
 	private void createAntennaTwoUI() {
 		ant2IsEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant2IsEnabled.setText("Enabled");
-		ant2IsEnabled.setBounds(10, 128, 65, 16);
+		ant2IsEnabled.setBounds(37, 192, 65, 16);
 		ant2IsEnabled.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
@@ -359,12 +357,12 @@ public class RFIDConfigurationManager {
 		
 		Label lblAntenna2 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAntenna2.setText("Antenna 2");
-		lblAntenna2.setBounds(85, 129, 55, 15);
+		lblAntenna2.setBounds(119, 193, 55, 15);
 		
 		ant2IsEntryPoint = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant2IsEntryPoint.setEnabled(ant2IsEnabled.getSelection());
 		ant2IsEntryPoint.setText("Entry point?");
-		ant2IsEntryPoint.setBounds(156, 128, 93, 16);
+		ant2IsEntryPoint.setBounds(314, 236, 93, 16);
 		ant2IsEntryPoint.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -378,11 +376,11 @@ public class RFIDConfigurationManager {
 		
 		Label lblBetwixt_2 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblBetwixt_2.setText("Between");
-		lblBetwixt_2.setBounds(255, 128, 55, 15);
+		lblBetwixt_2.setBounds(206, 193, 55, 15);
 		
 		ant2StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant2StoreAreaOne.setEnabled(ant2IsEnabled.getSelection());
-		ant2StoreAreaOne.setBounds(316, 126, 91, 23);
+		ant2StoreAreaOne.setBounds(301, 190, 91, 23);
 		ant2StoreAreaOne.setItems(COMMON_LOCATIONS);
 		ant2StoreAreaOne.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
@@ -392,12 +390,12 @@ public class RFIDConfigurationManager {
 		
 		Label lblAnd2 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAnd2.setAlignment(SWT.CENTER);
-		lblAnd2.setText("&&");
-		lblAnd2.setBounds(423, 129, 55, 15);
+		lblAnd2.setText("And");
+		lblAnd2.setBounds(436, 193, 55, 15);
 		
 		ant2StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant2StoreAreaTwo.setEnabled(ant2IsEnabled.getSelection());
-		ant2StoreAreaTwo.setBounds(494, 126, 91, 23);
+		ant2StoreAreaTwo.setBounds(547, 190, 91, 23);
 		ant2StoreAreaTwo.setItems(COMMON_LOCATIONS);
 		ant2StoreAreaTwo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
@@ -405,9 +403,13 @@ public class RFIDConfigurationManager {
 			}
 		});
 		
+		lblAddItemsTo_2 = new Label(shlRfidConfigurationManager, SWT.NONE);
+		lblAddItemsTo_2.setText("Add Items To");
+		lblAddItemsTo_2.setBounds(436, 237, 85, 15);
+		
 		ant2InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant2InsertionLocation.setEnabled(ant2IsEntryPoint.getSelection());
-		ant2InsertionLocation.setBounds(611, 128, 76, 21);
+		ant2InsertionLocation.setBounds(562, 234, 76, 21);
 	}
 	
 	/**
@@ -415,7 +417,7 @@ public class RFIDConfigurationManager {
 	 */
 	private void createAntennaOneUI() {
 		ant1IsEnabled = new Button(shlRfidConfigurationManager, SWT.CHECK);
-		ant1IsEnabled.setBounds(10, 99, 65, 16);
+		ant1IsEnabled.setBounds(37, 110, 65, 16);
 		ant1IsEnabled.setText("Enabled");
 		ant1IsEnabled.addSelectionListener(new SelectionListener() {	
 			@Override
@@ -428,12 +430,12 @@ public class RFIDConfigurationManager {
 		});
 		
 		Label lblAntenna1 = new Label(shlRfidConfigurationManager, SWT.NONE);
-		lblAntenna1.setBounds(85, 100, 55, 15);
+		lblAntenna1.setBounds(119, 111, 55, 15);
 		lblAntenna1.setText("Antenna 1");
 		
 		ant1IsEntryPoint = new Button(shlRfidConfigurationManager, SWT.CHECK);
 		ant1IsEntryPoint.setEnabled(ant1IsEnabled.getSelection());
-		ant1IsEntryPoint.setBounds(156, 99, 93, 16);
+		ant1IsEntryPoint.setBounds(314, 150, 93, 16);
 		ant1IsEntryPoint.setText("Entry point?");
 		ant1IsEntryPoint.addSelectionListener(new SelectionListener() {
 			@Override
@@ -446,12 +448,12 @@ public class RFIDConfigurationManager {
 		});
 		
 		Label lblBetwixt_1 = new Label(shlRfidConfigurationManager, SWT.NONE);
-		lblBetwixt_1.setBounds(255, 99, 55, 15);
+		lblBetwixt_1.setBounds(206, 111, 55, 15);
 		lblBetwixt_1.setText("Between");
 		
 		ant1StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant1StoreAreaOne.setEnabled(ant1IsEnabled.getSelection());
-		ant1StoreAreaOne.setBounds(316, 97, 91, 23);
+		ant1StoreAreaOne.setBounds(301, 108, 91, 23);
 		ant1StoreAreaOne.setItems(storeLocations.toArray(new String[]{}));
 		ant1StoreAreaOne.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
@@ -461,22 +463,26 @@ public class RFIDConfigurationManager {
 		
 		Label lblAnd1 = new Label(shlRfidConfigurationManager, SWT.NONE);
 		lblAnd1.setAlignment(SWT.CENTER);
-		lblAnd1.setBounds(423, 100, 55, 15);
-		lblAnd1.setText("&&");
+		lblAnd1.setBounds(436, 111, 55, 15);
+		lblAnd1.setText("And");
 		
 		ant1StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant1StoreAreaTwo.setEnabled(ant1IsEnabled.getSelection());
-		ant1StoreAreaTwo.setBounds(494, 97, 91, 23);
+		ant1StoreAreaTwo.setBounds(547, 108, 91, 23);
 		ant1StoreAreaTwo.setItems(COMMON_LOCATIONS);
 		ant1StoreAreaTwo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
 				ant1InsertionLocation.setItems(new String[] { ant1StoreAreaOne.getText(), ant1StoreAreaTwo.getText() });
 			}
 		});
+		
+		lblAddItemsTo_1 = new Label(shlRfidConfigurationManager, SWT.NONE);
+		lblAddItemsTo_1.setText("Add Items To");
+		lblAddItemsTo_1.setBounds(436, 151, 85, 15);
 			
 		ant1InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.NONE);
 		ant1InsertionLocation.setEnabled(ant1IsEntryPoint.getSelection());
-		ant1InsertionLocation.setBounds(611, 97, 75, 21);
+		ant1InsertionLocation.setBounds(563, 148, 75, 21);
 	}
 
 	/**
@@ -486,7 +492,7 @@ public class RFIDConfigurationManager {
 	private void createLoadButton() {
 		btnLoadStuff = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnLoadStuff.setToolTipText("Load existing configuration");
-		btnLoadStuff.setBounds(37, 560, 120, 25);
+		btnLoadStuff.setBounds(37, 736, 120, 25);
 		btnLoadStuff.setText("Load Configuration");
 		btnLoadStuff.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
@@ -504,7 +510,7 @@ public class RFIDConfigurationManager {
 	private void createSaveButton() {
 		btnSaveStuff = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnSaveStuff.setToolTipText("Save the entered configuration for later use");
-		btnSaveStuff.setBounds(37, 516, 120, 25);
+		btnSaveStuff.setBounds(37, 692, 120, 25);
 		btnSaveStuff.setText("Save Configuration");
 		btnSaveStuff.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
@@ -524,7 +530,7 @@ public class RFIDConfigurationManager {
 	private void createExecuteButton() {
 		btnRunAway = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnRunAway.setToolTipText("Will run Java Connector with current settings");
-		btnRunAway.setBounds(494, 560, 75, 25);
+		btnRunAway.setBounds(494, 736, 75, 25);
 		btnRunAway.setText("Execute");
 		btnRunAway.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent arg0) {
@@ -541,7 +547,7 @@ public class RFIDConfigurationManager {
 	private void createQuitButton() {
 		btnKillSelf = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnKillSelf.setToolTipText("Closes the application");
-		btnKillSelf.setBounds(611, 560, 75, 25);
+		btnKillSelf.setBounds(612, 736, 75, 25);
 		btnKillSelf.setText("Quit");
 		btnKillSelf.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
@@ -560,7 +566,7 @@ public class RFIDConfigurationManager {
 		shlRfidConfigurationManager = new Shell();
 		shlRfidConfigurationManager.setImage(null);
 		shlRfidConfigurationManager.setToolTipText("You are reading the tooltip text");
-		shlRfidConfigurationManager.setSize(750, 700);
+		shlRfidConfigurationManager.setSize(750, 900);
 		shlRfidConfigurationManager.setText("RFID Configuration Manager");
 		shlRfidConfigurationManager.setLayout(null);
 		shlRfidConfigurationManager.setFocus();
