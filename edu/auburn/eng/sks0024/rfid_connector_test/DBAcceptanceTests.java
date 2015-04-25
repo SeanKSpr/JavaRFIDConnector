@@ -17,6 +17,7 @@ public class DBAcceptanceTests {
 	private PostgresConnector conn;
 	private Connection c;
 	private String[] locations;
+	@SuppressWarnings("unused")
 	private HashMap<StoreConfigurationKey, TagLocation> map;
 	private JavaRFIDConnector connector;
 	

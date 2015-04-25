@@ -23,7 +23,6 @@ public class EPCConverterTest {
 		
 		String UPC = EPCConverter.getUPC(testList);
 		assertEquals(UPC, "051071851756");
-		long upcLong = Long.parseLong(UPC);
 	}
 	
 	@Test
