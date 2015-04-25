@@ -167,7 +167,7 @@ public class RFIDConfigurationManager {
 			public void widgetSelected(SelectionEvent arg0) {
 			}
 		});
-		btnEnterStoreLayout.setBounds(37, 780, 120, 25);
+		btnEnterStoreLayout.setBounds(182, 692, 120, 25);
 		btnEnterStoreLayout.setText("Enter Store Layout");
 		btnEnterStoreLayout.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
@@ -530,7 +530,7 @@ public class RFIDConfigurationManager {
 	private void createExecuteButton() {
 		btnRunAway = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnRunAway.setToolTipText("Will run Java Connector with current settings");
-		btnRunAway.setBounds(494, 736, 75, 25);
+		btnRunAway.setBounds(494, 692, 75, 25);
 		btnRunAway.setText("Execute");
 		btnRunAway.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent arg0) {
@@ -547,7 +547,7 @@ public class RFIDConfigurationManager {
 	private void createQuitButton() {
 		btnKillSelf = new Button(shlRfidConfigurationManager, SWT.NONE);
 		btnKillSelf.setToolTipText("Closes the application");
-		btnKillSelf.setBounds(612, 736, 75, 25);
+		btnKillSelf.setBounds(612, 692, 75, 25);
 		btnKillSelf.setText("Quit");
 		btnKillSelf.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
@@ -566,7 +566,7 @@ public class RFIDConfigurationManager {
 		shlRfidConfigurationManager = new Shell();
 		shlRfidConfigurationManager.setImage(null);
 		shlRfidConfigurationManager.setToolTipText("You are reading the tooltip text");
-		shlRfidConfigurationManager.setSize(750, 900);
+		shlRfidConfigurationManager.setSize(750, 830);
 		shlRfidConfigurationManager.setText("RFID Configuration Manager");
 		shlRfidConfigurationManager.setLayout(null);
 		shlRfidConfigurationManager.setFocus();
