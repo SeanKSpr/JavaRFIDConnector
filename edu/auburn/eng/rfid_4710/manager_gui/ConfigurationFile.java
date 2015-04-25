@@ -18,8 +18,9 @@ public interface ConfigurationFile {
 	 * @param hostIP The IP of the Impinj Reader
 	 * @param antennaList A list of Antennas which contain all the setup information for each RFID Antenna/Readerr
 	 * @param serverInfo Information relating to connecting to a database (currently owner, url, password)
+	 * @param storeLocations TODO
 	 */
-	public void saveConfiguration(String hostIP, List<Antenna> antennaList, ServerInfo serverInfo);
+	public void saveConfiguration(String hostIP, List<Antenna> antennaList, ServerInfo serverInfo, List<String> storeLocations);
 	public boolean loadConfiguration() throws LoadCancelledException;
 	public String getConfigFilePath();
 }

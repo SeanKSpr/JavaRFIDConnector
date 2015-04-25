@@ -405,7 +405,7 @@ public class DisplayUserSetupTest {
 					ArrayList<Antenna> antennaList = (ArrayList<Antenna>) getAntennaListFromFields();				
 					JSONConfigurationFile js = new JSONConfigurationFile();
 					ServerInfo si = getServerInfoFromFields();
-					js.saveConfiguration(hostnameText.getText(), antennaList, si); 
+					js.saveConfiguration(hostnameText.getText(), antennaList, si, null); 
 				}
 				public void mouseUp(MouseEvent e) { }
 				public void mouseDoubleClick(MouseEvent e) { }

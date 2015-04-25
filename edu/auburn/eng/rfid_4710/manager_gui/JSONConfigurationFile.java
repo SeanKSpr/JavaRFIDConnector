@@ -17,6 +17,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 /**
  * JSONConfigurationFile is an implementation of the ConfigurationFile interface which utilizes the JSON standard
@@ -32,9 +33,9 @@ public class JSONConfigurationFile implements ConfigurationFile{
 	private JsonObject jsonConfig;
 	
 	@Override
-	public void saveConfiguration(String hostIP, List<Antenna> antennaList, ServerInfo serverInfo) {
+	public void saveConfiguration(String hostIP, List<Antenna> antennaList, ServerInfo serverInfo, List<String> storeLocations) {
 		JsonObject jsonObj = new JsonObject();
-		jsonObj = createJSONConfigFile(hostIP, antennaList, serverInfo);
+		jsonObj = createJSONConfigFile(hostIP, antennaList, serverInfo, storeLocations);
 		try {
 			saveJsonObjAsJSONFile(jsonObj);
 		} catch (IOException e) {
@@ -106,16 +107,26 @@ public class JSONConfigurationFile implements ConfigurationFile{
 	 * @param serverInfo Information about the database to be connected to
 	 * @return
 	 */
-	private JsonObject createJSONConfigFile(String hostIP, List<Antenna> antennaList, ServerInfo serverInfo) {
+	private JsonObject createJSONConfigFile(String hostIP, List<Antenna> antennaList, ServerInfo serverInfo, List<String> storeLocations) {
 		JsonObject configurationFileFields = new JsonObject();
 		JsonObject configurationFile = new JsonObject();
 		configurationFileFields.addProperty("readerHost", hostIP);		
 		addAntennaListToJSON(configurationFileFields, antennaList);
 		addServerSetupToJSON(configurationFileFields, serverInfo);
+		addStoreLocations(configurationFileFields, storeLocations);
 		configurationFile.add("configurationFile", configurationFileFields);
 		return configurationFile;
 	}
 	
+	private void addStoreLocations(JsonObject configurationFileFields,
+			List<String> storeLocations) {
+		JsonArray jsonStoreLocations = new JsonArray();
+		for (String storelocation : storeLocations) {
+			jsonStoreLocations.add(new JsonPrimitive(storelocation));
+		}
+		configurationFileFields.add("storeLocations", jsonStoreLocations);
+	}
+
 	/**
 	 * Private helper method used by the createJSONConfigFile which parses the ServerInfo into JSON and adds it to the passed
 	 * JsonObject.
@@ -280,7 +291,17 @@ public class JSONConfigurationFile implements ConfigurationFile{
 		}
 		return serverInfo;
 	}
-
+	
+	public List<String> getStoreLocations() {
+		ArrayList<String> storeLocations = new ArrayList<String>();
+		JsonObject configurationFile = jsonConfig.get("configurationFile").getAsJsonObject();
+		JsonArray storeLocationsInJson = configurationFile.get("storeLocations").getAsJsonArray();
+		for (JsonElement location : storeLocationsInJson) {
+			storeLocations.add(location.getAsString());
+		}
+		return storeLocations;
+	}
+	
 	public static void main(String[] args) throws IOException {
 		JSONConfigurationFile configFile = new JSONConfigurationFile();
 		String hostName = null;
@@ -294,7 +315,7 @@ public class JSONConfigurationFile implements ConfigurationFile{
 		} catch (LoadCancelledException e) {
 			e.printStackTrace();
 		}
-		configFile.saveConfiguration(hostName, antennaList, serverInfo);
+		configFile.saveConfiguration(hostName, antennaList, serverInfo, null);
 
 		configFile.displayErrorBox("Opening File", "Error message goes here");
 		configFile.getConfigFilePath();
