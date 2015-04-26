@@ -1,5 +1,5 @@
 # JavaRFIDConnector Description
-Use Java and OctaneSDK to connect RFID tag information to a PostgreSQL Database
+Use Java, Impinj OctaneSDK, and a PostgreSQL database in order to develop a system in which you can keep track of where products are located within a store based on their RFID tag.
 
 # JavaRFIDConnector Installation Guide
 ## Hardware
@@ -26,26 +26,27 @@ Use Java and OctaneSDK to connect RFID tag information to a PostgreSQL Database
 
 ## Software 
 1. Download and install Eclipse - https://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/lunasr1a
-2. Download OctaneSDK for Java - https://support.impinj.com/hc/en-us/articles/202755268-Octane-SDK#java
+2. Download and install WindowBuilder for Eclipse - https://eclipse.org/windowbuilder/
+3. Download OctaneSDK for Java - https://support.impinj.com/hc/en-us/articles/202755268-Octane-SDK#java
   * Unzip OctaneSDK into a directory of your choosing
-3. Download PostgreSQL JDBC package - https://jdbc.postgresql.org/download/postgresql-9.4-1200.jdbc41.jar
+4. Download PostgreSQL JDBC package - https://jdbc.postgresql.org/download/postgresql-9.4-1200.jdbc41.jar
   * Place the .jar file in a directory of your choosing
-4. Clone JavaRFIDConnector to your desktop
-5. Open up Eclipse
+5. Clone the JavaRFIDConnector github project to your desktop
+6. Open up Eclipse
 	* May need to install EGit plugin http://eclipse.org/egit/download/
-6. Click on File at the top of the screen
-7. Click on import... on the dropdown menu
-8. Click on Git as your import source  
+7. Click on File at the top of the screen
+8. Click on import... on the dropdown menu
+9. Click on Git as your import source  
   1. Double click Projects from Git
   2. Double click Existing local repository
   3. Click Add..
   4. Click on Browse.. and navigate to the directory you cloned JavaRFIDConnector 
   5. Click Ok and you should see something like "..\JavaRFIDConnector\.git"
   6. Make sure the checkbox is checked for the JavaRFIDConnector and hit Finish
-9. Now you should see an entry for the JavaRFIDConnector. Double click it
+10. Now you should see an entry for the JavaRFIDConnector. Double click it
   1. Select Import as general project and click next
   2. The name should be JavaRFIDConnector so click Finish
-10. Navigate to the location of the imported JavaRFIDConnector - ..\JavaRFIDConnector
+11. Navigate to the location of the imported JavaRFIDConnector - ..\JavaRFIDConnector
   1. Open up the .project file with a text editor (like Notepad)
   2. You should see something like 
   ```
@@ -80,9 +81,9 @@ Change it to look like
 </projectDescription>
 ```
 And then save the .project file
-11. Now in the Eclipse window right click JavaRFIDConnector and click Refresh on the drop down menu
+12. Now in the Eclipse window right click JavaRFIDConnector and click Refresh on the drop down menu
   * Double click the JavaRFIDConnector project folder in the left-hand workspace/project window and you should see 3 packages
-12. Eclipse will say that there are errors in the RFID.src.edu.auburn.eng.sks0024.rfid_connector_test package
+13. Eclipse will say that there are errors in the RFID.src.edu.auburn.eng.sks0024.rfid_connector_test package
   * Double click that package to see a list of unit test files
   * In one of the unit test files hover over the @Test annotation and you should get a message which says
   
@@ -90,7 +91,7 @@ And then save the .project file
   Test cannot be resolved to a type 
   ```
   * In that window click Add JUnit 4 library to the build path
-13. Now we need to add a few libraries to the project so right click on JavaRFIDConnector and click properties on the drop down menu
+14. Now we need to add a few libraries to the project so right click on JavaRFIDConnector and click properties on the drop down menu
   1. In the Properties window click on Java Build Path
   2. Click on the Libraries tab
     1. Click Add Library... and choose JRE System Library and click Finish
@@ -106,7 +107,12 @@ And then save the .project file
     11. Finally click Ok
   3. Back in the User Library Window check mark both OctaneSDK and PostgreSQL JDBC and click Finish
   4. Click Ok on the JavaRFIDConnector Properties window
-14. You might need to Refactor the names of the packages to 
+15. You might need to Refactor the names of the packages to 
+
+```
+edu.auburn.eng.rfid_4710.manager_gui
+```
+and
 ```
 edu.auburn.eng.sks0024.rfid_connector
 ```
