@@ -239,7 +239,7 @@ public class RFIDConfigurationManager {
 		lblBetwixt_4.setText("Between");
 		lblBetwixt_4.setBounds(206, 368, 55, 15);
 		
-		ant4StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant4StoreAreaOne = new Combo(shlRfidConfigurationManager,  SWT.READ_ONLY);
 		ant4StoreAreaOne.setEnabled(ant4IsEnabled.getSelection());
 		ant4StoreAreaOne.setBounds(301, 365, 91, 23);
 		ant4StoreAreaOne.setItems(COMMON_LOCATIONS);
@@ -254,7 +254,7 @@ public class RFIDConfigurationManager {
 		lblAnd4.setText("And");
 		lblAnd4.setBounds(436, 368, 55, 15);
 		
-		ant4StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant4StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant4StoreAreaTwo.setEnabled(ant4IsEnabled.getSelection());
 		ant4StoreAreaTwo.setBounds(547, 365, 91, 23);
 		ant4StoreAreaTwo.setItems(COMMON_LOCATIONS);
@@ -268,7 +268,7 @@ public class RFIDConfigurationManager {
 		lblAddItemsTo_4.setBounds(436, 413, 85, 15);
 		lblAddItemsTo_4.setText("Add Items To");
 		
-		ant4InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant4InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant4InsertionLocation.setEnabled(ant4IsEntryPoint.getSelection());
 		ant4InsertionLocation.setBounds(562, 410, 76, 21);
 		ant4InsertionLocation.setItems(COMMON_LOCATIONS);
@@ -312,7 +312,7 @@ public class RFIDConfigurationManager {
 		lblBetwixt_3.setText("Between");
 		lblBetwixt_3.setBounds(206, 281, 55, 15);
 		
-		ant3StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant3StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant3StoreAreaOne.setEnabled(ant3IsEnabled.getSelection());
 		ant3StoreAreaOne.setBounds(301, 278, 91, 23);
 		ant3StoreAreaOne.setItems(COMMON_LOCATIONS);
@@ -327,7 +327,7 @@ public class RFIDConfigurationManager {
 		lblAnd3.setText("And");
 		lblAnd3.setBounds(436, 281, 55, 15);
 		
-		ant3StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant3StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant3StoreAreaTwo.setEnabled(ant3IsEnabled.getSelection());
 		ant3StoreAreaTwo.setBounds(547, 278, 91, 23);
 		ant3StoreAreaTwo.setItems(COMMON_LOCATIONS);
@@ -341,7 +341,7 @@ public class RFIDConfigurationManager {
 		lblAddItemsTo_3.setText("Add Items To");
 		lblAddItemsTo_3.setBounds(436, 323, 85, 15);
 		
-		ant3InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant3InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant3InsertionLocation.setEnabled(ant3IsEntryPoint.getSelection());
 		ant3InsertionLocation.setBounds(562, 320, 76, 21);
 		ant3InsertionLocation.setItems(COMMON_LOCATIONS);
@@ -386,7 +386,7 @@ public class RFIDConfigurationManager {
 		lblBetwixt_2.setText("Between");
 		lblBetwixt_2.setBounds(206, 193, 55, 15);
 		
-		ant2StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant2StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant2StoreAreaOne.setEnabled(ant2IsEnabled.getSelection());
 		ant2StoreAreaOne.setBounds(301, 190, 91, 23);
 		ant2StoreAreaOne.setItems(COMMON_LOCATIONS);
@@ -401,7 +401,7 @@ public class RFIDConfigurationManager {
 		lblAnd2.setText("And");
 		lblAnd2.setBounds(436, 193, 55, 15);
 		
-		ant2StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant2StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant2StoreAreaTwo.setEnabled(ant2IsEnabled.getSelection());
 		ant2StoreAreaTwo.setBounds(547, 190, 91, 23);
 		ant2StoreAreaTwo.setItems(COMMON_LOCATIONS);
@@ -415,7 +415,7 @@ public class RFIDConfigurationManager {
 		lblAddItemsTo_2.setText("Add Items To");
 		lblAddItemsTo_2.setBounds(436, 237, 85, 15);
 		
-		ant2InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant2InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant2InsertionLocation.setEnabled(ant2IsEntryPoint.getSelection());
 		ant2InsertionLocation.setBounds(562, 234, 76, 21);
 	}
@@ -459,7 +459,7 @@ public class RFIDConfigurationManager {
 		lblBetwixt_1.setBounds(206, 111, 55, 15);
 		lblBetwixt_1.setText("Between");
 		
-		ant1StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant1StoreAreaOne = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant1StoreAreaOne.setEnabled(ant1IsEnabled.getSelection());
 		ant1StoreAreaOne.setBounds(301, 108, 91, 23);
 		ant1StoreAreaOne.setItems(storeLocations.toArray(new String[]{}));
@@ -474,7 +474,7 @@ public class RFIDConfigurationManager {
 		lblAnd1.setBounds(436, 111, 55, 15);
 		lblAnd1.setText("And");
 		
-		ant1StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant1StoreAreaTwo = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant1StoreAreaTwo.setEnabled(ant1IsEnabled.getSelection());
 		ant1StoreAreaTwo.setBounds(547, 108, 91, 23);
 		ant1StoreAreaTwo.setItems(COMMON_LOCATIONS);
@@ -488,7 +488,7 @@ public class RFIDConfigurationManager {
 		lblAddItemsTo_1.setText("Add Items To");
 		lblAddItemsTo_1.setBounds(436, 151, 85, 15);
 			
-		ant1InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.NONE);
+		ant1InsertionLocation = new Combo(shlRfidConfigurationManager, SWT.READ_ONLY);
 		ant1InsertionLocation.setEnabled(ant1IsEntryPoint.getSelection());
 		ant1InsertionLocation.setBounds(563, 148, 75, 21);
 	}

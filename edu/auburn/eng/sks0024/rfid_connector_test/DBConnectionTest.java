@@ -447,6 +447,6 @@ public class DBConnectionTest {
 		String password = "LVX-RUHYaGT1iSjenf3OX-WbAI";
 		c = connector.open(url, owner, password);
 		
-		connector.addTagToDatabase(51071851756L, 111L, c, "in_store");
+		connector.addTagToDatabase(51071851756L, 112L, c, "Store room A");
 	}
 }
