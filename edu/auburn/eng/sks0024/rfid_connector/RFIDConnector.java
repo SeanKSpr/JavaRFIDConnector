@@ -31,6 +31,7 @@ public interface RFIDConnector extends Runnable{
 	 * @param hostname - The IP address/hostname of the hardware RFID reader
 	 * @param serverInformation The server information needed to connect to the UPC database
 	 * @param antennaList List of Antenna objects to be added to be used during the execution
+	 * @throws Exception Throws a generic exception if any of the passed parameters are found to be invalid.
 	 */
-	public void connectorBootstrap(String hostname, ServerInfo serverInformation, List<Antenna> antennaList);
+	public void connectorBootstrap(String hostname, ServerInfo serverInformation, List<Antenna> antennaList) throws Exception;
 }
