@@ -188,7 +188,6 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	        if (!dbLocation.equalsIgnoreCase(newLoc) && !dbLocation.equalsIgnoreCase("out of store")) {
 		        String sql = "UPDATE PRODUCTS set LOCATION = '" + newLoc + "' where ID=" + id + ";";
 				stmt.executeUpdate(sql);
-				
 				stmt.close();
 				c.commit();
 				return true;

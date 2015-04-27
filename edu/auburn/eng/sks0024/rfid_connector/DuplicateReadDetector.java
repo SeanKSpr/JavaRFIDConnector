@@ -51,8 +51,11 @@ public final class DuplicateReadDetector {
 	public static synchronized String getTagBatchTimeInfo() {
 		String timeList = "";
 		for (TagWrapper tw : tagBatch) {
-			timeList += "EPC: " + tw.getTag().getEpc().toString() +  " Time: " + tw.getTimeSeen() + "\n"
-					+ "Antenna ID: " + tw.getLocationScanned().toString();
+			String upc = EPCConverter.getUPC(tw.getTag().getEpc().toWordList());
+			timeList += "EPC: " + tw.getTag().getEpc().toString() 
+					+ " UPC: " + upc 
+					+ " Time: " + tw.getTimeSeen()
+					+ " Antenna Location: " + tw.getLocationScanned().toString() + "\n";
 		}
 		timeList += "\n**********END**********\n";
 		return timeList;

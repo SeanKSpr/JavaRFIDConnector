@@ -325,6 +325,7 @@ public class JavaRFIDConnector implements RFIDConnector {
 
         settings.setReaderMode(ReaderMode.AutoSetDenseReader);
         AntennaConfigGroup antennas = settings.getAntennas();
+        antennas.disableAll();
         antennas.enableById(antennaIDs);
         for (short antennaID : antennaIDs) {
 	        antennas.getAntenna(antennaID).setIsMaxRxSensitivity(false);
