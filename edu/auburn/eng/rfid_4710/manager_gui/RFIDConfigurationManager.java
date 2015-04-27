@@ -782,6 +782,7 @@ public class RFIDConfigurationManager {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			System.out.println("Failed to bootstrap connector");
+			return;
 		}
 		Thread thread = new Thread(jrc);
 		thread.start();
