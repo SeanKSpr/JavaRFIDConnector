@@ -82,18 +82,15 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 * are thrown if the host name of the reader or its location haven't been set.
 	 */
     public void run() {
-        try {          
-            if (hostname == null) {
-                throw new Exception("Must specify the hostname property of the reader");
-            }
-            	short[] antennaListForConfiguring = getAntennaListForConfiguring();
-	            configureReaderSettings(antennaListForConfiguring, reader);
-	            reader.start();
-	            Scanner s = new Scanner(System.in);
-	            s.nextLine();
-	            s.close();
-	            reader.stop();
-	            reader.disconnect();
+        try {
+            short[] antennaListForConfiguring = getAntennaListForConfiguring();
+	        configureReaderSettings(antennaListForConfiguring, reader);
+            reader.start();
+            Scanner s = new Scanner(System.in);
+            s.nextLine();
+            s.close();
+            reader.stop();
+            reader.disconnect();
             
         }catch (OctaneSdkException ex) {
             System.out.println(ex.getMessage());
@@ -152,19 +149,55 @@ public class JavaRFIDConnector implements RFIDConnector {
 		this.readerName = readerName;
 	}
 	
-	/**
-	 * Bootstrapping function which is required to setup the hostname of the impinj rfid reader, the 
-	 * server information needed by the PostgresConnector, and schedule the DBUpdateTimer so that we
-	 * send new Tags to the database periodically.
-	 * @param antennaList 
-	 */
-	public void connectorBootstrap(String hostname, ServerInfo serverInformation, List<Antenna> antennaList) {
+	public void connectorBootstrap(String hostname, ServerInfo serverInformation, List<Antenna> antennaList) throws Exception {
+		if (hostname == null || hostname.equals("")) {
+            throw new Exception("Must specify the hostname property of the reader");
+        }
+		if (serverInformation != null ) {
+			if (serverInformation.getUrl() == null || serverInformation.getUrl().equals("")) {
+				throw new Exception("Must specify the URL property of the server information");
+			}
+			if (serverInformation.getOwner() == null || serverInformation.getOwner().equals("")) {
+				throw new Exception("Must specify the owner/username property of the server information");
+			}
+			if (serverInformation.getPassword() == null || serverInformation.getPassword().equals("")) {
+				throw new Exception("Must specify the password property of the server information");
+			}
+		}
+		else {
+			throw new Exception("Must specify database information");
+		}
+		if (antennaList.isEmpty()) {
+			throw new Exception("Must specify at least one Antenna");
+		}
+		else {
+			if (!containsConfigredAntenna(antennaList)){
+				throw new Exception("Must have at least one Antenna properly configured");
+			}
+		}
 		setupDatabaseUpdater();
 		this.hostname = hostname;
 		setupDatabaseInformation(serverInformation);
 		setupAntennas(antennaList);
 		setupStoreConfigMap();
 	}
+	
+	/**
+	 * 
+	 * @param antennaList List of antennas which are connected to the Impinj RFID Scanner and have been enabled.
+	 * @return True if the antennaList contains at least one antenna with its store area one and two set; false otherwise
+	 */
+	private boolean containsConfigredAntenna(List<Antenna> antennaList) {
+ 		for (Antenna antenna : antennaList) {
+			if (antenna.getStoreAreaOne() != null && !antenna.getStoreAreaOne().equals("")) {
+				if (antenna.getStoreAreaTwo() != null && !antenna.getStoreAreaTwo().equals("")) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	
 	/**
 	 * Sets up the store configuration map. This function is to be called by the connectorBootstrap and is how the store configuration map

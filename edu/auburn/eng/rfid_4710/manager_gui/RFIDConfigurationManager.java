@@ -777,7 +777,12 @@ public class RFIDConfigurationManager {
 		List<Antenna> antennaList = getAntennaListFromFields();			
 		String hostname = hostnameText.getText();
 		ServerInfo serverInfo = getServerInfoFromFields();
-		jrc.connectorBootstrap(hostname, serverInfo, antennaList);
+		try {
+			jrc.connectorBootstrap(hostname, serverInfo, antennaList);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println("Failed to bootstrap connector");
+		}
 		Thread thread = new Thread(jrc);
 		thread.start();
 	}
