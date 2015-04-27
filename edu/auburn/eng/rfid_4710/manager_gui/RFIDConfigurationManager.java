@@ -695,6 +695,8 @@ public class RFIDConfigurationManager {
 		ant2StoreAreaOne.setEnabled(ant2IsEnabled.getSelection());
 		ant2StoreAreaTwo.setEnabled(ant2IsEnabled.getSelection());
 		ant2IsEntryPoint.setEnabled(ant2IsEnabled.getSelection());
+		ant2InsertionLocation.setEnabled(ant2IsEnabled.getSelection() && ant2IsEntryPoint.getSelection());
+		ant2InsertionLocation.setText(antennaTwo.getInsertionLocation());
 	}
 	
 	/**
@@ -709,6 +711,8 @@ public class RFIDConfigurationManager {
 		ant3StoreAreaOne.setEnabled(ant3IsEnabled.getSelection());
 		ant3StoreAreaTwo.setEnabled(ant3IsEnabled.getSelection());
 		ant3IsEntryPoint.setEnabled(ant3IsEnabled.getSelection());
+		ant3InsertionLocation.setEnabled(ant3IsEnabled.getSelection() && ant3IsEntryPoint.getSelection());
+		ant3InsertionLocation.setText(antennaThree.getInsertionLocation());
 	}
 	
 	/**
@@ -723,6 +727,8 @@ public class RFIDConfigurationManager {
 		ant4StoreAreaOne.setEnabled(ant4IsEnabled.getSelection());
 		ant4StoreAreaTwo.setEnabled(ant4IsEnabled.getSelection());
 		ant4IsEntryPoint.setEnabled(ant4IsEnabled.getSelection());
+		ant4InsertionLocation.setEnabled(ant4IsEnabled.getSelection() && ant4IsEntryPoint.getSelection());
+		ant4InsertionLocation.setText(antennaFour.getInsertionLocation());
 	}
 	
 	/**
