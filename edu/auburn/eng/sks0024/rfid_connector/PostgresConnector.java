@@ -41,7 +41,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			connectionProperties.setProperty("url", serverInformation.getUrl());
 			c.setClientInfo(connectionProperties);
 			c.setAutoCommit(false);
-			System.out.println("Opened database successfully");
+			//System.out.println("Opened database successfully");
 		} catch (Exception e) {
 			System.out.println("Exception occurred while opening db connection");
 		}
@@ -67,7 +67,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			connectionProperties.put("url", url);
 			c.setClientInfo(connectionProperties);
 			c.setAutoCommit(false);
-			System.out.println("Opened database successfully");
+			//System.out.println("Opened database successfully");
 		} catch (Exception e) {
 			System.out.println("Exception occurred while opening db connection");
 		}
@@ -187,7 +187,6 @@ public class PostgresConnector implements RFIDDatabaseManager {
 			//If invalid combination of reader location and current location, new location = current location, so we fail this condition.
 	        if (!dbLocation.equalsIgnoreCase(newLoc) && !dbLocation.equalsIgnoreCase("out of store")) {
 		        String sql = "UPDATE PRODUCTS set LOCATION = '" + newLoc + "' where ID=" + id + ";";
-		        System.out.println(sql);
 				stmt.executeUpdate(sql);
 				
 				stmt.close();

@@ -733,6 +733,8 @@ public class RFIDConfigurationManager {
 		try {js.loadConfiguration();} catch (LoadCancelledException ex) { System.out.println(ex); return; }
 		hostnameText.setText(js.getHostname());
 		ServerInfo serverInfo = js.getServerInfo();
+		storeLocations = (ArrayList<String>) js.getStoreLocations();
+		populateAndResetDDLs();
 		ArrayList<Antenna> antennaList = js.getAntennaList();
 		loadAntennaProperties(antennaList);
 		loadServerInfoProperties(serverInfo);

@@ -13,6 +13,7 @@ import java.util.TimerTask;
  */
 public class DBUpdateTimer extends TimerTask {
 	public static long TIMER_DELAY = 10000;
+	Connection dbConnection = null;
 	@Override
 	/**
 	 * This function is called whenever the DBUpdateTimer is awake. It simply updates the database with the latest batch 
@@ -29,7 +30,9 @@ public class DBUpdateTimer extends TimerTask {
 	 */
 	public void updateDatabase() {
 		RFIDDatabaseManager dbManager = new PostgresConnector();
-		Connection dbConnection = dbManager.open();
+		if (dbConnection == null) {
+			dbConnection = dbManager.open();
+		}
 		
 		Collection<TagWrapper> tagBatch = DuplicateReadDetector.getBatchCopy();
 		for (TagWrapper tag : tagBatch) {
@@ -39,9 +42,6 @@ public class DBUpdateTimer extends TimerTask {
 					dbManager.insertTag(tag, dbConnection, tag.getLocationScanned().getInsertionPoint().getName());
 				}
 			};
-		}
-		if (tagBatch.isEmpty()) {
-			System.out.println("Nothing in the tag batch");
 		}
 	}
 	

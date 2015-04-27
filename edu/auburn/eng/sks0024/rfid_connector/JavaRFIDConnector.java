@@ -83,7 +83,6 @@ public class JavaRFIDConnector implements RFIDConnector {
 	 */
     public void run() {
         try {          
-        	System.out.println("We running this shit now");
             if (hostname == null) {
                 throw new Exception("Must specify the hostname property of the reader");
             }

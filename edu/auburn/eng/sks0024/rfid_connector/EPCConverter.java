@@ -25,7 +25,8 @@ public final class EPCConverter {
 	 * @return The UPC corresponding to the input EPC as a String
 	 */
 	public static String getUPC(List<Integer> epc) {
-		String companyPrefix, productReference, UPC;
+		String companyPrefix, productReference, UPC = null;
+		try {
 		List<Integer> epcCopy = new ArrayList<Integer>(epc);
 		extractHeader(epcCopy);
 		extractFilter(epcCopy);
@@ -45,6 +46,10 @@ public final class EPCConverter {
 		
 		int checkDigit = generateCheckDigit(UPC);
 		UPC += checkDigit;
+		} catch(NumberFormatException e) {
+			System.out.println("EPC: " + epc);
+			e.printStackTrace();
+		}
 		return UPC;
 		
 	}
@@ -57,6 +62,7 @@ public final class EPCConverter {
 	 */
 	private static String extractProductReference(List<Integer> epc,
 			int productRefBitLength) {
+		int productRefDecimalLength = productRefBitLength / 4;
 		String productRefBinary = "", productRefDecimal;
 		int leftOverBits;
 		String leadingZeroCheck;
@@ -79,7 +85,11 @@ public final class EPCConverter {
 		
 		leadingZeroCheck = leadingZeroCheck.substring(10 - leftOverBits, 10);
 		productRefBinary += leadingZeroCheck;
-		productRefDecimal = "" + Integer.parseInt(productRefBinary, 2);
+		
+		productRefDecimal = "" + Long.parseLong(productRefBinary, 2);
+		while (productRefDecimal.length() < productRefDecimalLength) {
+			productRefDecimal = "0" + productRefDecimal;
+		}
 		return productRefDecimal;
 	}
 	
@@ -92,6 +102,7 @@ public final class EPCConverter {
 	 */
 	private static String extractCompanyPrefix(List<Integer> epc,
 			int prefixBitLength) {
+		int prefixLengthInDecimal = prefixBitLength / 4;
 		String prefixBinary = "", prefixDecimal;
 		int leftOverBits, fullEntries;
 		
@@ -113,7 +124,10 @@ public final class EPCConverter {
 		}
 		tempLeftOverBits = tempLeftOverBits.substring(0, leftOverBits);
 		prefixBinary += tempLeftOverBits;
-		prefixDecimal = "" + Integer.parseInt(prefixBinary, 2);
+		prefixDecimal = "" + Long.parseLong(prefixBinary, 2);
+		while (prefixDecimal.length() < prefixLengthInDecimal) {
+			prefixDecimal = "0" + prefixDecimal;
+		}
 		return prefixDecimal;
 	}
 	
