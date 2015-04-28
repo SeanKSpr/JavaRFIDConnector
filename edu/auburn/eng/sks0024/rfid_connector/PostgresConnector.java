@@ -173,7 +173,7 @@ public class PostgresConnector implements RFIDDatabaseManager {
 	
 	public boolean updateTagInDatabase(long upc, long serial, ReaderLocation rl, Connection c) {
 		try {
-			if (findTagInDatabase(upc, serial, c)) {
+			if (!findTagInDatabase(upc, serial, c)) {
 				return false;
 			}
 			
