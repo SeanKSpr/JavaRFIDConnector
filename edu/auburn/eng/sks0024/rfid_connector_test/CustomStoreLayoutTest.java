@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.swt.SWT;
@@ -32,8 +33,10 @@ import edu.auburn.eng.rfid_4710.manager_gui.JSONConfigurationFile;
 import edu.auburn.eng.rfid_4710.manager_gui.LoadCancelledException;
 import edu.auburn.eng.rfid_4710.manager_gui.ServerInfo;
 import edu.auburn.eng.sks0024.rfid_connector.JavaRFIDConnector;
+import edu.auburn.eng.sks0024.rfid_connector.StoreConfigurationKey;
+import edu.auburn.eng.sks0024.rfid_connector.TagLocation;
 
-public class GUIBackendTest {
+public class CustomStoreLayoutTest {
 	static void main(String[] args) {
 		ConfigManagerForTest.main(null);
 	}
@@ -778,26 +781,26 @@ public class GUIBackendTest {
 		/**
 		 * Pulls information from the hostname, antenna, and server information GUI fields 
 		 * in order to set up the JavaRFIDConnector and launch it.
+		 * @throws Exception 
 		 */
 		private void launchJavaRFIDConnector() {
+			JavaRFIDConnector connector = new JavaRFIDConnector();
 			List<Antenna> antennaList = getAntennaListFromFields();			
 			String hostname = hostnameText.getText();
 			ServerInfo serverInfo = getServerInfoFromFields();
-			JavaRFIDConnector connector = new JavaRFIDConnector();
-			connector.setHostname(hostname);
-			
+			try {
+				connector.testBootstrap(hostname, serverInfo, antennaList);
+			} catch (Exception e) {
+				System.out.println("Please fill out all the fields (including server info, hostname, and at least one antenna)");
+			}
 			System.out.println("**************Store Locations**************");
 			for (String location : storeLocations) {
 				System.out.println(location);
 			}
-			System.out.println("**************Antenna Information**************");
-			for (Antenna antenna : antennaList) {
-				System.out.println(antenna);
+			System.out.println("**************Defined Reader Locations and Transitions**************");
+			for (Entry<StoreConfigurationKey, TagLocation> mapEntry : JavaRFIDConnector.getStoreConfigurationMap().entrySet()) {
+				System.out.println(mapEntry.getKey() + " ---> New Location: " + mapEntry.getValue());
 			}
-			System.out.println("**************Impinj RFID Reader IP**************");
-			System.out.println(hostname);
-			System.out.println("**************Server Information**************");
-			System.out.println(serverInfo);
 			
 		}
 		

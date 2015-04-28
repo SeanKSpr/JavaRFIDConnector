@@ -183,6 +183,46 @@ public class JavaRFIDConnector implements RFIDConnector {
 	}
 	
 	/**
+	 * A bootstrapping function for testing and debugging purposes. Does everything the production bootstrap does except for setting up the 
+	 * database update timer. Thus all database calls after set up must be made manually.
+	 * @param hostname Hostname/IP of the Impinj Reader
+	 * @param serverInformation ServerInfo object containing user name, password, and url to connect to a database
+	 * @param antennaList List of Antenna objects to be configured 
+	 * @throws Exception
+	 */
+	public void testBootstrap(String hostname, ServerInfo serverInformation, List<Antenna> antennaList) throws Exception {
+		if (hostname == null || hostname.equals("")) {
+            throw new Exception("Must specify the hostname property of the reader");
+        }
+		if (serverInformation != null ) {
+			if (serverInformation.getUrl() == null || serverInformation.getUrl().equals("")) {
+				throw new Exception("Must specify the URL property of the server information");
+			}
+			if (serverInformation.getOwner() == null || serverInformation.getOwner().equals("")) {
+				throw new Exception("Must specify the owner/username property of the server information");
+			}
+			if (serverInformation.getPassword() == null || serverInformation.getPassword().equals("")) {
+				throw new Exception("Must specify the password property of the server information");
+			}
+		}
+		else {
+			throw new Exception("Must specify database information");
+		}
+		if (antennaList.isEmpty()) {
+			throw new Exception("Must specify at least one Antenna");
+		}
+		else {
+			if (!containsConfigredAntenna(antennaList)){
+				throw new Exception("Must have at least one Antenna properly configured");
+			}
+		}
+		this.hostname = hostname;
+		setupDatabaseInformation(serverInformation);
+		setupAntennas(antennaList);
+		setupStoreConfigMap();
+	}
+	
+	/**
 	 * 
 	 * @param antennaList List of antennas which are connected to the Impinj RFID Scanner and have been enabled.
 	 * @return True if the antennaList contains at least one antenna with its store area one and two set; false otherwise
