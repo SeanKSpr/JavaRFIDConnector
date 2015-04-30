@@ -10,8 +10,7 @@
 	<classpathentry kind="lib" path="lib/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-9.4-1200.jdbc41.jar"/>
-	<classpathentry kind="lib" path="lib/swt_64.jar"/>
-	<classpathentry kind="lib" path="lib/swt-debug_64.jar"/>
 	<classpathentry kind="lib" path="swing2swt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sean/Desktop/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
