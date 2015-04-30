@@ -143,21 +143,6 @@ public class EPCConverterTest {
 	
 	
 	public void decomposeOrangeShirt() {
-		ArrayList<Integer> testList = new ArrayList<Integer>();
-		testList.add(0xad31);
-		testList.add(0x8000);
-		testList.add(0xbb77);
-		testList.add(0x00ad);
-		testList.add(0x3180);
-		testList.add(0x002a);
-		
-		long serial = EPCConverter.getSerial(testList);
-		long actualSerial = Long.parseLong("1");
-		//assertEquals(serial, actualSerial);	
-		
-		String UPC = EPCConverter.getUPC(testList);
-		//assertTrue(EPC.equals("039307807364"));
-		
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Input a 96-bit EPC as it appears in hex: ");
 		String epcString = scan.nextLine();
@@ -166,14 +151,13 @@ public class EPCConverterTest {
 		LinkedList<Integer> epc = new LinkedList<Integer>();
 		for (int i = 0; i < 6; i++) {
 			String fourHexString = epcString.substring(0, 4);
-			//fourHexString = "0x" + fourHexString;
 			int fourHex = Integer.parseInt(fourHexString, 16);
 			epc.add(fourHex);
 			epcString = epcString.substring(4);
 		}
 		System.out.println(epc);
 		long serialID = EPCConverter.getSerial(epc);
-		//String UPC = EPCConverter.getUPC(epc);
+		String UPC = EPCConverter.getUPC(epc);
 		
 		System.out.println("Corresponding UPC: " + UPC);
 		System.out.println("Corresponding Serial ID: " + serialID);
