@@ -81,6 +81,7 @@ Change it to look like
 </projectDescription>
 ```
 And then save the .project file
+
 12. Now in the Eclipse window right click JavaRFIDConnector and click Refresh on the drop down menu
   * Double click the JavaRFIDConnector project folder in the left-hand workspace/project window and you should see 3 packages
 13. Eclipse will say that there are errors in the RFID.src.edu.auburn.eng.sks0024.rfid_connector_test package
